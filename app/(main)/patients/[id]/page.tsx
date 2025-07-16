@@ -38,7 +38,7 @@ export default function Patient() {
       {patient?.id && (
         <>
           <div className='flex flex-row justify-center'>
-            <div className='self-end w-1/3'>
+            <div className='self-end md:w-1/3'>
               <SmallSearchInput setShowModal={(show) => { }} />
             </div>
           </div>

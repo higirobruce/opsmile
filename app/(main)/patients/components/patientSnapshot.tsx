@@ -47,10 +47,10 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                             <p className='text-foreground/50'>{patientData.countryOfBirth || 'Kigali-Rwanda'}</p>
                                         </div>
 
-                                        <div className='text-xs flex flex-row items-center space-x-1'>
+                                        {/* <div className='text-xs flex flex-row items-center space-x-1'>
                                             <RiBriefcase4Fill size={14} className='text-xs font-bold' />
                                             <p className='text-foreground/50'>{patientData.occupation || 'Teacher'}</p>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                                 <div className='flex flex-row space-x-2 w-full'>

@@ -16,11 +16,13 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
         <div className='flex justify-between'>
             <Card className='flex w-full justify-between'>
                 <CardContent>
-                    <div className='grid grid-cols-3'>
-                        <div className='flex flex-row space-x-2 col-span-2'>
-                            <div className='w-40 h-40'>
+                    <div className='grid md:grid-cols-3 gap-5'>
+                        <div className='flex md:flex-row flex-col md:space-x-2 col-span-2'>
+                            <div className='md:w-40 md:h-40'>
                                 <AvatarComponent source={patientData?.profilePicture || '/avatar2.jpg'} height={40} width={40} />
                             </div>
+
+
                             <div className='flex flex-col space-y-3 w-full justify-between ' >
                                 <div>
                                     <div className='flex flex-row space-x-3 items-center'>
@@ -33,6 +35,12 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
 
                                             <Mail size={13} aria-hidden={true} />
                                         </div>
+
+                                        {!isHeaderSection && (
+                                            <Button variant="gradient" className='sm:flex md:hidden place-self-end' onClick={() => router.push('patients/' + patientData.id)}>
+                                                <Edit /> More
+                                            </Button>
+                                        )}
                                         {/* <Button className='rounded-full' variant="outline" size="smallIcon">
                                         </Button> */}
                                     </div>
@@ -53,13 +61,13 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                         </div> */}
                                     </div>
                                 </div>
-                                <div className='flex flex-row space-x-2 w-full'>
+                                <div className='grid grid-cols-2 md:grid-cols-4 gap-2 w-full'>
 
                                     <Vitalscard icon={<LocateIcon />} description='BMI' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bmi || '-'} />
 
-                                    <Vitalscard icon={<LocateIcon />} description='Weight (Kg)' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.weight || '-'} />
+                                    <Vitalscard icon={<LocateIcon />} description='Weight' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.weight || '-'} />
 
-                                    <Vitalscard icon={<LocateIcon />} description='Height (Cm)' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.height || '-'} />
+                                    <Vitalscard icon={<LocateIcon />} description='Height' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.height || '-'} />
 
                                     <Vitalscard icon={<LocateIcon />} description='Blood Pressure' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic ? patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic + '/' + patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureDiastolic : '-'} />
 
@@ -68,33 +76,35 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                             </div>
                         </div>
 
-                        <div className='flex flex-col justify-between'>
+                        <div className='md:flex flex-col justify-between hidden'>
                             {!isHeaderSection && (
                                 <Button variant="gradient" className='place-self-end' onClick={() => router.push('patients/' + patientData.id)}>
                                     <Edit /> More
                                 </Button>
                             )}
 
-                            <p className='text-sm font-semibold place-self-end mt-4'>Own diagnosis</p>
-                            <div className='place-self-end flex-row items-center'>
-                                <div className='flex space-x-2'>
-                                    {patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.ownDiagnosis?.map((diagnosis: any) => (
-                                        <Badge key={diagnosis} variant="warning">{diagnosis}</Badge>
-                                    )) || '-'}
-                                    {/* <Badge variant="warning">Obesity</Badge>
+                            <div className='flex flex-col justify-between '>
+                                <p className='text-sm font-semibold place-self-end mt-4'>Own diagnosis</p>
+                                <div className='place-self-end flex-row items-center'>
+                                    <div className='flex space-x-2'>
+                                        {patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.ownDiagnosis?.map((diagnosis: any) => (
+                                            <Badge key={diagnosis} variant="warning">{diagnosis}</Badge>
+                                        )) || '-'}
+                                        {/* <Badge variant="warning">Obesity</Badge>
                                     <Badge variant="warning">Uncontolled type2</Badge> */}
+                                    </div>
                                 </div>
-                            </div>
 
 
-                            <p className='text-sm font-semibold place-self-end mt-4'>Health Barriers</p>
-                            <div className='place-self-end flex-row items-center'>
-                                <div className='flex space-x-2'>
-                                    {patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.healthBarriers?.map((barrier: any) => (
-                                        <Badge key={barrier} variant="secondary">{barrier}</Badge>
-                                    )) || '-'}
-                                    {/* <Badge variant="secondary">Fear of medication</Badge>
+                                <p className='text-sm font-semibold place-self-end mt-4'>Health Barriers</p>
+                                <div className='place-self-end flex-row items-center'>
+                                    <div className='flex space-x-2'>
+                                        {patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.healthBarriers?.map((barrier: any) => (
+                                            <Badge key={barrier} variant="secondary">{barrier}</Badge>
+                                        )) || '-'}
+                                        {/* <Badge variant="secondary">Fear of medication</Badge>
                                     <Badge variant="secondary">Fear of operation</Badge> */}
+                                    </div>
                                 </div>
                             </div>
                         </div>

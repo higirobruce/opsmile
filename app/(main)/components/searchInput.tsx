@@ -59,11 +59,11 @@ export default function SearchInput(
   }
   return (
     <div className='flex justify-center'>
-      <div className="flex flex-col justify-center items-center px-4 pt-20 pb-10 w-full">
-        <h1 className="text-5xl font-extrabold tracking-tight text-center">
+      <div className="flex flex-col justify-center items-center px-4 sm:pt-5 md:pt-20 pb-10 w-full">
+        <h1 className="text-2xl md:text-5xl font-extrabold tracking-tight text-center">
           Search Patient
         </h1>
-        <p className="mt-4 text-lg text-center text-muted-foreground max-w-xl">
+        <p className="mt-4 text-sm md:text-lg text-center text-muted-foreground max-w-xl">
           Use this page to quickly find a patient Names or phone numbers
         </p>
 
@@ -73,16 +73,16 @@ export default function SearchInput(
           className="relative mt-12 w-full max-w-3xl"
         >
           {/* Icon */}
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 md:h-6 md:w-6 text-muted-foreground" />
 
           {/* Giant input */}
           <Input
             type="text"
-            placeholder="Enter patient Names or phone number"
+            placeholder="Enter Names or phone number"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             autoFocus
-            className="h-12 w-full rounded-2xl pl-16 pr-32 text-2xl tracking-wide"
+            className="h-12 w-full rounded-2xl pl-10 pr-28 md:pl-16 text-sm md:text-md tracking-wide"
           />
 
           {/* Optional “Go” button */}
@@ -96,7 +96,7 @@ export default function SearchInput(
 
           <Toaster />
         </form>
-        <p className="py-5">or</p>
+        <p className="py-1 md:py-5">or</p>
         <NewPatient  />
       </div>
     </div>

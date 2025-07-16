@@ -8,7 +8,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <AppSidebar />
       <main className='w-full'>
         <SidebarTrigger />
-        <div className='px-16 py-5 bg-gray-50 min-h-[100vh]'>
+        <div className='px-5 md:px-16 py-5 bg-gray-50 min-h-[100vh]'>
           {children}
         </div>
       </main>

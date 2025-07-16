@@ -230,9 +230,9 @@ export default function PatientTabs({ patientData, refresh }: { patientData: any
                 <>
                     <div className="flex flex-col space-y-3">
                         <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid md:grid-cols-3 gap-3">
                             {/* Timeline for the patients interaction with the doctor */}
-                            <div className="col-span-1">
+                            <div className="md:col-span-1">
                                 <Card >
                                     <CardHeader className='border-b'>
                                         <div className="flex flex-row items-center space-x-2">
@@ -243,7 +243,7 @@ export default function PatientTabs({ patientData, refresh }: { patientData: any
                                         </div>
                                     </CardHeader>
 
-                                    <CardContent className="h-[calc(100vh-40rem)] overflow-scroll ">
+                                    <CardContent className="max-h-[calc(100vh-40rem)] overflow-scroll ">
 
                                         <SimpleTimeline />
                                     </CardContent>
@@ -291,7 +291,7 @@ export default function PatientTabs({ patientData, refresh }: { patientData: any
                     <div className="flex flex-col space-y-5">
                         <PatientSnapshot isHeaderSection={true} patientData={patientData} />
 
-                        <div className="grid grid-cols-3 gap-5">
+                        <div className="grid md:grid-cols-3 gap-5">
                             <Card>
                                 <CardHeader>
                                     <p className="font-semibold text-sm">Blood pressure (mmHg)</p>

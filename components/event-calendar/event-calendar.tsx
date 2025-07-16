@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
 import { RiCalendarCheckLine } from "@remixicon/react"
 import {
   addDays,
@@ -19,24 +18,9 @@ import {
   ChevronRightIcon,
   PlusIcon,
 } from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
 
-import {
-  addHoursToDate,
-  AgendaDaysToShow,
-  AgendaView,
-  CalendarDndProvider,
-  CalendarEvent,
-  CalendarView,
-  DayView,
-  EventDialog,
-  EventGap,
-  EventHeight,
-  MonthView,
-  WeekCellsHeight,
-  WeekView,
-} from "@/components/event-calendar/event-calendar"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -45,6 +29,16 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
+import { AgendaDaysToShow, EventGap, EventHeight, WeekCellsHeight } from "./constants"
+import { CalendarEvent, CalendarView } from "./types"
+import { addHoursToDate } from "./utils"
+import { CalendarDndProvider } from "./calendar-dnd-context"
+import { MonthView } from "./month-view"
+import { WeekView } from "./week-view"
+import { DayView } from "./day-view"
+import { AgendaView } from "./agenda-view"
+import { EventDialog } from "./event-dialog"
 
 export interface EventCalendarProps {
   events?: CalendarEvent[]

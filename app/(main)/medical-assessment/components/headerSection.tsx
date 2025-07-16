@@ -16,7 +16,7 @@ export default function HeaderSection({ patientData }: { patientData: any }) {
                     <div className='grid grid-cols-3'>
                         <div className='flex flex-row space-x-2 col-span-2'>
                             <div className='w-40 h-40'>
-                                <AvatarComponent height={40} width={40} />
+                                <AvatarComponent source='/avatar.jpg' height={40} width={40} />
                             </div>
                             <div className='flex flex-col space-y-3 w-full justify-between ' >
                                 <div>

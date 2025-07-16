@@ -5,11 +5,11 @@ import Menu from '@/app/componets/menu'
 export default function layout({ children }: { children: React.ReactNode }) {
     return (
 
-        <main className='w-full'>
+        <div className='w-full'>
             <Menu />
             <div className='p-10'>
                 {children}
             </div>
-        </main>
+        </div>
     )
 }

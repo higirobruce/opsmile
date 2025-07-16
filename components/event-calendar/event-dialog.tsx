@@ -4,10 +4,6 @@ import { useEffect, useMemo, useState } from "react"
 import { RiCalendarLine, RiDeleteBinLine } from "@remixicon/react"
 import { format, isBefore } from "date-fns"
 
-import type {
-  CalendarEvent,
-  EventColor,
-} from "@/components/event-calendar/event-calendar"
 import {
   DefaultEndHour,
   DefaultStartHour,
@@ -42,6 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { CalendarEvent, EventColor } from "./types"
 
 interface EventDialogProps {
   event: CalendarEvent | null

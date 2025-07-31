@@ -5,10 +5,12 @@ export default function MedicalHistoryCard({
     label,
     sublabel,
     description,
+    date
 }: {
     label: string
-    sublabel?: string
-    description?: string
+    sublabel?: string[]
+    description?: string,
+    date: string
 }) {
     return (
         <div className="border-input has-data-[state=checked]:border-primary/50 relative flex w-full items-start gap-2 rounded-md border p-4 shadow-xs outline-none">
@@ -16,7 +18,9 @@ export default function MedicalHistoryCard({
                 <Label htmlFor={`2`}>
                     {label+" "}
                     <span className="text-muted-foreground text-xs leading-[inherit] font-normal">
-                        ({sublabel})
+                        ( { sublabel?.map((s,i)=>{
+                            return s
+                        })?.join(', ')})
                     </span>
                 </Label>
                 <p
@@ -24,6 +28,10 @@ export default function MedicalHistoryCard({
                     className="text-sm font-bold"
                 >
                     {description}
+                </p>
+
+                <p className='text-xs text-muted-foreground'>
+                    {date}
                 </p>
             </div>
         </div>

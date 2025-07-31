@@ -2,11 +2,14 @@ import {
     BoxIcon,
     CalendarIcon,
     ChartLine,
+    Cross,
     Edit,
     HouseIcon,
     PanelsTopLeftIcon,
+    Plus,
     SettingsIcon,
     UsersRoundIcon,
+    X,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -34,6 +37,10 @@ import { supabase } from "@/lib/supabase-client"
 import PatientSnapshot from "./patientSnapshot"
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
+import VitalsInput from "./vitals-input-sheet"
+import VitalsHistory from "./vitals-history"
+import MedicalInputSheet from "./medical-input-sheet"
+import moment from "moment"
 
 const medicalHistory = [
     {
@@ -110,6 +117,7 @@ export default function PatientTabs({ patientData, refresh }: { patientData: any
     const [oxygenSaturation, setOxygenSaturation] = useState<any>()
     const [nurseNotes, setNurseNotes] = useState<any>()
     const [bmi, setBmi] = useState<any>()
+    const [addingVitals, setAddingVitals] = useState(false)
 
     const handleSubmit = async () => {
         const { error } = await supabase.from('vital_signs').insert({
@@ -136,7 +144,7 @@ export default function PatientTabs({ patientData, refresh }: { patientData: any
     }
     return (
         <Tabs value={tab} defaultValue="tab-1">
-            <Toaster/>
+            <Toaster />
             <ScrollArea>
                 <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none bg-transparent px-0 py-1">
                     <TabsTrigger
@@ -270,12 +278,9 @@ export default function PatientTabs({ patientData, refresh }: { patientData: any
 
                                     <CardContent className="max-h-[calc(100vh-40rem)] overflow-scroll ">
                                         <div className="grid grid-cols-2 gap-3">
-                                            {medicalHistory.map((mh, index) => (
-                                                <MedicalHistoryCard key={index} label={mh.label} sublabel={mh.subLabel} description={mh.description} />
+                                            {patientData?.medical_assessments?.map((mh:any, index:number) => (
+                                                <MedicalHistoryCard key={index} label={mh.chief_complaint} sublabel={mh.provisional_diagnosis} description={mh.clinical_notes} date={moment(mh.created_at).fromNow()} />
                                             ))}
-
-
-
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -290,141 +295,8 @@ export default function PatientTabs({ patientData, refresh }: { patientData: any
                 <>
                     <div className="flex flex-col space-y-5">
                         <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-
-                        <div className="grid md:grid-cols-3 gap-5">
-                            <Card>
-                                <CardHeader>
-                                    <p className="font-semibold text-sm">Blood pressure (mmHg)</p>
-                                </CardHeader>
-
-                                <CardContent>
-                                    <div className="flex flex-col space-y-2">
-                                        <div>
-                                            <Label>Blood Pressure (Systolic)</Label>
-                                            <Input
-                                                type="number"
-                                                value={bloodPressureSystolic?.toString()}
-                                                onChange={(e) => setBloodPressureSystolic(Number(e.target.value))}
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <Label>Blood Pressure (Diastolic)</Label>
-                                            <Input
-                                                type="number"
-                                                value={bloodPressureDiastolic?.toString()}
-                                                onChange={(e) => setBloodPressureDiastolic(Number(e.target.value))}
-                                            /></div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    <p className="font-semibold text-sm">Pulse & Respiratory</p>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex flex-col space-y-2">
-                                        <div>
-                                            <Label>Pulse rate</Label>
-                                            <Input
-                                                type="number"
-                                                value={pulseRate?.toString()}
-                                                onChange={(e) => setPulerRate(Number(e.target.value))}
-                                            /></div>
-
-                                        <div>
-                                            <Label>Respiration rate</Label>
-                                            <Input
-                                                type="number"
-                                                value={respiratoryRate?.toString()}
-                                                onChange={(e) => setRespiratoryRate(Number(e.target.value))}
-                                            /></div>
-
-                                        <div>
-                                            <Label>Oxygen saturation</Label>
-                                            <Input
-                                                type="number"
-                                                value={oxygenSaturation?.toString()}
-                                                onChange={(e) => setOxygenSaturation(Number(e.target.value))}
-                                            /></div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    <p className="font-semibold text-sm">Temperature</p>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex flex-col space-y-2">
-                                        <div>
-                                            <Label>Temperature (°C)</Label>
-                                            <Input
-                                                type="number"
-                                                value={temperature?.toString()}
-                                                onChange={(e) => setTemperature(Number(e.target.value))}
-                                            /></div>
-
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    <p className="font-semibold text-sm">Physical Measurements</p>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex flex-col space-y-2">
-                                        <div>
-                                            <Label>Height (cm)</Label>
-                                            <Input
-                                                type="number"
-                                                value={height?.toString()}
-                                                onChange={(e) => setHeight(Number(e.target.value))}
-                                            /></div>
-
-                                        <div>
-                                            <Label>Weight (kg)</Label>
-                                            <Input
-                                                type="number"
-                                                value={weight?.toString()}
-                                                onChange={(e) => setWeight(Number(e.target.value))}
-                                            /></div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    <p className="font-semibold text-sm">Nurse notes</p>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex flex-col space-y-2">
-                                        <div>
-                                            <Label>Notes</Label>
-                                            <Textarea
-                                                value={nurseNotes}
-                                                onChange={(e) => setNurseNotes(e.target.value)}
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <InputTags label="Own diagnosis" inputTags={ownDiagnosisTags} setInputTags={setOwnDiagnosisTags} />
-                                        </div>
-
-                                        <div>
-                                            <InputTags label="Health Barriers" inputTags={healthBarriersTags} setInputTags={setHealthBarriersTags} />
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                            <div className="self-end">
-                                <Button variant="default" onClick={handleSubmit}>Save</Button>
-                            </div>
-
-                        </div>
-
+                        <VitalsInput refresh={refresh} patientData={patientData} />
+                        <VitalsHistory patientData={patientData} />
                     </div>
                 </>
             </TabsContent>
@@ -432,6 +304,31 @@ export default function PatientTabs({ patientData, refresh }: { patientData: any
                 <>
                     <div className="flex flex-col space-y-5">
                         <PatientSnapshot isHeaderSection={true} patientData={patientData} />
+
+                        {/* Medical History */}
+                        <div className="col-span-2">
+                            <Card >
+                                <CardHeader className='border-b'>
+                                    <div className="flex flex-row items-center space-x-2 justify-between">
+                                        <div className="flex flex-row items-center space-x-3">
+                                            <Button variant="outline" size="icon">
+                                                <RiFileList2Line size={9} />
+                                            </Button>
+                                            <p className="text-sm font-semibold">Medical History</p></div>
+
+                                        <MedicalInputSheet refresh={refresh} patientData={patientData} />
+                                    </div>
+                                </CardHeader>
+
+                                <CardContent className="max-h-[calc(100vh-40rem)] overflow-scroll ">
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {patientData?.medical_assessments?.map((mh:any, index:any) => (
+                                            <MedicalHistoryCard key={index} label={mh.chief_complaint} sublabel={mh.provisional_diagnosis} description={mh.clinical_notes} date={moment(mh.created_at).fromNow()} />
+                                        ))}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                 </>
             </TabsContent>

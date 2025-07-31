@@ -1,3 +1,4 @@
+'use client'
 import { ArrowBigRight, Calendar, File, FileBadge, FileEdit, ForkKnife, HeartIcon, Home, HousePlus, Inbox, ScanHeart, Scissors, Search, Settings, Space, ToolCaseIcon, User2, UserCheck } from "lucide-react"
 
 import {
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import AvatarComponent from "./avatar"
 import { RiUserHeartLine } from "@remixicon/react"
+import { usePathname } from "next/navigation"
 
 // Menu items.
 const items = [
@@ -74,6 +76,7 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const path = usePathname()
   return (
     <Sidebar>
       <SidebarContent>
@@ -89,7 +92,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild isActive={item.url === path.split('/')[1]}>
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

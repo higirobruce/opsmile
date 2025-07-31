@@ -2,7 +2,7 @@
 import { Card, CardContent } from '@/components/ui/card'
 import React from 'react'
 import AvatarComponent from '../../components/avatar'
-import { Edit, LocateIcon, Mail, Phone } from 'lucide-react'
+import { Edit, LocateIcon, Mail, Phone, Plus } from 'lucide-react'
 import Vitalscard from './vital-card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -18,20 +18,20 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                 <CardContent>
                     <div className='grid md:grid-cols-3 gap-5'>
                         <div className='flex md:flex-row flex-col md:space-x-2 col-span-2'>
-                            <div className='md:w-40 md:h-40'>
+                            {/* <div className='md:w-40 md:h-40'>
                                 <AvatarComponent source={patientData?.profilePicture || '/avatar2.jpg'} height={40} width={40} />
-                            </div>
+                            </div> */}
 
 
                             <div className='flex flex-col space-y-3 w-full justify-between ' >
                                 <div>
                                     <div className='flex flex-row space-x-3 items-center'>
                                         <p className='text-md font-semibold'>{patientData.firstName} {patientData.lastName}</p>
-                                        <div className='cursor-pointer bg-primary/10 rounded-full p-2'>
+                                        <div className='cursor-pointer bg-foreground/10 rounded-full p-2'>
                                             <Phone size={13} aria-hidden={true} />
                                         </div>
 
-                                        <div className='cursor-pointer bg-primary/10 rounded-full p-2'>
+                                        <div className='cursor-pointer bg-foreground/10 rounded-full p-2'>
 
                                             <Mail size={13} aria-hidden={true} />
                                         </div>
@@ -41,6 +41,8 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                                 <Edit /> More
                                             </Button>
                                         )}
+
+                                        
                                         {/* <Button className='rounded-full' variant="outline" size="smallIcon">
                                         </Button> */}
                                     </div>

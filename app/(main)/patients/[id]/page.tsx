@@ -12,7 +12,7 @@ export default function Patient() {
   const [patient, setPatient] = useState<any>({})
 
   useEffect(() => {
-    supabase.from('patients').select("*, vital_signs(*)").eq('id', id)
+    supabase.from('patients').select("*, vital_signs (*), medical_assessments (*)").eq('id', id)
       .then(({ data, error }) => {
         if (error) {
           console.log(error)
@@ -22,7 +22,7 @@ export default function Patient() {
   }, [id])
 
   const fetchPatientInfo = () => {
-    supabase.from('patients').select("*, vital_signs(*)").eq('id', id)
+    supabase.from('patients').select("*, vital_signs (*), medical_assessments (*)").eq('id', id)
       .then(({ data, error }) => {
         if (error) {
           console.log(error)

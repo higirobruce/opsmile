@@ -41,7 +41,7 @@ export default function SearchInput(
 
     const { data, error } = await supabase
       .from('patients')
-      .select(`*, vital_signs (*)`)
+      .select(`*, vital_signs (*), medical_assessments (*)`)
       .or(`firstName.ilike.%${search}%,phoneNumber.ilike.%${search}%,lastName.ilike.%${search}%`)
     // .contains('firstName', search)
     // .or(`phone_number.contains.${search}`)

@@ -28,11 +28,11 @@ const items = [
     url: "/patients",
     icon: RiUserHeartLine,
   },
-  // {
-  //   title: "Nursing Assessment",
-  //   url: "/nursing",
-  //   icon: Scissors,
-  // },
+  {
+    title: "Programs",
+    url: "/programs",
+    icon: Scissors,
+  },
   // {
   //   title: "Medical Assessment",
   //   url: "/medical-assessment",
@@ -92,7 +92,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={item.url === path.split('/')[1]}>
+                  <SidebarMenuButton asChild isActive={item.url.slice(1) === path.split('/')[1]}>
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

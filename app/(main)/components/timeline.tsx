@@ -8,6 +8,7 @@ import {
   TimelineSeparator,
   TimelineTitle,
 } from "@/components/ui/timeline"
+import Image from "next/image"
 
 const items = [
   {
@@ -65,7 +66,7 @@ export default function TimelineUsers() {
               </span>
             </TimelineTitle>
             <TimelineIndicator className="bg-primary/10 group-data-completed/timeline-item:bg-primary group-data-completed/timeline-item:text-primary-foreground flex size-6 items-center justify-center border-none group-data-[orientation=vertical]/timeline:-left-7">
-              <img
+              <Image
                 src={item.image}
                 alt={item.title}
                 className="size-6 rounded-full"

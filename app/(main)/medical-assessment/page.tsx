@@ -9,13 +9,13 @@ export default function NursingAssess() {
   return (
     <>
       {
-        !patientData?.id && (<div>
+        !patientData?._id && (<div>
           <SearchInput setPatientData={(data) => setPatientData(data)} />
         </div>)
       }
       <div className='flex flex-col space-y-5'>
 
-        {patientData?.id && (
+        {patientData?._id && (
           <>
             <div className='flex flex-row justify-center'>
               <div className='self-end w-1/3'>

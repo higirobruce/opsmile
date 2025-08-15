@@ -14,34 +14,18 @@ import {
 } from "lucide-react"
 
 import {
+  FileMetadata,
+  FileWithPreview,
   formatBytes,
   useFileUpload,
 } from "@/hooks/use-file-upload"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import { supabase } from "@/lib/supabase-client"
+import { toast } from "sonner"
 
 // Create some dummy initial files
-const initialFiles = [
-  {
-    name: "document.pdf",
-    size: 528737,
-    type: "application/pdf",
-    url: "https://example.com/document.pdf",
-    id: "document.pdf-1744638436563-8u5xuls",
-  },
-  {
-    name: "intro.zip",
-    size: 252873,
-    type: "application/zip",
-    url: "https://example.com/intro.zip",
-    id: "intro.zip-1744638436563-8u5xuls",
-  },
-  {
-    name: "conclusion.xlsx",
-    size: 352873,
-    type: "application/xlsx",
-    url: "https://example.com/conclusion.xlsx",
-    id: "conclusion.xlsx-1744638436563-8u5xuls",
-  },
+const initialFiles:FileMetadata[] = [
 ]
 
 const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
@@ -79,9 +63,17 @@ const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
   return <FileIcon className="size-4 opacity-60" />
 }
 
-export default function FileUpload() {
-  const maxSize = 100 * 1024 * 1024 // 10MB default
+// Update the interface
+interface FileUploadProps {
+  onUploadComplete?: (files: FileWithPreview[]) => void;
+  bucketName?: string;
+}
+
+
+export default function FileUpload({ onUploadComplete, bucketName = "consents" }: FileUploadProps) {
+  const maxSize = 100 * 1024 * 1024 // 100MB default
   const maxFiles = 10
+  const [uploading, setUploading] = useState(false)
 
   const [
     { files, isDragging, errors },
@@ -99,8 +91,17 @@ export default function FileUpload() {
     multiple: true,
     maxFiles,
     maxSize,
-    initialFiles,
+    initialFiles: []
   })
+
+  // Replace uploadToSupabase with a simpler handler
+  const handleUpload = () => {
+    if (onUploadComplete) {
+      onUploadComplete(files)
+    }
+    clearFiles()
+  }
+
 
   return (
     <div className="flex flex-col gap-2">
@@ -192,30 +193,22 @@ export default function FileUpload() {
             </div>
           ))}
 
-          {/* Remove all files button */}
-          {files.length > 1 && (
-            <div>
+          {/* Upload and Remove buttons */}
+          <div className="flex gap-2">
+            <Button 
+              onClick={handleUpload}
+              disabled={uploading}
+            >
+              {uploading ? 'Uploading...' : 'Upload Files'}
+            </Button>
+            {files.length > 1 && (
               <Button size="sm" variant="outline" onClick={clearFiles}>
                 Remove all files
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
-
-      <p
-        aria-live="polite"
-        role="region"
-        className="text-muted-foreground mt-2 text-center text-xs"
-      >
-        Multiple files uploader w/ list ∙{" "}
-        <a
-          href="https://github.com/origin-space/originui/tree/main/docs/use-file-upload.md"
-          className="hover:text-foreground underline"
-        >
-          API
-        </a>
-      </p>
     </div>
   )
 }

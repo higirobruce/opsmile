@@ -1,3 +1,4 @@
+'use client'
 import {
   BoltIcon,
   BookOpenIcon,
@@ -22,59 +23,65 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { supabase } from "@/lib/supabase-client"
+import { useAuth } from "@/app/context/AuthContext"
+import SignIn from "@/app/componets/sign-in"
+import { sign } from "crypto"
 
 export default function UserMenu() {
+  let { user, loading, signOut } = useAuth()
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
-          <Avatar>
-            <AvatarImage src="./avatar.jpg" alt="Profile image" className="h-6 w-6" />
-            <AvatarFallback>KK</AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="max-w-64" align="end">
-        <DropdownMenuLabel className="flex min-w-0 flex-col">
-          <span className="text-foreground truncate text-sm font-medium">
-            Keith Kennedy
-          </span>
-          <span className="text-muted-foreground truncate text-xs font-normal">
-            k.kennedy@originui.com
-          </span>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 1</span>
+    <>
+      {user && <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
+            <Avatar>
+              <AvatarImage src="./avatar.jpg" alt="Profile image" className="h-6 w-6" />
+              <AvatarFallback>{user.email?.slice(1, 2)}</AvatarFallback>
+            </Avatar>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="max-w-64" align="end">
+          <DropdownMenuLabel className="flex min-w-0 flex-col">
+            <span className="text-muted-foreground truncate text-xs font-normal">
+              {user?.email}
+            </span>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Option 1</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Option 2</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Option 3</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <PinIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Option 4</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span>Option 5</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={async () => signOut()}>
+            <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
+            <span>Logout</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 2</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 3</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <PinIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 4</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 5</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
-          <span>Logout</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>}
+
+      {!user && !loading && <SignIn />}
+    </>
   )
 }

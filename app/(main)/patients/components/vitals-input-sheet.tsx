@@ -1,4 +1,4 @@
-import { useId, useState } from "react"
+import { useEffect, useId, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -43,6 +43,10 @@ import { Toaster } from "@/components/ui/sonner"
 import { Tag } from "emblor"
 import { Textarea } from "@/components/ui/textarea"
 import InputTags from "../../components/input-tags"
+import { useAuth } from "@/app/context/AuthContext"
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+
 
 const steps = [1, 2, 3]
 export default function VitalsInput({ className,
@@ -53,6 +57,7 @@ export default function VitalsInput({ className,
 }: React.ComponentProps<any>
 ) {
     const id = useId()
+    const { token, user } = useAuth()
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [middleName, setMiddleName] = useState('')
@@ -84,9 +89,9 @@ export default function VitalsInput({ className,
     const [bmi, setBmi] = useState<any>()
     const [addingVitals, setAddingVitals] = useState(false)
 
-    const handleSubmit = async () => {
+    const handleSubmit_supabase = async () => {
         const { error } = await supabase.from('vital_signs').insert({
-            patientId: patientData?.id,
+            patientId: patientData?._id,
             bloodPressureSystolic: bloodPressureSystolic,
             bloodPressureDiastolic: bloodPressureDiastolic,
             ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
@@ -106,6 +111,68 @@ export default function VitalsInput({ className,
 
         refresh()
 
+    }
+
+    useEffect(() => {
+        console.log("---------",patientData)
+    }, [patientData])
+
+    const handleSubmit = async () => {
+        try {
+            const response = await fetch(`${API_URL}/vital_signs`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    patientId: patientData?._id,
+                    bloodPressureSystolic,
+                    bloodPressureDiastolic,
+                    ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
+                    healthBarriers: healthBarriersTags?.map((tag: any) => tag?.text),
+                    height,
+                    weight,
+                    temperature,
+                    respirationRate: respiratoryRate,
+                    pulseRate,
+                    oxygenSaturation,
+                    bmi: weight / (height * height), // Correct BMI calculation
+                    nurseNotes,
+                    nurseId: user?.id
+                })
+            })
+
+            const data = await response.json()
+
+            console.log({
+                    patientId: patientData?._id,
+                    bloodPressureSystolic,
+                    bloodPressureDiastolic,
+                    ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
+                    healthBarriers: healthBarriersTags?.map((tag: any) => tag?.text),
+                    height,
+                    weight,
+                    temperature,
+                    respirationRate: respiratoryRate,
+                    pulseRate,
+                    oxygenSaturation,
+                    bmi: weight / (height * height), // Correct BMI calculation
+                    nurseNotes,
+                    nurseId: user?.id
+                })
+
+            if (!response.ok) {
+                toast.error(data.message || 'Error submitting vital signs')
+                return
+            }
+
+            toast.success('Vital Signs Submitted')
+            refresh()
+        } catch (error) {
+            console.error(error)
+            toast.error('Failed to submit vital signs')
+        }
     }
 
     const postPatient = async () => {

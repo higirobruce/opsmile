@@ -1,22 +1,6 @@
 import { useId, useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-    Stepper,
-    StepperIndicator,
-    StepperItem,
-    StepperSeparator,
-    StepperTrigger,
-} from "@/components/ui/stepper"
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -30,29 +14,22 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { LoaderCircleIcon, PlusIcon } from "lucide-react"
-import { Select } from "@/components/ui/select"
-import SelectComponent from "../../components/select-component"
-import { stat } from "fs"
-import { json } from "stream/consumers"
+import { LoaderCircleIcon } from "lucide-react"
 import { supabase } from "@/lib/supabase-client"
-import DOBPicker from "./date-of-birth-picker"
-import WebCapture from "./web-capture"
 import { toast } from "sonner"
-import { Toaster } from "@/components/ui/sonner"
 import { Tag } from "emblor"
 import { Textarea } from "@/components/ui/textarea"
 import InputTags from "../../components/input-tags"
+import { useAuth } from "@/app/context/AuthContext"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 
-const steps = [1, 2, 3]
+
 export default function MedicalInputSheet({ className,
     appendNewPatient,
     patientData,
-    refresh,
-    ...props
-}: React.ComponentProps<any>
+    refresh}: React.ComponentProps<any>
 ) {
-    const id = useId()
+     const { token, user } = useAuth()
     const [open, setOpen] = useState(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
 
@@ -63,15 +40,16 @@ export default function MedicalInputSheet({ className,
     const [provisionalDiagnosis, setProvisionalDiagnosis] = useState<Tag[]>([])
     const [clinicalNotes, setClinicalNotes] = useState<any>()
 
-    const handleSubmit = async () => {
+    const handleSubmit_supabase = async () => {
         const { error } = await supabase.from('medical_assessments').insert({
-            patient_id: patientData?.id,
+            patient_id: patientData?._id,
             chief_complaint: chiefComplaint,
             past_medical_history: pastMedicalHistory?.map((tag: any) => tag?.text),
             current_medication: currentMedication?.map((tag: any) => tag?.text),
             allergies: allergies?.map((tag: any) => tag?.text),
             provisional_diagnosis: provisionalDiagnosis?.map((tag: any) => tag?.text),
-            clinical_notes: clinicalNotes
+            clinical_notes: clinicalNotes,
+            nurseId: user?.id
 
         })
         if (error) {
@@ -79,6 +57,45 @@ export default function MedicalInputSheet({ className,
         }
         toast.success('Medical assessment saved')
         refresh()
+    }
+
+     const handleSubmit = async () => {
+        setSubmitting(true)
+        try {
+            const response = await fetch(`${API_URL}/medical-assessment`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    patientId: patientData?._id,
+                    chief_complaint: chiefComplaint,
+                    past_medical_history: pastMedicalHistory?.map((tag: Tag) => tag?.text),
+                    current_medication: currentMedication?.map((tag: Tag) => tag?.text),
+                    allergies: allergies?.map((tag: Tag) => tag?.text),
+                    provisional_diagnosis: provisionalDiagnosis?.map((tag: Tag) => tag?.text),
+                    clinical_notes: clinicalNotes,
+                    doneById: user?.id
+                })
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                toast.error(data.message || 'Error saving medical assessment')
+                return
+            }
+
+            toast.success('Medical assessment saved')
+            setOpen(false)
+            refresh()
+        } catch (error) {
+            console.error(error)
+            toast.error('Failed to save medical assessment')
+        } finally {
+            setSubmitting(false)
+        }
     }
 
     return (

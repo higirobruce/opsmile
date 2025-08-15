@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import React, { useState } from 'react'
 import Webcam from 'react-webcam'
 
@@ -31,7 +32,7 @@ export default function WebCapture({onCapture}: {onCapture: (value: string) => v
                 className='rounded-md mb-2'
             />}
             {imgSrc && (
-                <img
+                <Image
                     src={imgSrc}
                     alt="Captured"
                     className='rounded-md mb-2'

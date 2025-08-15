@@ -1,6 +1,7 @@
-import { useId } from "react"
+"use client";
+import { useId, useState } from "react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,16 +9,48 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { supabase } from "@/lib/supabase-client";
+import { CodeSquare } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { toast, Toaster } from "sonner";
 
 export default function SignUp() {
-  const id = useId()
+  const id = useId();
+  let { signUp } = useAuth();
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleSignUp = async () => {
+    let { error, data } = await signUp(
+      email,
+      password,
+      firstName,
+      lastName
+    );
+
+    if (error) {
+      toast.error(error);
+      console.log("Failed to signup", error);
+    }
+
+    if (data) {
+      toast.success("user " + data.user?.email + " successfully created!");
+      setOpen(false);
+    }
+  };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Toaster />
       <DialogTrigger asChild>
-        <Button variant="outline">Get Started</Button>
+        <Button variant="outline" onClick={() => setOpen(true)}>
+          Get Started
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <div className="flex flex-col items-center gap-2">
@@ -37,9 +70,7 @@ export default function SignUp() {
             </svg>
           </div> */}
           <DialogHeader>
-            <DialogTitle className="sm:text-center">
-              Sign up
-            </DialogTitle>
+            <DialogTitle className="sm:text-center">Sign up</DialogTitle>
             <DialogDescription className="sm:text-center">
               We just need a few details to get you started.
             </DialogDescription>
@@ -49,12 +80,25 @@ export default function SignUp() {
         <form className="space-y-5">
           <div className="space-y-4">
             <div className="*:not-first:mt-2">
-              <Label htmlFor={`${id}-name`}>Full name</Label>
+              <Label htmlFor={`${id}-firstName`}>First name</Label>
               <Input
-                id={`${id}-name`}
+                id={`${id}-firstName`}
                 placeholder="Matt Welsh"
                 type="text"
                 required
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className="*:not-first:mt-2">
+              <Label htmlFor={`${id}-lastName`}>Last name</Label>
+              <Input
+                id={`${id}-lastName`}
+                placeholder="Matt Welsh"
+                type="text"
+                required
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </div>
             <div className="*:not-first:mt-2">
@@ -64,6 +108,8 @@ export default function SignUp() {
                 placeholder="hi@yourcompany.com"
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="*:not-first:mt-2">
@@ -73,10 +119,16 @@ export default function SignUp() {
                 placeholder="Enter your password"
                 type="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
-          <Button type="button" className="w-full">
+          <Button
+            onClick={() => handleSignUp()}
+            type="button"
+            className="w-full"
+          >
             Sign up
           </Button>
         </form>
@@ -96,5 +148,5 @@ export default function SignUp() {
         </p>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

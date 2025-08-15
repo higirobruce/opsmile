@@ -15,6 +15,8 @@ import {
 import AvatarComponent from "./avatar"
 import { RiUserHeartLine } from "@remixicon/react"
 import { usePathname } from "next/navigation"
+import { useAuth } from "@/app/context/AuthContext"
+import UserMenu from "@/components/navbar-components/user-menu"
 
 // Menu items.
 const items = [
@@ -76,16 +78,14 @@ const items = [
 ]
 
 export function AppSidebar() {
+  let {user} = useAuth()
   const path = usePathname()
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>
-            <div className="flex items-center justify-between w-full">
-                <AvatarComponent source="/avatar.jpg" height={8} width={8} /> 
-                <p className="text-xs font-semibold">Bruce H.</p>
-            </div>
+            <UserMenu />
           </SidebarGroupLabel>
           <SidebarSeparator/>
           <SidebarGroupContent>

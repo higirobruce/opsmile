@@ -9,36 +9,19 @@ import { toast, Toaster } from "sonner"
 import { useRouter } from "next/navigation"
 import NewPatient from "../patients/components/new-patient-modal"
 import { supabase } from "@/lib/supabase-client"
+import { useAuth } from "@/app/context/AuthContext"
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 export default function SearchInput(
   { setPatientData }: { setPatientData: (patientId: null | {}) => void }
 ) {
   const id = useId()
   const [search, setSearch] = useState('')
   const router = useRouter();
-  const fetchPatients = async (e: FormEvent) => {
+    const { token } = useAuth()
+  const fetchPatients_Supabase = async (e: FormEvent) => {
     e.preventDefault()
-    // if (search) {
-    //   const response = await fetch('http://localhost:9999/patients/search/' + search)
-    //   const data = await response.json()
-
-    //   if (response.status != 200 || data?.length == 0) {
-    //     setPatientData(null)
-    //     toast.error("Patient not found!", {
-    //       description: "Please check well the provided info!",
-    //       // action: {
-    //       //   label: "Undo",
-    //       //   onClick: () => console.log("Undo"),
-    //       // },
-    //     })
-    //   }
-
-    //   setPatientData(data)
-    //   // router.push('/patient/'+ data.id)
-    // } else {
-    //   setPatientData([])
-    // }
-
+   
     const { data, error } = await supabase
       .from('patients')
       .select(`*, vital_signs (*), medical_assessments (*)`)
@@ -55,6 +38,31 @@ export default function SearchInput(
 
     if (data) {
       setPatientData(data)
+    }
+  }
+
+  const fetchPatients = async (e: FormEvent) => {
+    e.preventDefault()
+   
+    try {
+      const response = await fetch(`${API_URL}/patients?search=${encodeURIComponent(search)}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        toast.error(data.message || 'Error fetching patients')
+        return
+      }
+
+      setPatientData(data)
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to fetch patients')
     }
   }
   return (

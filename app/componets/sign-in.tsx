@@ -1,4 +1,5 @@
-import { useId } from "react"
+'use client'
+import { useId, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -12,11 +13,53 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { redirect, useRouter } from "next/navigation"
+import { useAuth } from "../context/AuthContext"
+import { supabase } from "@/lib/supabase-client"
+import { Loader2 } from "lucide-react"
+import { toast, Toaster } from "sonner"
 
 export default function SignIn() {
+  const router = useRouter();
+  const { signIn, loading } = useAuth();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const id = useId()
+  // const handleSignIn = async () => {
+  //   let { data, error } = await supabase.auth.signInWithPassword({
+  //     email: 'higirobru@gmail.com',
+  //     password: 'nLrSPgCCmlppTbzUOqLq'
+  //   })
+  //   if (error) {
+  //     console.log('Failed to log in', error)
+  //   }
+
+  //   if (data) {
+  //     supabase.auth.setSession({
+  //       access_token: data.session?.access_token ?? '',
+  //       refresh_token: data.session?.refresh_token ?? '',
+  //     })
+  //     router.push('/dashboard')
+  //   }
+  // }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const { error } = await signIn(email, password);
+
+      if (error) throw error;
+      router.push('/dashboard')
+    } catch (error: any) {
+      toast.error(error)
+    } finally {
+    }
+  };
+
   return (
     <Dialog>
+      <Toaster/>
       <DialogTrigger asChild>
         <Button variant="gradient">Sign in</Button>
       </DialogTrigger>
@@ -45,7 +88,7 @@ export default function SignIn() {
           </DialogHeader>
         </div>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-4">
             <div className="*:not-first:mt-2">
               <Label htmlFor={`${id}-email`}>Email</Label>
@@ -54,6 +97,8 @@ export default function SignIn() {
                 placeholder="hi@yourcompany.com"
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="*:not-first:mt-2">
@@ -63,6 +108,8 @@ export default function SignIn() {
                 placeholder="Enter your password"
                 type="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
@@ -80,7 +127,8 @@ export default function SignIn() {
               Forgot password?
             </a>
           </div>
-          <Button type="button" className="w-full">
+          <Button type="submit" className="w-full" disabled={!email || !password || loading}>
+            {loading && <Loader2 size="sm"/>}
             Sign in
           </Button>
         </form>

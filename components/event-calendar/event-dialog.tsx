@@ -169,7 +169,7 @@ export function EventDialog({
     const eventTitle = title.trim() ? title : "(no title)"
 
     onSave({
-      id: event?._id || "",
+      id: event?.id || "",
       title: eventTitle,
       description,
       start,
@@ -181,7 +181,7 @@ export function EventDialog({
   }
 
   const handleDelete = () => {
-    if (event?._id) {
+    if (event?.id) {
       onDelete(event.id)
     }
   }
@@ -235,9 +235,9 @@ export function EventDialog({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{event?._id ? "Edit Event" : "Create Event"}</DialogTitle>
+          <DialogTitle>{event?.id ? "Edit Event" : "Create Event"}</DialogTitle>
           <DialogDescription className="sr-only">
-            {event?._id
+            {event?.id
               ? "Edit the details of this event"
               : "Add a new event to your calendar"}
           </DialogDescription>
@@ -444,7 +444,7 @@ export function EventDialog({
           </fieldset>
         </div>
         <DialogFooter className="flex-row sm:justify-between">
-          {event?._id && (
+          {event?.id && (
             <Button
               variant="outline"
               size="icon"

@@ -1,5 +1,6 @@
 "use client"
 
+import { set } from "date-fns"
 import { createContext, useContext, useEffect, useState, ReactNode } from "react"
 
 interface User {
@@ -55,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
         try {
+            setLoading(true)
             const response = await fetch(`${API_URL}/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -74,13 +76,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setToken(data.access_token)
             setUser(data.user)
             
+            setLoading(false)
             return { error: null, data }
         } catch (error) {
+            setLoading(false)
             return { error: 'An error occurred during sign up', data: null }
         }
     }
 
     const signIn = async (email: string, password: string) => {
+        setLoading
         try {
             const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
@@ -101,8 +106,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setToken(data.access_token)
             setUser(data.user)
             
+            setLoading(false)
             return { error: null, data }
         } catch (error) {
+            setLoading(false)
             return { error: 'An error occurred during sign in', data: null }
         }
     }

@@ -5,6 +5,7 @@ import {
   Layers2Icon,
   LogOutIcon,
   PinIcon,
+  User2,
   UserPenIcon,
 } from "lucide-react"
 
@@ -36,8 +37,8 @@ export default function UserMenu() {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
             <Avatar>
-              <AvatarImage src="./avatar.jpg" alt="Profile image" className="h-6 w-6" />
-              <AvatarFallback>{user.email?.slice(1, 2)}</AvatarFallback>
+              {/* <AvatarImage src="./avatar.jpg" alt="Profile image" className="h-6 w-6" /> */}
+              <AvatarFallback>{user.firstName?.slice(0, 1) + "" + user.lastName?.slice(0, 1).toUpperCase()}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -47,31 +48,14 @@ export default function UserMenu() {
               {user?.email}
             </span>
           </DropdownMenuLabel>
+          
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
-              <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-              <span>Option 1</span>
+              <User2 size={16} className="opacity-60" aria-hidden="true" />
+              <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
-              <span>Option 2</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
-              <span>Option 3</span>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <PinIcon size={16} className="opacity-60" aria-hidden="true" />
-              <span>Option 4</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
-              <span>Option 5</span>
-            </DropdownMenuItem>
+           
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={async () => signOut()}>

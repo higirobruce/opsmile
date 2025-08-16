@@ -52,7 +52,7 @@ export default function SearchInput({
     setLoadingPatients(true);
     try {
       const response = await fetch(
-        `${API_URL}/patients?search=${encodeURIComponent(search)}`,
+        `${API_URL}/patients/search?search=${encodeURIComponent(search)}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

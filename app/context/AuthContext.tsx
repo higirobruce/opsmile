@@ -78,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             
             setLoading(false)
             return { error: null, data }
-        } catch (error) {
+        } catch (error) {7
             setLoading(false)
             return { error: 'An error occurred during sign up', data: null }
         }

@@ -127,7 +127,7 @@ export default function SignIn() {
             </a>
           </div>
           <Button type="submit" className="w-full" disabled={!email || !password || loading}>
-            {loading && <Loader2 size="sm"/>}
+            {loading && <Loader2 className="mr-2 animate-spin" size="sm"/>}
             Sign in
           </Button>
         </form>

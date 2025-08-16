@@ -111,6 +111,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } catch (error) {
             setLoading(false)
             return { error: 'An error occurred during sign in', data: null }
+        } finally {
+            setLoading(false)
         }
     }
 

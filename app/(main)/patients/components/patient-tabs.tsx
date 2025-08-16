@@ -28,6 +28,7 @@ import {
   RiHeartPulseFill,
   RiHospitalFill,
   RiHotelBedFill,
+  RiHotelBedLine,
   RiLogoutBoxRFill,
   RiLogoutCircleFill,
   RiMedicineBottleFill,
@@ -37,6 +38,7 @@ import {
   RiProgress1Fill,
   RiProgress2Fill,
   RiScissors2Fill,
+  RiScissors2Line,
   RiUser2Fill,
   RiUser3Fill,
   RiUser6Fill,
@@ -46,11 +48,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import MedicalHistoryCard from "./medical-history-card";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import InputTags from "../../components/input-tags";
-import { Tag } from "emblor";
-import { supabase } from "@/lib/supabase-client";
 import PatientSnapshot from "./patientSnapshot";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
@@ -59,64 +56,8 @@ import VitalsHistory from "./vitals-history";
 import MedicalInputSheet from "./medical-input-sheet";
 import moment from "moment";
 import AnesthesiaInputSheet from "./anesthesia-input-sheet";
+import SurgeryInputSheet from "./surgery-input-sheet";
 
-const medicalHistory = [
-  {
-    label: "Chronic Conditions",
-    subLabel: "Ongoing or previously diagnosed illnesses",
-    description: "Hypertension, Diabetes, Asthma",
-  },
-  {
-    label: "Allergies",
-    subLabel: "Known allergies to medications or substances",
-    description: "Penicillin – causes rash and itching",
-  },
-  {
-    label: "Current Medications",
-    subLabel: "Drugs the patient is currently taking",
-    description: "Metformin 500mg twice daily",
-  },
-  {
-    label: "Past Surgeries",
-    subLabel: "Any surgical procedures in the past",
-    description: "Appendectomy (2010), Cesarean section (2015)",
-  },
-  {
-    label: "Family History",
-    subLabel: "Medical conditions in close family members",
-    description: "Mother – Diabetes, Father – Stroke",
-  },
-  {
-    label: "Smoking History",
-    subLabel: "Current or past tobacco use",
-    description: "Smokes 5 cigarettes/day for 10 years",
-  },
-  {
-    label: "Alcohol Use",
-    subLabel: "Frequency and quantity of alcohol consumption",
-    description: "Drinks occasionally on weekends",
-  },
-  {
-    label: "Occupation",
-    subLabel: "Patient’s job or regular work",
-    description: "Farmer, Driver, Teacher",
-  },
-  {
-    label: "Physical Activity",
-    subLabel: "Regular exercise or activity level",
-    description: "Walks 30 minutes every day",
-  },
-  {
-    label: "Dietary Habits",
-    subLabel: "Food preferences or restrictions",
-    description: "Vegetarian, avoids salt and sugar",
-  },
-  {
-    label: "Additional Notes",
-    subLabel: "Anything else clinically relevant",
-    description: "History of depression, prefers female doctor",
-  },
-];
 
 export default function PatientTabs({
   patientData,
@@ -126,45 +67,8 @@ export default function PatientTabs({
   refresh: () => void;
 }) {
   const [tab, setTab] = useState("tab-1");
-  const [bloodPressureSystolic, setBloodPressureSystolic] = useState<any>("");
-  const [bloodPressureDiastolic, setBloodPressureDiastolic] = useState<any>("");
-  const [vitalSigns, setVitalSigns] = useState<any>();
-  const [ownDiagnosisTags, setOwnDiagnosisTags] = useState<Tag[]>([]);
-  const [healthBarriersTags, setHealthBarriersTags] = useState<Tag[]>([]);
-  const [ownDiagnosis, setOwnDiagnosis] = useState<any>();
-  const [healthBarriers, setHealthBarriers] = useState<any>();
-  const [height, setHeight] = useState<any>();
-  const [weight, setWeight] = useState<any>();
-  const [temperature, setTemperature] = useState<any>();
-  const [respiratoryRate, setRespiratoryRate] = useState<any>();
-  const [pulseRate, setPulerRate] = useState<any>();
-  const [oxygenSaturation, setOxygenSaturation] = useState<any>();
-  const [nurseNotes, setNurseNotes] = useState<any>();
-  const [bmi, setBmi] = useState<any>();
-  const [addingVitals, setAddingVitals] = useState(false);
 
-  const handleSubmit = async () => {
-    const { error } = await supabase.from("vital_signs").insert({
-      patientId: patientData?._id,
-      bloodPressureSystolic: bloodPressureSystolic,
-      bloodPressureDiastolic: bloodPressureDiastolic,
-      ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
-      healthBarriers: healthBarriersTags?.map((tag: any) => tag?.text),
-      height: height,
-      weight: weight,
-      temperature: temperature,
-      respirationRate: respiratoryRate,
-      pulseRate: pulseRate,
-      oxygenSaturation: oxygenSaturation,
-      bmi: (weight / height) ^ 2,
-    });
-    if (error) {
-      console.log(error);
-    }
-    toast.success("Vital Signs Submitted");
 
-    refresh();
-  };
   useEffect(() => {
     console.log(patientData);
   }, []);
@@ -290,7 +194,7 @@ export default function PatientTabs({
                     <div className="flex flex-row items-center space-x-2 justify-between">
                       <div className="flex flex-row items-center space-x-3">
                         <Button variant="outline" size="icon">
-                          <RiFileList2Line size={9} />
+                          <RiMedicineBottleFill size={9} />
                         </Button>
                         <p className="text-sm font-semibold">Medical History</p>
                       </div>
@@ -351,7 +255,7 @@ export default function PatientTabs({
                   <div className="flex flex-row items-center space-x-2 justify-between">
                     <div className="flex flex-row items-center space-x-3">
                       <Button variant="outline" size="icon">
-                        <RiFileList2Line size={9} />
+                        <RiMedicineBottleFill size={9} />
                       </Button>
                       <p className="text-sm font-semibold">Medical History</p>
                     </div>
@@ -395,7 +299,7 @@ export default function PatientTabs({
                   <div className="flex flex-row items-center space-x-2 justify-between">
                     <div className="flex flex-row items-center space-x-3">
                       <Button variant="outline" size="icon">
-                        <RiFileList2Line size={9} />
+                        <RiHotelBedLine size={9} />
                       </Button>
                       <p className="text-sm font-semibold">
                         Anesthesia History
@@ -434,6 +338,42 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
+            {/* Surgery History */}
+
+            <div className="col-span-2">
+              <Card>
+                <CardHeader className="border-b">
+                  <div className="flex flex-row items-center space-x-2 justify-between">
+                    <div className="flex flex-row items-center space-x-3">
+                      <Button variant="outline" size="icon">
+                        <RiScissors2Line size={9} />
+                      </Button>
+                      <p className="text-sm font-semibold">Sugery History</p>
+                    </div>
+
+                    <SurgeryInputSheet
+                      refresh={refresh}
+                      patientData={patientData}
+                    />
+                  </div>
+                </CardHeader>
+
+                <CardContent className="max-h-[calc(100vh-40rem)] overflow-scroll ">
+                  <div className="grid grid-cols-2 gap-3">
+                    {patientData?.surgeries?.map((surgery: any, index: any) => (
+                      <MedicalHistoryCard
+                        key={index}
+                        label={surgery.surgeryType}
+                        sublabel={[surgery.status]}
+                        description={surgery.surgicalNotes}
+                        date={moment(surgery.surgeryDate).fromNow()}
+                        consentFileUrls={surgery.consentFileUrls}
+                      />
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </>
       </TabsContent>

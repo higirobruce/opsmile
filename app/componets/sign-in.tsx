@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { redirect, useRouter } from "next/navigation"
 import { useAuth } from "../context/AuthContext"
-import { supabase } from "@/lib/supabase-client"
 import { Loader2 } from "lucide-react"
 import { toast, Toaster } from "sonner"
 
@@ -25,23 +24,6 @@ export default function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const id = useId()
-  // const handleSignIn = async () => {
-  //   let { data, error } = await supabase.auth.signInWithPassword({
-  //     email: 'higirobru@gmail.com',
-  //     password: 'nLrSPgCCmlppTbzUOqLq'
-  //   })
-  //   if (error) {
-  //     console.log('Failed to log in', error)
-  //   }
-
-  //   if (data) {
-  //     supabase.auth.setSession({
-  //       access_token: data.session?.access_token ?? '',
-  //       refresh_token: data.session?.refresh_token ?? '',
-  //     })
-  //     router.push('/dashboard')
-  //   }
-  // }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

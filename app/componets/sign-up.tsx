@@ -12,8 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/lib/supabase-client";
-import { CodeSquare } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { toast, Toaster } from "sonner";
 

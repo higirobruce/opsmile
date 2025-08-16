@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import PatientTabs from "../components/patient-tabs";
 import { useState } from "react";
 import SmallSearchInput from "../../components/small-search-input";
-import { supabase } from "@/lib/supabase-client";
 import { useAuth } from "@/app/context/AuthContext";
 import { toast, Toaster } from "sonner";
 import { set } from "date-fns";
@@ -50,18 +49,6 @@ export default function Patient() {
     fetchPatientData();
   }, [id]);
 
-  const fetchPatientData_supabase = () => {
-    supabase
-      .from("patients")
-      .select("*, vital_signs (*), medical_assessments (*)")
-      .eq("id", id)
-      .then(({ data, error }) => {
-        if (error) {
-          console.log(error);
-        }
-        setPatient(data?.[0]);
-      });
-  };
 
   return (
     <div className="flex flex-col space-y-5">

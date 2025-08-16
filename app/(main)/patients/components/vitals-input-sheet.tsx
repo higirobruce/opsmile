@@ -31,13 +31,6 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { LoaderCircleIcon, PlusIcon } from "lucide-react"
-import { Select } from "@/components/ui/select"
-import SelectComponent from "../../components/select-component"
-import { stat } from "fs"
-import { json } from "stream/consumers"
-import { supabase } from "@/lib/supabase-client"
-import DOBPicker from "./date-of-birth-picker"
-import WebCapture from "./web-capture"
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
 import { Tag } from "emblor"
@@ -89,29 +82,6 @@ export default function VitalsInput({ className,
     const [bmi, setBmi] = useState<any>()
     const [addingVitals, setAddingVitals] = useState(false)
 
-    const handleSubmit_supabase = async () => {
-        const { error } = await supabase.from('vital_signs').insert({
-            patientId: patientData?._id,
-            bloodPressureSystolic: bloodPressureSystolic,
-            bloodPressureDiastolic: bloodPressureDiastolic,
-            ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
-            healthBarriers: healthBarriersTags?.map((tag: any) => tag?.text),
-            height: height,
-            weight: weight,
-            temperature: temperature,
-            respirationRate: respiratoryRate,
-            pulseRate: pulseRate,
-            oxygenSaturation: oxygenSaturation,
-            bmi: weight / height ^ 2,
-        })
-        if (error) {
-            console.log(error)
-        }
-        toast.success('Vital Signs Submitted')
-
-        refresh()
-
-    }
 
     useEffect(() => {
         console.log("---------",patientData)
@@ -175,33 +145,6 @@ export default function VitalsInput({ className,
         }
     }
 
-    const postPatient = async () => {
-        setSubmitting(true)
-        supabase.from('patients').insert({
-            "firstName": firstName,
-            "lastName": lastName,
-            "gender": gender,
-            "phoneNumber": phoneNumber,
-            "email": email,
-            "countryOfBirth": "",
-            "status": "Active",
-            "dateOfBirth": date,
-            "profilePicture": ""
-        }).single().then((data) => {
-            console.log(data)
-            setOpen(false)
-            setCurrentStep(1)
-            setFirstName('')
-            setLastName('')
-            setGender('')
-            setPhoneNumber('')
-            setEmail('')
-            setCountryOfOrigin('')
-            setStatus('Active')
-            setSubmitting(false)
-            // appendNewPatient(data)
-        })
-    }
     return (
         <>
             <Sheet>

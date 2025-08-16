@@ -33,9 +33,6 @@ import {
 import { LoaderCircleIcon, PlusIcon } from "lucide-react";
 import { Select } from "@/components/ui/select";
 import SelectComponent from "../../components/select-component";
-import { stat } from "fs";
-import { json } from "stream/consumers";
-import { supabase } from "@/lib/supabase-client";
 import DOBPicker from "./date-of-birth-picker";
 import WebCapture from "./web-capture";
 import { useAuth } from "@/app/context/AuthContext";
@@ -65,37 +62,6 @@ export default function NewPatient({
   // const [profilePicture, setProfilePicture] = useState<any>()
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const postPatient_supabase = async () => {
-    setSubmitting(true);
-    supabase
-      .from("patients")
-      .insert({
-        firstName: firstName,
-        lastName: lastName,
-        gender: gender,
-        phoneNumber: phoneNumber,
-        email: email,
-        countryOfBirth: "",
-        status: "Active",
-        dateOfBirth: date,
-        profilePicture: "",
-      })
-      .single()
-      .then((data) => {
-        console.log(data);
-        setOpen(false);
-        setCurrentStep(1);
-        setFirstName("");
-        setLastName("");
-        setGender("");
-        setPhoneNumber("");
-        setEmail("");
-        setCountryOfOrigin("");
-        setStatus("Active");
-        setSubmitting(false);
-        // appendNewPatient(data)
-      });
-  };
 
   const postPatient = async () => {
     setSubmitting(true);

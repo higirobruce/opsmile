@@ -24,7 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { supabase } from "@/lib/supabase-client"
 import { useAuth } from "@/app/context/AuthContext"
 import SignIn from "@/app/componets/sign-in"
 import { sign } from "crypto"

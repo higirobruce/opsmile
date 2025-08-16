@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -13,7 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { LoaderCircleIcon } from "lucide-react";
+import { Key, LoaderCircleIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import SelectComponent from "../../components/select-component";
@@ -21,6 +21,7 @@ import RadioButtons from "../../components/radio-group";
 import FileUpload from "../../components/file-upload";
 import { FileWithPreview } from "@/hooks/use-file-upload";
 import { useAuth } from "@/app/context/AuthContext";
+import { set } from "date-fns";
 
 const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -38,7 +39,7 @@ interface UploadedFile {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-export default function AnesthesiaInputSheet({
+export default function SurgeryInputSheet({
   patientData,
   refresh,
 }: React.ComponentProps<any>) {
@@ -60,7 +61,62 @@ export default function AnesthesiaInputSheet({
   const [uploading, setUploading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
-  const  handleFileUpload = async (files: FileWithPreview[]) => {
+  const [surgeons, setSurgeons] = useState<any[]>([]);
+  const [selectedSurgeon, setSelectedSurgeon] = useState<string>("");
+  const [selectedAnesthesiologist, setSelectedAnesthesiologist] =
+    useState<string>("");
+  const [anesthesiologists, setAnesthesiologists] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchSurgeons();
+    fetchAnesthesiologists();
+  }, [patientData]);
+
+  const fetchSurgeons = async () => {
+    try {
+      const response = await fetch(`${API_URL}/users/role/surgeon`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setSurgeons(data);
+      if (!response.ok) {
+        toast.error(data.message || "Error fetching surgeons");
+        return;
+      }
+      return data;
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch surgeons");
+    }
+  };
+
+  const fetchAnesthesiologists = async () => {
+    try {
+      const response = await fetch(`${API_URL}/users/role/anesthesiologist`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setAnesthesiologists(data);
+      if (!response.ok) {
+        toast.error(data.message || "Error fetching anesthesiologists");
+        return;
+      }
+      return data;
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to fetch anesthesiologists");
+    }
+  };
+
+  const handleFileUpload = async (files: FileWithPreview[]) => {
     try {
       const filePromises = files.map(async (file) => {
         const base64Url = await fileToBase64(file.file as File);
@@ -99,19 +155,9 @@ export default function AnesthesiaInputSheet({
           surgical_decision: decision,
           reviewedBy: user?.id,
           consentFileUrl: uploadedFiles,
-          doneById: user?.id // Array of {name, base64Url}
+          doneById: user?.id, // Array of {name, base64Url}
         }),
       });
-
-      console.log({
-          patientId: patientData?._id,
-          pastAnestheticNotes: pastAnesteticHistory,
-          knownComplicationsNotes: knownComplications,
-          asaScore: asaScore,
-          anesthesiaType: typeAnesthesia,
-          anesthesiaPlan: anesthesiaPlan,
-          consentFileUrl: uploadedFiles, // Array of {name, base64Url}
-        })
 
       const data = await response.json();
 
@@ -137,101 +183,55 @@ export default function AnesthesiaInputSheet({
         <SheetTrigger asChild>
           <div>
             <Button variant="outline" onClick={() => setOpen(true)}>
-              Add new anesthesia info
+              Add new surgery record
             </Button>
           </div>
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Capture anesthesia info</SheetTitle>
+            <SheetTitle>Capture surgery info</SheetTitle>
             <SheetDescription>
-              Enter the patient's medical assessment
+              Enter the required information for the surgery input sheet.
             </SheetDescription>
           </SheetHeader>
           <div className="grid flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
             <div>
-              <Label>Past Anestetic History</Label>
+              <Label>Sergeon</Label>
               <SelectComponent
-                name="pastAnesteticHistoryBool"
-                _setValue={setPastMedicalHistoryBool}
-                value={pastAnesteticHistoryBool}
+                name="selectedSurgeon"
+                _setValue={setSelectedSurgeon}
+                value={selectedSurgeon}
                 label=""
-                options={[
-                  { value: "Yes", label: "Yes" },
-                  { value: "No", label: "No" },
-                ]}
+                options={
+                  surgeons?.map((surgeon) => ({
+                    key: surgeon._id,
+                    value: surgeon._id,
+                    label: surgeon.firstName + " " + surgeon.lastName,
+                  })) || []
+                }
               ></SelectComponent>
-
-              {pastAnesteticHistoryBool == "Yes" && (
-                <Textarea
-                  className="mt-2"
-                  onChange={(e) => setPastMedicalHistory(e.target.value)}
-                  value={pastAnesteticHistory}
-                />
-              )}
             </div>
 
             <div>
-              <Label>Known complications</Label>
+              <Label>Anesthesiologist</Label>
               <SelectComponent
-                name="knownComplicationsBool"
-                _setValue={setKnownComplicationsBool}
-                value={knownComplicationsBool}
+                name="selectedAnesthesiologist"
+                _setValue={setSelectedAnesthesiologist}
+                value={selectedAnesthesiologist}
                 label=""
-                options={[
-                  { value: "Yes", label: "Yes" },
-                  { value: "No", label: "No" },
-                ]}
+                options={anesthesiologists?.map((anesthesiologist) => ({
+                  key: anesthesiologist._id,
+                  value: anesthesiologist._id,
+                  label:
+                    anesthesiologist.firstName +
+                    " " +
+                    anesthesiologist.lastName,
+                }))}
               ></SelectComponent>
-
-              {knownComplicationsBool == "Yes" && (
-                <Textarea
-                  className="mt-2"
-                  onChange={(e) => setKnownComplications(e.target.value)}
-                  value={knownComplications}
-                />
-              )}
             </div>
 
             <div>
-              <Label>ASA Score</Label>
-
-              <RadioButtons
-                setValue={setASAScore}
-                options={[
-                  {
-                    label: "ASA I: Healthy patient",
-                    description:
-                      "Normal healthy patient with no systemic disease",
-                    value: "I",
-                  },
-                  {
-                    label: "ASA II: Mild systemic disease",
-                    description: "Does not limit daily activities",
-                    value: "II",
-                  },
-                  {
-                    label: "ASA II: Severe systemic disease",
-                    description: " Limits activity but is not incapacitating",
-                    value: "III",
-                  },
-                  {
-                    label: "ASA II: Severe systemic disease",
-                    description: "Desease that is a constant threat to life",
-                    value: "IV",
-                  },
-                  {
-                    label: "ASA II: Moribund patient",
-                    description:
-                      "Patient is not expected to survive without the operation",
-                    value: "V",
-                  },
-                ]}
-              />
-            </div>
-
-            <div>
-              <Label>Type of Anesthesia</Label>
+              <Label>Surgery Type</Label>
               <SelectComponent
                 name="typeAnesthesia"
                 _setValue={setTypeAnesthesia}
@@ -243,30 +243,6 @@ export default function AnesthesiaInputSheet({
                   { value: "LOCAL", label: "Local" },
                 ]}
               ></SelectComponent>
-            </div>
-
-            <div>
-              <Label>Decision</Label>
-              <SelectComponent
-                name="typeAnesthesia"
-                _setValue={setDecision}
-                value={decision}
-                label=""
-                options={[
-                  { value: "PROCEED", label: "Proceed" },
-                  { value: "DEFER", label: "Defer" },
-                  { value: "CANCEL", label: "cancel" },
-                ]}
-              ></SelectComponent>
-            </div>
-
-            <div>
-              <Label>Anesthesia plan</Label>
-              <Textarea
-                className="mt-2"
-                onChange={(e) => setAnesthesiaPlan(e.target.value)}
-                value={anesthesiaPlan}
-              />
             </div>
 
             <div>

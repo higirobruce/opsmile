@@ -15,7 +15,6 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { LoaderCircleIcon } from "lucide-react"
-import { supabase } from "@/lib/supabase-client"
 import { toast } from "sonner"
 import { Tag } from "emblor"
 import { Textarea } from "@/components/ui/textarea"
@@ -39,25 +38,6 @@ export default function MedicalInputSheet({ className,
     const [allergies, setAllergies] = useState<Tag[]>([])
     const [provisionalDiagnosis, setProvisionalDiagnosis] = useState<Tag[]>([])
     const [clinicalNotes, setClinicalNotes] = useState<any>()
-
-    const handleSubmit_supabase = async () => {
-        const { error } = await supabase.from('medical_assessments').insert({
-            patient_id: patientData?._id,
-            chief_complaint: chiefComplaint,
-            past_medical_history: pastMedicalHistory?.map((tag: any) => tag?.text),
-            current_medication: currentMedication?.map((tag: any) => tag?.text),
-            allergies: allergies?.map((tag: any) => tag?.text),
-            provisional_diagnosis: provisionalDiagnosis?.map((tag: any) => tag?.text),
-            clinical_notes: clinicalNotes,
-            nurseId: user?.id
-
-        })
-        if (error) {
-            console.log(error)
-        }
-        toast.success('Medical assessment saved')
-        refresh()
-    }
 
      const handleSubmit = async () => {
         setSubmitting(true)

@@ -21,8 +21,6 @@ import {
 } from "@/hooks/use-file-upload"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
-import { supabase } from "@/lib/supabase-client"
-import { toast } from "sonner"
 
 // Create some dummy initial files
 const initialFiles:FileMetadata[] = [
@@ -93,8 +91,6 @@ export default function FileUpload({ onUploadComplete, bucketName = "consents" }
     maxSize,
     initialFiles: []
   })
-
-  // Replace uploadToSupabase with a simpler handler
   const handleUpload = () => {
     if (onUploadComplete) {
       onUploadComplete(files)

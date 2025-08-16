@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import NewPatient from "../patients/components/new-patient-modal";
-import { supabase } from "@/lib/supabase-client";
 import { useAuth } from "@/app/context/AuthContext";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
@@ -23,29 +22,7 @@ export default function SearchInput({
   const [search, setSearch] = useState("");
   const router = useRouter();
   const { token } = useAuth();
-  const fetchPatients_Supabase = async (e: FormEvent) => {
-    e.preventDefault();
-
-    const { data, error } = await supabase
-      .from("patients")
-      .select(`*, vital_signs (*), medical_assessments (*)`)
-      .or(
-        `firstName.ilike.%${search}%,phoneNumber.ilike.%${search}%,lastName.ilike.%${search}%`
-      );
-    // .contains('firstName', search)
-    // .or(`phone_number.contains.${search}`)
-
-    if (error) {
-      console.log(error);
-      toast.error(error.message);
-    }
-
-    console.log(data);
-
-    if (data) {
-      setPatientData(data);
-    }
-  };
+ 
 
   const fetchPatients = async (e: FormEvent) => {
     e.preventDefault();

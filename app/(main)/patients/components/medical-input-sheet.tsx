@@ -20,26 +20,77 @@ import { Tag } from "emblor"
 import { Textarea } from "@/components/ui/textarea"
 import InputTags from "../../components/input-tags"
 import { useAuth } from "@/app/context/AuthContext"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { DialogClose } from "@radix-ui/react-dialog"
+import SelectComponent from "../../components/select-component"
+import MultiSelect from "../../components/multi-select"
+import FileUpload from "../../components/file-upload"
+import { FileWithPreview } from "@/hooks/use-file-upload"
+import { fileToBase64, UploadedFile } from "./surgery-input-sheet"
+import { Option } from "@/components/ui/multiselect"
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 
 
 export default function MedicalInputSheet({ className,
     appendNewPatient,
     patientData,
-    refresh}: React.ComponentProps<any>
+    refresh }: React.ComponentProps<any>
 ) {
-     const { token, user } = useAuth()
+    const { token, user } = useAuth()
     const [open, setOpen] = useState(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
 
     const [chiefComplaint, setChiefComplaint] = useState<any>('')
-    const [pastMedicalHistory, setPastMedicalHistory] = useState<Tag[]>([])
-    const [currentMedication, setCurrentMedication] = useState<Tag[]>([])
+    const [clearedForSurgery, setClearedForSurgery] = useState<any>('')
+    const [pastMedicalHistory, setPastMedicalHistory] = useState('')
+    const [currentMedication, setCurrentMedication] = useState<string>('')
     const [allergies, setAllergies] = useState<Tag[]>([])
     const [provisionalDiagnosis, setProvisionalDiagnosis] = useState<Tag[]>([])
-    const [clinicalNotes, setClinicalNotes] = useState<any>()
+    const [diagnosis, setDiagnosis] = useState<any>()
+    const [proposedProcedure, setProposedProcedure] = useState<any>()
+    const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+    const [uploadedPhotos, setUploadedPhotos] = useState<UploadedFile[]>([]);
+    const [reasonForCancellation, setReasonForCancellation] = useState('')
+    const [labRequests, setLabRequests] = useState<Option[]>([])
 
-     const handleSubmit = async () => {
+
+    const handleFileUpload = async (files: FileWithPreview[]) => {
+        try {
+            const filePromises = files.map(async (file) => {
+                const base64Url = await fileToBase64(file.file as File);
+                return {
+                    name: file.file.name,
+                    base64Url,
+                };
+            });
+
+            const processedFiles = await Promise.all(filePromises);
+            setUploadedFiles((prev) => [...prev, ...processedFiles]);
+        } catch (error) {
+            console.error("Error processing files:", error);
+            toast.error("Error processing files");
+        }
+    };
+
+    const handlePhotoUpload = async (files: FileWithPreview[]) => {
+        try {
+            const filePromises = files.map(async (file) => {
+                const base64Url = await fileToBase64(file.file as File);
+                return {
+                    name: file.file.name,
+                    base64Url,
+                };
+            });
+
+            const processedPhotos = await Promise.all(filePromises);
+            setUploadedPhotos((prev) => [...prev, ...processedPhotos]);
+        } catch (error) {
+            console.error("Error processing files:", error);
+            toast.error("Error processing files");
+        }
+    };
+
+    const handleSubmit = async () => {
         setSubmitting(true)
         try {
             const response = await fetch(`${API_URL}/medical-assessment`, {
@@ -51,11 +102,10 @@ export default function MedicalInputSheet({ className,
                 body: JSON.stringify({
                     patientId: patientData?._id,
                     chief_complaint: chiefComplaint,
-                    past_medical_history: pastMedicalHistory?.map((tag: Tag) => tag?.text),
-                    current_medication: currentMedication?.map((tag: Tag) => tag?.text),
+                    past_medical_history: pastMedicalHistory,
                     allergies: allergies?.map((tag: Tag) => tag?.text),
                     provisional_diagnosis: provisionalDiagnosis?.map((tag: Tag) => tag?.text),
-                    clinical_notes: clinicalNotes,
+
                     doneById: user?.id
                 })
             })
@@ -80,70 +130,126 @@ export default function MedicalInputSheet({ className,
 
     return (
         <>
-            <Sheet>
-                <SheetTrigger asChild>
+            <Dialog onOpenChange={setOpen} open={open}>
+                <DialogTrigger asChild>
                     <div>
                         <Button variant="outline" onClick={() => setOpen(true)}>
                             Add new medical assessment</Button>
                     </div>
-                </SheetTrigger>
-                <SheetContent>
-                    <SheetHeader>
-                        <SheetTitle>Capture patient's medical assessment</SheetTitle>
-                        <SheetDescription>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[800px]">
+                    <DialogHeader>
+                        <DialogTitle>Capture patient's medical assessment</DialogTitle>
+                        <DialogDescription>
                             Enter the patient's medical assessment
-                        </SheetDescription>
-                    </SheetHeader>
-                    <div className="grid flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
 
                         <div>
-                            <Label>Chief complaint</Label>
-                            <Input
-                                type="text"
-                                value={chiefComplaint?.toString()}
-                                onChange={(e) => setChiefComplaint(e.target.value)}
-                            />
-                        </div>
-
-                        <div>
-                            {/* <Label>Past Medical History</Label> */}
-                            <div>
-                                <InputTags label="Past Medical History" inputTags={pastMedicalHistory} setInputTags={setPastMedicalHistory} />
-                            </div>
-                        </div>
-
-                        <div>
-                            {/* <Label>Current Medication</Label> */}
-                            <div>
-                                <InputTags label="Current Medication" inputTags={currentMedication} setInputTags={setCurrentMedication} />
-                            </div>
-                        </div>
-
-                        <div>
-                            {/* <Label>Allergies</Label> */}
-                            <div>
-                                <InputTags label="Allergies" inputTags={allergies} setInputTags={setAllergies} />
-                            </div>
-                        </div>
-
-                        <div>
-                            <Label>Clinical Notes</Label>
+                            <Label>Medical History</Label>
                             <Textarea
-                                value={clinicalNotes}
-                                onChange={(e) => setClinicalNotes(e.target.value)}
+                                value={pastMedicalHistory}
+                                onChange={(e) => setPastMedicalHistory(e.target.value)}
                             />
                         </div>
 
                         <div>
-                            {/* <Label>Provisional Diagnosis</Label> */}
-                            <div>
-                                <InputTags label="Provisional Diagnosis" inputTags={provisionalDiagnosis} setInputTags={setProvisionalDiagnosis} />
-                            </div>
+                            <Label>Diagnosis</Label>
+                            <Textarea
+                                value={diagnosis}
+                                onChange={(e) => setDiagnosis(e.target.value)}
+                            />
                         </div>
 
+                        <div>
+                            <Label>Proposed procedure</Label>
+                            <Textarea
+                                value={proposedProcedure}
+                                onChange={(e) => setProposedProcedure(e.target.value)}
+                            />
+                        </div>
+
+                        <div>
+                            <MultiSelect setOptions={setLabRequests} label="Lab requests" options={[
+                                {
+                                    value: 'HEMATOLOGY',
+                                    label: 'Hematology'
+                                },
+                                {
+                                    value: 'BIOCHEMISTRY',
+                                    label: 'Biochemistry'
+                                },
+                                {
+                                    value: 'INFECTION-SCREENING',
+                                    label: 'Infection screening'
+                                },
+                                {
+                                    value: 'URINALYSIS',
+                                    label: 'Urinalysis'
+                                },
+                                {
+                                    value: 'CHEST-XRAY',
+                                    label: 'Chest X-Ray'
+                                },
+                                {
+                                    value: 'ECG',
+                                    label: 'Ecg'
+                                },
+                                {
+                                    value: 'ECHOCARDIOGRAM',
+                                    label: 'Echocardiogram'
+                                }
+
+                            ]} />
+                        </div>
+
+                        <div>
+                            <Label>Consent Upload</Label>
+                            <FileUpload
+                                bucketName="consents"
+                                onUploadComplete={(files: FileWithPreview[]) =>
+                                    handleFileUpload(files)
+                                }
+                            />
+                        </div>
+
+                        <div>
+                            <Label>Photo Upload</Label>
+                            <FileUpload
+                                bucketName="photos"
+                                onUploadComplete={(files: FileWithPreview[]) =>
+                                    handlePhotoUpload(files)
+                                }
+                            />
+                        </div>
+
+
+                        <div>
+                            <SelectComponent
+                                _setValue={setClearedForSurgery}
+                                value={clearedForSurgery}
+                                name="clearedForSurgery"
+                                label="Cleared for surgery"
+                                options={[
+                                    { value: "Yes", label: "Yes" },
+                                    { value: "No", label: "No" },
+
+                                ]}
+                            />
+                        </div>
+
+                        {clearedForSurgery == 'No' &&
+                            <div>
+                                <Label>Reason for Cancellation</Label>
+                                <Textarea
+                                    value={reasonForCancellation}
+                                    onChange={(e) => setReasonForCancellation(e.target.value)}
+                                />
+                            </div>}
 
                     </div>
-                    <SheetFooter>
+                    <DialogFooter className=" px-4 pb-4 sm:justify-start">
                         <Button onClick={handleSubmit} type="submit" disabled={submitting}>
                             {submitting && <LoaderCircleIcon
                                 className="-ms-1 animate-spin"
@@ -152,12 +258,12 @@ export default function MedicalInputSheet({ className,
                             />}
                             Save
                         </Button>
-                        <SheetClose asChild>
+                        <DialogClose asChild>
                             <Button variant="outline">Close</Button>
-                        </SheetClose>
-                    </SheetFooter>
-                </SheetContent>
-            </Sheet>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
         </>
     )

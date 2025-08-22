@@ -60,18 +60,18 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                         </Button> */}
                                     </div>
                                     <div className='flex flex-row space-x-5 mt-2'>
-                                        <div className='text-sm flex flex-row items-center space-x-1'>
-                                            <RiUser3Fill size={14} className='text-sm font-bold' />
+                                        <div className='text-sm flex items-start space-x-1'>
+                                            <RiUser3Fill size={16} className='text-sm font-bold' />
                                             <p className='text-foreground/50'>{patientData.gender == 'M' ? 'Male' : 'Female'}</p>
                                         </div>
 
-                                        <div className='text-sm flex flex-row items-center space-x-1'>
-                                            <RiMapPin2Fill size={14} className='text-sm font-bold' />
+                                        <div className='text-sm flex flex-row items-start space-x-1'>
+                                            <RiMapPin2Fill size={16} className='text-sm font-bold' />
                                             <p className='text-foreground/50'>{patientData.countryOfBirth || 'Kigali-Rwanda'}</p>
                                         </div>
 
-                                        <div className='text-sm flex flex-row items-center space-x-1'>
-                                            <RiCalendarEventFill size={14} className='text-sm font-bold' />
+                                        <div className='text-sm flex flex-row items-start space-x-1'>
+                                            <RiCalendarEventFill size={16} className='text-sm font-bold' />
                                             <p className='text-foreground/50'>{age} yrs</p>
                                         </div>
 

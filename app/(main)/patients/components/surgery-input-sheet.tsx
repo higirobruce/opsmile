@@ -23,7 +23,7 @@ import { FileWithPreview } from "@/hooks/use-file-upload";
 import { useAuth } from "@/app/context/AuthContext";
 import { set } from "date-fns";
 
-const fileToBase64 = (file: File): Promise<string> => {
+export const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -32,7 +32,7 @@ const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
-interface UploadedFile {
+export interface UploadedFile {
   name: string;
   base64Url: string;
 }

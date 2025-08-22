@@ -21,6 +21,8 @@ import RadioButtons from "../../components/radio-group";
 import FileUpload from "../../components/file-upload";
 import { FileWithPreview } from "@/hooks/use-file-upload";
 import { useAuth } from "@/app/context/AuthContext";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import SelectWithDescription from "../../components/select-wit-desc";
 
 const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -60,7 +62,7 @@ export default function AnesthesiaInputSheet({
   const [uploading, setUploading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
-  const  handleFileUpload = async (files: FileWithPreview[]) => {
+  const handleFileUpload = async (files: FileWithPreview[]) => {
     try {
       const filePromises = files.map(async (file) => {
         const base64Url = await fileToBase64(file.file as File);
@@ -104,14 +106,14 @@ export default function AnesthesiaInputSheet({
       });
 
       console.log({
-          patientId: patientData?._id,
-          pastAnestheticNotes: pastAnesteticHistory,
-          knownComplicationsNotes: knownComplications,
-          asaScore: asaScore,
-          anesthesiaType: typeAnesthesia,
-          anesthesiaPlan: anesthesiaPlan,
-          consentFileUrl: uploadedFiles, // Array of {name, base64Url}
-        })
+        patientId: patientData?._id,
+        pastAnestheticNotes: pastAnesteticHistory,
+        knownComplicationsNotes: knownComplications,
+        asaScore: asaScore,
+        anesthesiaType: typeAnesthesia,
+        anesthesiaPlan: anesthesiaPlan,
+        consentFileUrl: uploadedFiles, // Array of {name, base64Url}
+      })
 
       const data = await response.json();
 
@@ -133,22 +135,22 @@ export default function AnesthesiaInputSheet({
 
   return (
     <>
-      <Sheet>
-        <SheetTrigger asChild>
+      <Dialog onOpenChange={setOpen} open={open}>
+        <DialogTrigger asChild>
           <div>
             <Button variant="outline" onClick={() => setOpen(true)}>
               Add new anesthesia info
             </Button>
           </div>
-        </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Capture anesthesia info</SheetTitle>
-            <SheetDescription>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[800px] overflow-scroll">
+          <DialogHeader>
+            <DialogTitle>Capture anesthesia info</DialogTitle>
+            <DialogDescription>
               Enter the patient's medical assessment
-            </SheetDescription>
-          </SheetHeader>
-          <div className="grid flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
             <div>
               <Label>Past Anestetic History</Label>
               <SelectComponent
@@ -194,10 +196,11 @@ export default function AnesthesiaInputSheet({
             </div>
 
             <div>
-              <Label>ASA Score</Label>
+              {/* <Label>ASA Score</Label> */}
 
-              <RadioButtons
+              <SelectWithDescription
                 setValue={setASAScore}
+                label="ASA Scores"
                 options={[
                   {
                     label: "ASA I: Healthy patient",
@@ -211,23 +214,24 @@ export default function AnesthesiaInputSheet({
                     value: "II",
                   },
                   {
-                    label: "ASA II: Severe systemic disease",
+                    label: "ASA III: Severe systemic disease",
                     description: " Limits activity but is not incapacitating",
                     value: "III",
                   },
                   {
-                    label: "ASA II: Severe systemic disease",
+                    label: "ASA IV: Severe systemic disease",
                     description: "Desease that is a constant threat to life",
                     value: "IV",
                   },
                   {
-                    label: "ASA II: Moribund patient",
+                    label: "ASA V: Moribund patient",
                     description:
                       "Patient is not expected to survive without the operation",
                     value: "V",
                   },
                 ]}
               />
+              
             </div>
 
             <div>
@@ -269,7 +273,7 @@ export default function AnesthesiaInputSheet({
               />
             </div>
 
-            <div>
+            <div className="mb-4">
               <Label>Consent Upload</Label>
               <FileUpload
                 bucketName="consents"
@@ -279,7 +283,7 @@ export default function AnesthesiaInputSheet({
               />
             </div>
           </div>
-          <SheetFooter>
+          <DialogFooter className=" px-4 pb-4 sm:justify-start">
             <Button onClick={handleSubmit} type="submit" disabled={submitting}>
               {submitting && (
                 <LoaderCircleIcon
@@ -290,12 +294,12 @@ export default function AnesthesiaInputSheet({
               )}
               Save
             </Button>
-            <SheetClose asChild>
+            <DialogClose asChild>
               <Button variant="outline">Close</Button>
-            </SheetClose>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

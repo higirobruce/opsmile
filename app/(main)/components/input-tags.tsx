@@ -34,7 +34,7 @@ export default function InputTags({
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null)
 
   return (
-    <div className="*:not-first:mt-2">
+    <div>
       <Label htmlFor={id}>{label}</Label>
       <TagInput
         id={id}

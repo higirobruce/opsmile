@@ -1,17 +1,31 @@
 
+'use client'
 import { Card, CardContent } from '@/components/ui/card'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AvatarComponent from '../../components/avatar'
 import { Edit, LocateIcon, Mail, Phone, Plus } from 'lucide-react'
 import Vitalscard from './vital-card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { RiBriefcase4Fill, RiMapPin2Fill, RiUser3Fill } from '@remixicon/react'
+import { RiBriefcase4Fill, RiCalendarEventFill, RiMapPin2Fill, RiUser3Fill } from '@remixicon/react'
 import { useRouter } from 'next/navigation'
+import moment from 'moment'
 
 export default function PatientSnapshot({ patientData, isHeaderSection }: { patientData: any, isHeaderSection: boolean }) {
 
     const router = useRouter()
+    const [age, setAge] = useState<number>()
+
+    useEffect(() => {
+        handleCaluculateAge(moment(patientData.dateOfBirth).toDate())
+    }, [patientData])
+
+    const handleCaluculateAge = (dateOfBirth: Date) => {
+        if (dateOfBirth) {
+            const age = new Date().getFullYear() - dateOfBirth.getFullYear();
+            setAge(age);
+        }
+    };
     return (
         <div className='flex justify-between'>
             <Card className='flex w-full justify-between'>
@@ -32,7 +46,6 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                         </div>
 
                                         <div className='cursor-pointer bg-foreground/10 rounded-full p-2'>
-
                                             <Mail size={13} aria-hidden={true} />
                                         </div>
 
@@ -42,19 +55,24 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                             </Button>
                                         )}
 
-                                        
+
                                         {/* <Button className='rounded-full' variant="outline" size="smallIcon">
                                         </Button> */}
                                     </div>
                                     <div className='flex flex-row space-x-5 mt-2'>
-                                        <div className='text-xs flex flex-row items-center space-x-1'>
-                                            <RiUser3Fill size={14} className='text-xs font-bold' />
+                                        <div className='text-sm flex flex-row items-center space-x-1'>
+                                            <RiUser3Fill size={14} className='text-sm font-bold' />
                                             <p className='text-foreground/50'>{patientData.gender == 'M' ? 'Male' : 'Female'}</p>
                                         </div>
 
-                                        <div className='text-xs flex flex-row items-center space-x-1'>
-                                            <RiMapPin2Fill size={14} className='text-xs font-bold' />
+                                        <div className='text-sm flex flex-row items-center space-x-1'>
+                                            <RiMapPin2Fill size={14} className='text-sm font-bold' />
                                             <p className='text-foreground/50'>{patientData.countryOfBirth || 'Kigali-Rwanda'}</p>
+                                        </div>
+
+                                        <div className='text-sm flex flex-row items-center space-x-1'>
+                                            <RiCalendarEventFill size={14} className='text-sm font-bold' />
+                                            <p className='text-foreground/50'>{age} yrs</p>
                                         </div>
 
                                         {/* <div className='text-xs flex flex-row items-center space-x-1'>

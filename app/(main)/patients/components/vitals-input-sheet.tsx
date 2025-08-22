@@ -6,6 +6,7 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -37,6 +38,7 @@ import { Tag } from "emblor"
 import { Textarea } from "@/components/ui/textarea"
 import InputTags from "../../components/input-tags"
 import { useAuth } from "@/app/context/AuthContext"
+import { DialogClose } from "@radix-ui/react-dialog"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 
@@ -67,27 +69,25 @@ export default function VitalsInput({ className,
 
     const [bloodPressureSystolic, setBloodPressureSystolic] = useState<any>('')
     const [bloodPressureDiastolic, setBloodPressureDiastolic] = useState<any>('')
-    const [vitalSigns, setVitalSigns] = useState<any>()
     const [ownDiagnosisTags, setOwnDiagnosisTags] = useState<Tag[]>([])
     const [healthBarriersTags, setHealthBarriersTags] = useState<Tag[]>([])
-    const [ownDiagnosis, setOwnDiagnosis] = useState<any>()
-    const [healthBarriers, setHealthBarriers] = useState<any>()
-    const [height, setHeight] = useState<any>()
-    const [weight, setWeight] = useState<any>()
-    const [temperature, setTemperature] = useState<any>()
-    const [respiratoryRate, setRespiratoryRate] = useState<any>()
-    const [pulseRate, setPulerRate] = useState<any>()
-    const [oxygenSaturation, setOxygenSaturation] = useState<any>()
-    const [nurseNotes, setNurseNotes] = useState<any>()
-    const [bmi, setBmi] = useState<any>()
+    const [height, setHeight] = useState<any>('')
+    const [weight, setWeight] = useState<any>('')
+    const [temperature, setTemperature] = useState<any>('')
+    const [respiratoryRate, setRespiratoryRate] = useState<any>('')
+    const [pulseRate, setPulerRate] = useState<any>('')
+    const [oxygenSaturation, setOxygenSaturation] = useState<any>('')
+    const [nurseNotes, setNurseNotes] = useState<any>('')
+    const [bmi, setBmi] = useState<any>('')
     const [addingVitals, setAddingVitals] = useState(false)
 
 
     useEffect(() => {
-        console.log("---------", patientData)
-    }, [patientData])
+        handleCalculateBMI()
+    }, [height, weight])
 
     const handleSubmit = async () => {
+        setSubmitting(true)
         try {
             const response = await fetch(`${API_URL}/vital_signs`, {
                 method: 'POST',
@@ -99,39 +99,20 @@ export default function VitalsInput({ className,
                     patientId: patientData?._id,
                     bloodPressureSystolic,
                     bloodPressureDiastolic,
-                    ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
-                    healthBarriers: healthBarriersTags?.map((tag: any) => tag?.text),
                     height,
                     weight,
                     temperature,
                     respirationRate: respiratoryRate,
                     pulseRate,
                     oxygenSaturation,
-                    bmi: weight / (height * height), // Correct BMI calculation
-                    nurseNotes,
+                    bmi: weight / (height * height),
                     nurseId: user?.id
                 })
             })
 
             const data = await response.json()
-
-            console.log({
-                patientId: patientData?._id,
-                bloodPressureSystolic,
-                bloodPressureDiastolic,
-                ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
-                healthBarriers: healthBarriersTags?.map((tag: any) => tag?.text),
-                height,
-                weight,
-                temperature,
-                respirationRate: respiratoryRate,
-                pulseRate,
-                oxygenSaturation,
-                bmi: weight / (height * height), // Correct BMI calculation
-                nurseNotes,
-                nurseId: user?.id
-            })
-
+            setSubmitting(false)
+            setOpen(false)
             if (!response.ok) {
                 toast.error(data.message || 'Error submitting vital signs')
                 return
@@ -145,24 +126,31 @@ export default function VitalsInput({ className,
         }
     }
 
+    const handleCalculateBMI = () => {
+        if (height && weight) {
+            const bmi = weight / ((height * height)/10000)
+            if (bmi) {
+                setBmi(bmi.toFixed(2))
+            }
+        }
+    }
+
     return (
         <>
-            <Sheet>
-                <SheetTrigger asChild>
+            <Dialog onOpenChange={setOpen} open={open}>
+                <DialogTrigger asChild>
                     <div>
                         <Button variant="outline" onClick={() => setOpen(true)}>
                             Add new vitals</Button>
                     </div>
-                </SheetTrigger>
-                <SheetContent>
-                    <SheetHeader>
-                        <SheetTitle>Capture patient's vital signs</SheetTitle>
-                        <SheetDescription>
-                            Enter the patient's vital signs.
-                        </SheetDescription>
-                    </SheetHeader>
-                    <div className="grid flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[800px]">
+                    <DialogHeader>
+                        <DialogTitle>Capture patient's vital signs</DialogTitle>
 
+                    </DialogHeader>
+                    <p className="text-sm font-semibold text-foreground/50">Capture patient's vital signs</p>
+                    <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
                         <div>
                             <Label>Blood Pressure (Systolic)</Label>
                             <Input
@@ -178,7 +166,8 @@ export default function VitalsInput({ className,
                                 type="number"
                                 value={bloodPressureDiastolic?.toString()}
                                 onChange={(e) => setBloodPressureDiastolic(Number(e.target.value))}
-                            /></div>
+                            />
+                        </div>
 
                         <div>
                             <Label>Pulse rate</Label>
@@ -220,25 +209,26 @@ export default function VitalsInput({ className,
                                 onChange={(e) => setHeight(Number(e.target.value))}
                             /></div>
 
-                        <div>
+                        <div className="">
                             <Label>Weight (kg)</Label>
                             <Input
                                 type="number"
                                 value={weight?.toString()}
                                 onChange={(e) => setWeight(Number(e.target.value))}
-                            /></div>
-
-                        <div className="flex flex-col space-y-2">
-                            <div>
-                                <Label>Notes</Label>
-                                <Textarea
-                                    value={nurseNotes}
-                                    onChange={(e) => setNurseNotes(e.target.value)}
-                                />
-                            </div>
+                            />
                         </div>
+                        <div className="mb-4">
+                            <Label>BMI</Label>
+                            <Input
+                                type="number"
+                                disabled
+                                value={bmi?.toString()}
+                            />
+                        </div>
+
+
                     </div>
-                    <SheetFooter>
+                    <DialogFooter className=" px-4 pb-4 sm:justify-start">
                         <Button onClick={handleSubmit} type="submit" disabled={submitting}>
                             {submitting && <LoaderCircleIcon
                                 className="-ms-1 animate-spin"
@@ -247,12 +237,12 @@ export default function VitalsInput({ className,
                             />}
                             Save vitals
                         </Button>
-                        <SheetClose asChild>
+                        <DialogClose asChild>
                             <Button variant="outline">Close</Button>
-                        </SheetClose>
-                    </SheetFooter>
-                </SheetContent>
-            </Sheet>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
         </>
     )

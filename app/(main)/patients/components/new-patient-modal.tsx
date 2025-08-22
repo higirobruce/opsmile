@@ -127,7 +127,7 @@ export default function NewPatient({
             Add new Patient
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px]">
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto ">
           <DialogHeader>
             <DialogTitle>Register a Patient</DialogTitle>
             {/* <DialogDescription>Enter the patients details.</DialogDescription> */}

@@ -84,31 +84,6 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                     <Edit /> More
                                 </Button>
                             )}
-
-                            <div className='flex flex-col justify-between '>
-                                <p className='text-sm font-semibold place-self-end mt-4'>Own diagnosis</p>
-                                <div className='place-self-end flex-row items-center'>
-                                    <div className='flex space-x-2'>
-                                        {patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.ownDiagnosis?.map((diagnosis: any) => (
-                                            <Badge key={diagnosis} variant="warning">{diagnosis}</Badge>
-                                        )) || '-'}
-                                        {/* <Badge variant="warning">Obesity</Badge>
-                                    <Badge variant="warning">Uncontolled type2</Badge> */}
-                                    </div>
-                                </div>
-
-
-                                <p className='text-sm font-semibold place-self-end mt-4'>Health Barriers</p>
-                                <div className='place-self-end flex-row items-center'>
-                                    <div className='flex space-x-2'>
-                                        {patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.healthBarriers?.map((barrier: any) => (
-                                            <Badge key={barrier} variant="secondary">{barrier}</Badge>
-                                        )) || '-'}
-                                        {/* <Badge variant="secondary">Fear of medication</Badge>
-                                    <Badge variant="secondary">Fear of operation</Badge> */}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

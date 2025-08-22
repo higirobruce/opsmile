@@ -84,7 +84,7 @@ export default function VitalsInput({ className,
 
 
     useEffect(() => {
-        console.log("---------",patientData)
+        console.log("---------", patientData)
     }, [patientData])
 
     const handleSubmit = async () => {
@@ -116,21 +116,21 @@ export default function VitalsInput({ className,
             const data = await response.json()
 
             console.log({
-                    patientId: patientData?._id,
-                    bloodPressureSystolic,
-                    bloodPressureDiastolic,
-                    ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
-                    healthBarriers: healthBarriersTags?.map((tag: any) => tag?.text),
-                    height,
-                    weight,
-                    temperature,
-                    respirationRate: respiratoryRate,
-                    pulseRate,
-                    oxygenSaturation,
-                    bmi: weight / (height * height), // Correct BMI calculation
-                    nurseNotes,
-                    nurseId: user?.id
-                })
+                patientId: patientData?._id,
+                bloodPressureSystolic,
+                bloodPressureDiastolic,
+                ownDiagnosis: ownDiagnosisTags?.map((tag: any) => tag?.text),
+                healthBarriers: healthBarriersTags?.map((tag: any) => tag?.text),
+                height,
+                weight,
+                temperature,
+                respirationRate: respiratoryRate,
+                pulseRate,
+                oxygenSaturation,
+                bmi: weight / (height * height), // Correct BMI calculation
+                nurseNotes,
+                nurseId: user?.id
+            })
 
             if (!response.ok) {
                 toast.error(data.message || 'Error submitting vital signs')
@@ -151,7 +151,7 @@ export default function VitalsInput({ className,
                 <SheetTrigger asChild>
                     <div>
                         <Button variant="outline" onClick={() => setOpen(true)}>
-                        Add new vitals</Button>
+                            Add new vitals</Button>
                     </div>
                 </SheetTrigger>
                 <SheetContent>
@@ -235,14 +235,6 @@ export default function VitalsInput({ className,
                                     value={nurseNotes}
                                     onChange={(e) => setNurseNotes(e.target.value)}
                                 />
-                            </div>
-
-                            <div>
-                                <InputTags label="Own diagnosis" inputTags={ownDiagnosisTags} setInputTags={setOwnDiagnosisTags} />
-                            </div>
-
-                            <div>
-                                <InputTags label="Health Barriers" inputTags={healthBarriersTags} setInputTags={setHealthBarriersTags} />
                             </div>
                         </div>
                     </div>

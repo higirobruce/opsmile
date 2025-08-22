@@ -44,8 +44,6 @@ export default function NewPatient({
   const [age, setAge] = useState(0);
   const [guardianRelationship, setGuardianRelationship] = useState('')
 
-
-
   const postPatient = async () => {
     setSubmitting(true);
     try {
@@ -64,12 +62,12 @@ export default function NewPatient({
           status: "Active",
           dateOfBirth: dateOfBirth,
           profilePicture: "",
-          guardianFirstName: age >= 18 ? guardianFirstName : null,
-          guardianLastName: age >= 18 ? guardianLastName : null,
-          guardianPhoneNumber: age >= 18 ? guardianPhoneNumber : null,
-          guardianNID: age >= 18 ? guardianNID : null,
-          guardianDateOfBirth: age >= 18 ? guardianDateOfBirth : null,
-          guardianRelationship: age >= 18 ? guardianRelationship : null,
+          guardianFirstName: age <= 18 ? guardianFirstName : null,
+          guardianLastName: age <= 18 ? guardianLastName : null,
+          guardianPhoneNumber: age <= 18 ? guardianPhoneNumber : null,
+          guardianNID: age <= 18 ? guardianNID : null,
+          guardianDateOfBirth: age <= 18 ? guardianDateOfBirth : null,
+          guardianRelationship: age <= 18 ? guardianRelationship : null,
         }),
       });
 
@@ -225,7 +223,7 @@ export default function NewPatient({
             </div>
           </div>
 
-          {age >= 18 && (
+          {age <= 18 && (
             <>
               <p className="text-sm font-semibold mt-4 text-foreground/50">Guardian's Info</p>
               <div className="grid flex-1 auto-rows-min gap-4 px-4 overflow-scroll">

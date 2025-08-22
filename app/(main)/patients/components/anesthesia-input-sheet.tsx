@@ -143,7 +143,7 @@ export default function AnesthesiaInputSheet({
             </Button>
           </div>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px] overflow-scroll">
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto ">
           <DialogHeader>
             <DialogTitle>Capture anesthesia info</DialogTitle>
             <DialogDescription>

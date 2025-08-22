@@ -137,7 +137,7 @@ export default function MedicalInputSheet({ className,
                             Add new medical assessment</Button>
                     </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[800px]">
+                <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto ">
                     <DialogHeader>
                         <DialogTitle>Capture patient's medical assessment</DialogTitle>
                         <DialogDescription>

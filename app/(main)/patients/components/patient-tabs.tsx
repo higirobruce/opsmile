@@ -39,6 +39,7 @@ import {
   RiProgress2Fill,
   RiScissors2Fill,
   RiScissors2Line,
+  RiTestTubeFill,
   RiUser2Fill,
   RiUser3Fill,
   RiUser6Fill,
@@ -77,6 +78,7 @@ export default function PatientTabs({
       <Toaster />
       <ScrollArea>
         <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none bg-transparent px-0 py-1">
+          
           <TabsTrigger
             value="tab-1"
             onClick={() => setTab("tab-1")}
@@ -89,6 +91,7 @@ export default function PatientTabs({
             />
             Overview
           </TabsTrigger>
+          
           <TabsTrigger
             value="tab-2"
             onClick={() => setTab("tab-2")}
@@ -101,6 +104,7 @@ export default function PatientTabs({
             />
             Nursing
           </TabsTrigger>
+          
           <TabsTrigger
             value="tab-3"
             onClick={() => setTab("tab-3")}
@@ -113,9 +117,23 @@ export default function PatientTabs({
             />
             Medical
           </TabsTrigger>
+          
           <TabsTrigger
             value="tab-4"
             onClick={() => setTab("tab-4")}
+            className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+          >
+            <RiTestTubeFill
+              className="-ms-0.5 me-1.5 opacity-60"
+              size={16}
+              aria-hidden="true"
+            />
+            Lab
+          </TabsTrigger>
+          
+          <TabsTrigger
+            value="tab-5"
+            onClick={() => setTab("tab-5")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiHotelBedFill
@@ -126,8 +144,8 @@ export default function PatientTabs({
             Anesthesia
           </TabsTrigger>
           <TabsTrigger
-            value="tab-5"
-            onClick={() => setTab("tab-5")}
+            value="tab-6"
+            onClick={() => setTab("tab-6")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiScissors2Fill
@@ -138,8 +156,8 @@ export default function PatientTabs({
             Surgery
           </TabsTrigger>
           <TabsTrigger
-            value="tab-6"
-            onClick={() => setTab("tab-6")}
+            value="tab-7"
+            onClick={() => setTab("tab-7")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiUserHeartFill
@@ -150,8 +168,8 @@ export default function PatientTabs({
             Progress
           </TabsTrigger>
           <TabsTrigger
-            value="tab-7"
-            onClick={() => setTab("tab-7")}
+            value="tab-8"
+            onClick={() => setTab("tab-8")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiLogoutBoxRFill
@@ -164,6 +182,8 @@ export default function PatientTabs({
         </TabsList>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
+      
+      {/* Overview */}
       <TabsContent value="tab-1">
         <>
           <div className="flex flex-col space-y-3">
@@ -243,6 +263,10 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
+
+     
+
+      {/* Medical */}
       <TabsContent value="tab-3">
         <>
           <div className="flex flex-col space-y-5">
@@ -288,7 +312,17 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
+
+ {/* Lab */}
       <TabsContent value="tab-4">
+        <>
+          <div className="flex flex-col space-y-5">
+            <PatientSnapshot isHeaderSection={true} patientData={patientData} />
+          </div>
+        </>
+      </TabsContent>
+      {/* Anesthesia */}
+      <TabsContent value="tab-5">
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
@@ -334,7 +368,9 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
-      <TabsContent value="tab-5">
+
+      {/* Surgery */}
+      <TabsContent value="tab-6">
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
@@ -377,14 +413,8 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
-      <TabsContent value="tab-6">
-        <>
-          <div className="flex flex-col space-y-5">
-            <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-          </div>
-        </>
-      </TabsContent>
-
+      
+      {/* Progress */}
       <TabsContent value="tab-7">
         <>
           <div className="flex flex-col space-y-5">
@@ -392,6 +422,8 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
+
+      {/* Discharge */}
       <TabsContent value="tab-8">
         <>
           <div className="flex flex-col space-y-5">
@@ -399,6 +431,8 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
+      
+      
     </Tabs>
   );
 }

@@ -40,9 +40,9 @@ export default function SignIn() {
 
   return (
     <Dialog>
-      <Toaster/>
+      <Toaster />
       <DialogTrigger asChild>
-        <Button variant="gradient">Sign in</Button>
+        <Button>Sign in</Button>
       </DialogTrigger>
       <DialogContent>
         <div className="flex flex-col items-center gap-2">
@@ -109,7 +109,7 @@ export default function SignIn() {
             </a>
           </div>
           <Button type="submit" className="w-full" disabled={!email || !password || loading}>
-            {loading && <Loader2 className="mr-2 animate-spin" size="sm"/>}
+            {loading && <Loader2 className="mr-2 animate-spin" size="sm" />}
             Sign in
           </Button>
         </form>

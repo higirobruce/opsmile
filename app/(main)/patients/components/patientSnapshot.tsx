@@ -37,7 +37,7 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                         </div>
 
                                         {!isHeaderSection && (
-                                            <Button variant="gradient" className='sm:flex md:hidden place-self-end' onClick={() => router.push('patients/' + patientData._id)}>
+                                            <Button className='sm:flex md:hidden place-self-end' onClick={() => router.push('patients/' + patientData._id)}>
                                                 <Edit /> More
                                             </Button>
                                         )}
@@ -80,7 +80,7 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
 
                         <div className='md:flex flex-col justify-between hidden'>
                             {!isHeaderSection && (
-                                <Button variant="gradient" className='place-self-end' onClick={() => router.push('patients/' + patientData._id)}>
+                                <Button className='place-self-end' onClick={() => router.push('patients/' + patientData._id)}>
                                     <Edit /> More
                                 </Button>
                             )}

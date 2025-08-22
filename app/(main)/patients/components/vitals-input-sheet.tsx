@@ -144,7 +144,7 @@ export default function VitalsInput({ className,
                             Add new vitals</Button>
                     </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[800px]">
+                <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto ">
                     <DialogHeader>
                         <DialogTitle>Capture patient's vital signs</DialogTitle>
 

@@ -90,9 +90,9 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
 
                             <Vitalscard icon={<LocateIcon />} description='BMI' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bmi || '-'} />
 
-                            <Vitalscard icon={<LocateIcon />} description='Weight' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.weight || '-'} />
+                            <Vitalscard icon={<LocateIcon />} description='Weight' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.weight ? patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.weight + ' kg' : '-'} />
 
-                            <Vitalscard icon={<LocateIcon />} description='Height' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.height || '-'} />
+                            <Vitalscard icon={<LocateIcon />} description='Height' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.height ? patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.height + ' cm' : '-'} />
 
                             <Vitalscard icon={<LocateIcon />} description='Blood Pressure' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic ? patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic + '/' + patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureDiastolic : '-'} />
 

@@ -291,7 +291,7 @@ export default function PatientTabs({
                   </div>
                 </CardHeader>
 
-                <CardContent className="max-h-[calc(100vh-40rem)] overflow-scroll ">
+                <CardContent className="flex-1 overflow-scroll ">
                   <div className="grid grid-cols-2 gap-3">
                     {patientData?.medical_assessments?.map(
                       (mh: any, index: any) => (
@@ -347,7 +347,7 @@ export default function PatientTabs({
                   </div>
                 </CardHeader>
 
-                <CardContent className="max-h-[calc(100vh-40rem)] overflow-scroll ">
+                <CardContent className="flex-1 overflow-scroll ">
                   <div className="grid grid-cols-2 gap-3">
                     {patientData?.anesthesia_records?.map(
                       (an: any, index: any) => (
@@ -394,7 +394,7 @@ export default function PatientTabs({
                   </div>
                 </CardHeader>
 
-                <CardContent className="max-h-[calc(100vh-40rem)] overflow-scroll ">
+                <CardContent className="flex-1 overflow-scroll ">
                   <div className="grid grid-cols-2 gap-3">
                     {patientData?.surgeries?.map((surgery: any, index: any) => (
                       <MedicalHistoryCard

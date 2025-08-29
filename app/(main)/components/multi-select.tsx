@@ -18,7 +18,7 @@ export default function MultiSelect({ options, label, setOptions }:
                 placeholder={`Select ${label}`}
                 hideClearAllButton
                 hidePlaceholderWhenSelected
-                onChange={(value) => setOptions}
+                onChange={setOptions}
                 emptyIndicator={<p className="text-center text-sm">No results found</p>}
             />
         </div>

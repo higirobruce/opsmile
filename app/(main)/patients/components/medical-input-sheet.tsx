@@ -101,11 +101,20 @@ export default function MedicalInputSheet({ className,
                 },
                 body: JSON.stringify({
                     patientId: patientData?._id,
-                    chief_complaint: chiefComplaint,
-                    past_medical_history: pastMedicalHistory,
-                    allergies: allergies?.map((tag: Tag) => tag?.text),
-                    provisional_diagnosis: provisionalDiagnosis?.map((tag: Tag) => tag?.text),
-
+                    pastMedicalHistory,
+                    diagnosis,
+                    proposedProcedure,
+                    labRequests: labRequests.map((item) => item.value),
+                    uploadedFiles: uploadedFiles.map((item) => ({
+                        name: item.name,
+                        base64Url: item.base64Url
+                    })),
+                    uploadedPhotos: uploadedPhotos.map((item) => ({
+                        name: item.name,
+                        base64Url: item.base64Url
+                    })),
+                    clearedForSurgery: clearedForSurgery == 'Yes' ? true : false,
+                    reasonForCancellation,
                     doneById: user?.id
                 })
             })

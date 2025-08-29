@@ -25,11 +25,7 @@ export default function MedicalHistoryCard({
           {label + " "}
           <span className="text-muted-foreground text-xs leading-[inherit] font-normal">
             ({" "}
-            {sublabel
-              ?.map((s, i) => {
-                return s;
-              })
-              ?.join(", ")}
+            {sublabel}
             )
           </span>
         </Label>
@@ -37,7 +33,7 @@ export default function MedicalHistoryCard({
           {description}
         </p>
 
-        <div>
+        <div className="grid md:grid-cols-2 gap-2 ">
           <p className="text-xs text-muted-foreground">{date}</p>
           {consentFileUrls?.length > 0 && (
             consentFileUrls?.map((file, index) => (

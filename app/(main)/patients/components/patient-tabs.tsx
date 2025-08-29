@@ -236,11 +236,11 @@ export default function PatientTabs({
                         (mh: any, index: number) => (
                           <MedicalHistoryCard
                             key={index}
-                            label={mh.chief_complaint}
-                            sublabel={mh.provisional_diagnosis}
-                            description={mh.clinical_notes}
+                            label={mh.diagnosis}
+                            sublabel={mh.pastMedicalHistory}
+                            description={mh.reasonForCancellation}
                             date={moment(mh.created_at).fromNow()}
-                            consentFileUrls={[{ name: "", base64Url: "" }]}
+                            consentFileUrls={mh.uploadedFiles}
                           />
                         )
                       )}
@@ -297,11 +297,11 @@ export default function PatientTabs({
                       (mh: any, index: any) => (
                         <MedicalHistoryCard
                           key={index}
-                          label={mh.chief_complaint}
-                          sublabel={mh.provisional_diagnosis}
-                          description={mh.clinical_notes}
-                          date={moment(mh.created_at).fromNow()}
-                          consentFileUrls={[{ name: "", base64Url: "" }]}
+                            label={mh.diagnosis}
+                            sublabel={mh.pastMedicalHistory}
+                            description={mh.reasonForCancellation}
+                            date={moment(mh.created_at).fromNow()}
+                            consentFileUrls={mh.uploadedFiles}
                         />
                       )
                     )}

@@ -30,14 +30,12 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
         <div className='flex justify-between'>
             <Card className='flex w-full justify-between'>
                 <CardContent>
-                    <div className='grid md:grid-cols-3 gap-5'>
-                        <div className='flex md:flex-row flex-col md:space-x-2 col-span-2'>
+                    <div className='sm:grid md:flex flex-row space-x-5 justify-between'>
+                        <div className='flex md:flex-row flex-col md:space-x-2'>
                             {/* <div className='md:w-40 md:h-40'>
                                 <AvatarComponent source={patientData?.profilePicture || '/avatar2.jpg'} height={40} width={40} />
                             </div> */}
-
-
-                            <div className='flex flex-col space-y-3 w-full justify-between ' >
+                            <div className='flex flex-col space-y-3 w-full' >
                                 <div>
                                     <div className='flex flex-row space-x-3 items-center'>
                                         <p className='text-md font-semibold'>{patientData.firstName} {patientData.lastName}</p>
@@ -48,6 +46,8 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                         <div className='cursor-pointer bg-foreground/10 rounded-full p-2'>
                                             <Mail size={13} aria-hidden={true} />
                                         </div>
+
+
 
                                         {!isHeaderSection && (
                                             <Button className='sm:flex md:hidden place-self-end' onClick={() => router.push('patients/' + patientData._id)}>
@@ -75,27 +75,28 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                             <p className='text-foreground/50'>{age} yrs</p>
                                         </div>
 
+
+
+
                                         {/* <div className='text-xs flex flex-row items-center space-x-1'>
                                             <RiBriefcase4Fill size={14} className='text-xs font-bold' />
                                             <p className='text-foreground/50'>{patientData.occupation || 'Teacher'}</p>
                                         </div> */}
                                     </div>
                                 </div>
-                                <div className='grid grid-cols-2 md:grid-cols-4 gap-2 w-full'>
-
-                                    <Vitalscard icon={<LocateIcon />} description='BMI' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bmi || '-'} />
-
-                                    <Vitalscard icon={<LocateIcon />} description='Weight' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.weight || '-'} />
-
-                                    <Vitalscard icon={<LocateIcon />} description='Height' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.height || '-'} />
-
-                                    <Vitalscard icon={<LocateIcon />} description='Blood Pressure' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic ? patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic + '/' + patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureDiastolic : '-'} />
-
-                                </div>
-
                             </div>
                         </div>
+                        <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
 
+                            <Vitalscard icon={<LocateIcon />} description='BMI' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bmi || '-'} />
+
+                            <Vitalscard icon={<LocateIcon />} description='Weight' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.weight || '-'} />
+
+                            <Vitalscard icon={<LocateIcon />} description='Height' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.height || '-'} />
+
+                            <Vitalscard icon={<LocateIcon />} description='Blood Pressure' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic ? patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic + '/' + patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureDiastolic : '-'} />
+
+                        </div>
                         <div className='md:flex flex-col justify-between hidden'>
                             {!isHeaderSection && (
                                 <Button className='place-self-end' onClick={() => router.push('patients/' + patientData._id)}>

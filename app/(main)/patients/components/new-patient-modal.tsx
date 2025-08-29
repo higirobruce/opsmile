@@ -18,6 +18,7 @@ import SelectComponent from "../../components/select-component";
 import { useAuth } from "@/app/context/AuthContext";
 import { toast } from "sonner";
 import { SimpletDatePicker } from "@/app/componets/simple-date-picker";
+import moment from "moment";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -37,8 +38,8 @@ export default function NewPatient({
   const [guardianNID, setGuardianNID] = useState("");
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-  const [dateOfBirth, setDateOfBirth] = useState<Date | undefined>(new Date());
-  const [guardianDateOfBirth, setGuardianDateOfBirth] = useState<Date | undefined>(new Date());
+  const [dateOfBirth, setDateOfBirth] = useState<Date | undefined>(moment('01-01-1990').toDate());
+  const [guardianDateOfBirth, setGuardianDateOfBirth] = useState<Date | undefined>(moment('01-01-1990').toDate());
   // const [profilePicture, setProfilePicture] = useState<any>()
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [age, setAge] = useState(0);
@@ -133,199 +134,240 @@ export default function NewPatient({
             {/* <DialogDescription>Enter the patients details.</DialogDescription> */}
           </DialogHeader>
           <p className="text-sm font-semibold text-foreground/50">Patient's personal Info</p>
-          <div className="grid flex-1 auto-rows-min gap-4 px-4 overflow-scroll">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor={`${id}-firstName`}>First Name</Label>
-                <Input
-                  id={`${id}-firstName`}
-                  name="firstName"
-                  // placeholder="John"
-                  type="text"
-                  required
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-              </div>
+          <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
 
-              <div>
-                <Label htmlFor={`${id}-lastName`}>Last Name</Label>
-                <Input
-                  id={`${id}-lastName`}
-                  name="lastName"
-                  // placeholder="Doe"
-                  type="text"
-                  required
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </div>
+            <div>
+              <Label htmlFor={`${id}-firstName`}>First Name</Label>
+              <Input
+                id={`${id}-firstName`}
+                name="firstName"
+                // placeholder="John"
+                type="text"
+                required
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-
-              <div>
-                <Label htmlFor={`${id}-phoneNumber`}>Phone number</Label>
-                <Input
-                  id={`${id}-phoneNumber`}
-                  // placeholder="078xxx..."
-                  name="phoneNumber"
-                  type="tel"
-                  required
-                  value={phoneNumber}
-                  onChange={(e) => {
-                    setPhoneNumber(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor={`${id}-nid`}>NID or Passport</Label>
-                <Input
-                  id={`${id}-nid`}
-                  name="nid"
-                  // placeholder="email@example.com"
-                  type="text"
-                  required
-                  value={nid}
-                  onChange={(e) => {
-                    setNID(e.target.value);
-                  }}
-                />
-              </div>
-
+            <div>
+              <Label htmlFor={`${id}-lastName`}>Last Name</Label>
+              <Input
+                id={`${id}-lastName`}
+                name="lastName"
+                // placeholder="Doe"
+                type="text"
+                required
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
             </div>
 
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <SelectComponent
-                  _setValue={setGender}
-                  value={gender}
-                  name="gender"
-                  label="Gender"
-                  options={[
-                    { value: "M", label: "Male" },
-                    { value: "F", label: "Female" },
-                  ]}
-                />
-              </div>
-              <div>
-                {/* <Label htmlFor={`${id}-DateOfBirth`}>Date of Birth</Label>
-              <DOBPicker
-                onChange={(value) => {
-                  setDate(value);
+            <div>
+              <Label htmlFor={`${id}-phoneNumber`}>Phone number</Label>
+              <Input
+                id={`${id}-phoneNumber`}
+                // placeholder="078xxx..."
+                name="phoneNumber"
+                type="tel"
+                required
+                value={phoneNumber}
+                onChange={(e) => {
+                  setPhoneNumber(e.target.value);
                 }}
-                value={date}
-              /> */}
-                <SimpletDatePicker setDate={setDateOfBirth} date={dateOfBirth} label="Date of Birth" />
-              </div>
+              />
+            </div>
+
+            <div>
+              <Label htmlFor={`${id}-nid`}>NID or Passport</Label>
+              <Input
+                id={`${id}-nid`}
+                name="nid"
+                // placeholder="email@example.com"
+                type="text"
+                required
+                value={nid}
+                onChange={(e) => {
+                  setNID(e.target.value);
+                }}
+              />
+            </div>
+
+            <div>
+              <SelectComponent
+                _setValue={setGender}
+                value={gender}
+                name="gender"
+                label="Gender"
+                options={[
+                  { value: "M", label: "Male" },
+                  { value: "F", label: "Female" },
+                ]}
+              />
+            </div>
+            <div>
+
+              <SimpletDatePicker setDate={setDateOfBirth} date={dateOfBirth} label="Date of Birth" />
+            </div>
+
+            <div>
+              <SelectComponent
+                _setValue={()=>{}}
+                value={''}
+                name="province"
+                label="Province"
+                options={[
+                  { value: "PROVINCE 1", label: "Province 1" },
+                  { value: "PROVINCE 2", label: "Province 2" },
+                ]}
+              />
+            </div>
+
+
+            <div>
+              <SelectComponent
+                _setValue={()=>{}}
+                value={''}
+                name="district"
+                label="District"
+                options={[
+                  { value: "DISTRICT 1", label: "District 1" },
+                  { value: "DISTRICT 2", label: "District 2" },
+                ]}
+              />
+            </div>
+
+
+            <div>
+              <SelectComponent
+                _setValue={()=>{}}
+                value={''}
+                name="sector"
+                label="Sector"
+                options={[
+                  { value: "SECTOR 1", label: "Sector 1" },
+                  { value: "SECTOR 2", label: "Sector 2" },
+                ]}
+              />
+            </div>
+
+            <div>
+              <SelectComponent
+                _setValue={()=>{}}
+                value={''}
+                name="cell"
+                label="Cell"
+                options={[
+                  { value: "CELL 1", label: "Cell 1" },
+                  { value: "CELL 2", label: "Cell 2" },
+                ]}
+              />
+            </div>
+
+            <div>
+              <SelectComponent
+                _setValue={()=>{}}
+                value={''}
+                name="village"
+                label="Village"
+                options={[
+                  { value: "VILLAGE 1", label: "Village 1" },
+                  { value: "VILLAGE 2", label: "Village 2" },
+                ]}
+              />
             </div>
           </div>
 
           {age <= 18 && (
             <>
               <p className="text-sm font-semibold mt-4 text-foreground/50">Guardian's Info</p>
-              <div className="grid flex-1 auto-rows-min gap-4 px-4 overflow-scroll">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor={`${id}-guardian-firstName`}>First Name</Label>
-                    <Input
-                      id={`${id}-guardian-firstName`}
-                      name="girdianFirstName"
-                      // placeholder="John"
-                      type="text"
-                      required
-                      value={guardianFirstName}
-                      onChange={(e) => setGuardianFirstName(e.target.value)}
-                    />
-                  </div>
+              <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
 
-                  <div>
-                    <Label htmlFor={`${id}-guardian-lastName`}>Last Name</Label>
-                    <Input
-                      id={`${id}-gurdian-lastName`}
-                      name="guardianLastName"
-                      // placeholder="Doe"
-                      type="text"
-                      required
-                      value={guardianLastName}
-                      onChange={(e) => setGuardianLastName(e.target.value)}
-                    />
-                  </div>
+                <div>
+                  <Label htmlFor={`${id}-guardian-firstName`}>First Name</Label>
+                  <Input
+                    id={`${id}-guardian-firstName`}
+                    name="girdianFirstName"
+                    // placeholder="John"
+                    type="text"
+                    required
+                    value={guardianFirstName}
+                    onChange={(e) => setGuardianFirstName(e.target.value)}
+                  />
                 </div>
 
+                <div>
+                  <Label htmlFor={`${id}-guardian-lastName`}>Last Name</Label>
+                  <Input
+                    id={`${id}-gurdian-lastName`}
+                    name="guardianLastName"
+                    // placeholder="Doe"
+                    type="text"
+                    required
+                    value={guardianLastName}
+                    onChange={(e) => setGuardianLastName(e.target.value)}
+                  />
+                </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <SelectComponent
+                    _setValue={setGuardianRelationship}
+                    value={guardianRelationship}
+                    name="guardianRelationship"
+                    label="Guardian Relationship"
+                    options={[
+                      { value: "PARENT", label: "Parent" },
+                      { value: "LEGAL GUARDIAN", label: "Legal guardian" },
+                      { value: "NEXT OF KIN", label: "Next of kin" },
+                      { value: "SPOUSE", label: "Spouse" },
+                      { value: "SIBLING", label: "Sibling" },
+                    ]}
+                  />
+                </div>
 
-                  <div>
-                    <SelectComponent
-                      _setValue={setGuardianRelationship}
-                      value={guardianRelationship}
-                      name="guardianRelationship"
-                      label="Guardian Relationship"
-                      options={[
-                        { value: "PARENT", label: "Parent" },
-                        { value: "LEGAL GUARDIAN", label: "Legal guardian" },
-                        { value: "NEXT OF KIN", label: "Next of kin" },
-                        { value: "SPOUSE", label: "Spouse" },
-                        { value: "SIBLING", label: "Sibling" },
-                      ]}
-                    />
-                  </div>
-
-                  <div>
-                    {/* <Label htmlFor={`${id}-DateOfBirth`}>Date of Birth</Label>
+                <div>
+                  {/* <Label htmlFor={`${id}-DateOfBirth`}>Date of Birth</Label>
               <DOBPicker
                 onChange={(value) => {
                   setDate(value);
                 }}
                 value={date}
               /> */}
-                    <SimpletDatePicker setDate={setGuardianDateOfBirth} date={guardianDateOfBirth} label="Date of Birth" />
-                  </div>
+                  <SimpletDatePicker setDate={setGuardianDateOfBirth} date={guardianDateOfBirth} label="Date of Birth" />
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor={`${id}-guardian-phoneNumber`}>Phone number</Label>
+                  <Input
+                    id={`${id}-guardian-phoneNumber`}
+                    // placeholder="078xxx..."
+                    name="guardianPhoneNumber"
+                    type="tel"
+                    required
+                    value={guardianPhoneNumber}
+                    onChange={(e) => {
+                      setGuardianPhoneNumber(e.target.value);
+                    }}
+                  />
+                </div>
 
-                  <div>
-                    <Label htmlFor={`${id}-guardian-phoneNumber`}>Phone number</Label>
-                    <Input
-                      id={`${id}-guardian-phoneNumber`}
-                      // placeholder="078xxx..."
-                      name="guardianPhoneNumber"
-                      type="tel"
-                      required
-                      value={guardianPhoneNumber}
-                      onChange={(e) => {
-                        setGuardianPhoneNumber(e.target.value);
-                      }}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor={`${id}-guardian-nid`}>NID or Passport</Label>
-                    <Input
-                      id={`${id}-guardian-nid`}
-                      name="guardianNid"
-                      // placeholder="email@example.com"
-                      type="text"
-                      required
-                      value={guardianNID}
-                      onChange={(e) => {
-                        setGuardianNID(e.target.value);
-                      }}
-                    />
-                  </div>
-
+                <div>
+                  <Label htmlFor={`${id}-guardian-nid`}>NID or Passport</Label>
+                  <Input
+                    id={`${id}-guardian-nid`}
+                    name="guardianNid"
+                    // placeholder="email@example.com"
+                    type="text"
+                    required
+                    value={guardianNID}
+                    onChange={(e) => {
+                      setGuardianNID(e.target.value);
+                    }}
+                  />
                 </div>
 
 
 
 
-                {/* <div>
-                            <WebCapture onCapture={setProfilePicture} />
-                        </div> */}
               </div>
             </>
 

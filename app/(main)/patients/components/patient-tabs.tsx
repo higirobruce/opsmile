@@ -202,7 +202,7 @@ export default function PatientTabs({
                   </CardHeader>
 
                   <CardContent className="flex-1 overflow-scroll ">
-                    <SimpleTimeline />
+                    <SimpleTimeline patientId={patientData?._id} />
                   </CardContent>
                 </Card>
               </div>

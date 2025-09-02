@@ -1,3 +1,4 @@
+import { useAuth } from "@/app/context/AuthContext";
 import {
   Timeline,
   TimelineContent,
@@ -8,6 +9,9 @@ import {
   TimelineSeparator,
   TimelineTitle,
 } from "@/components/ui/timeline"
+import moment from "moment";
+import { useState } from "react"
+import { useEffect } from "react"
 
 const items = [
   {
@@ -40,24 +44,57 @@ const items = [
   }
 ]
 
-export default function SimpleTimeline() {
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+
+
+export default function SimpleTimeline({ patientId }: { patientId: string }) {
+  const [patientData, setPatientData] = useState<any>(null)
+  const { token } = useAuth();
+  useEffect(() => {
+    getActionLogsByPatientId(patientId).then((data) => {
+      setPatientData(data)
+    })
+  }, [patientId])
+
+  if (!patientData) {
+    return null
+  }
+
+
+  async function getActionLogsByPatientId(patientId: string) {
+  const response = await fetch(`${API_URL}/activity-log/patient/${patientId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+  if (!response.ok) {
+    console.log(response.statusText)
+    throw new Error("Failed to fetch action logs", {
+      cause: response
+    })
+  }
+  return response.json()
+}
   return (
     <Timeline defaultValue={4}>
-      {items.map((item) => (
+      {patientData.map((item: any) => (
         <TimelineItem
-          key={item.id}
-          step={item.id}
+          key={item._id}
+          step={item._id}
           className="group-data-[orientation=vertical]/timeline:sm:ms-32"
         >
           <TimelineHeader>
             <TimelineSeparator />
             <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-              {item.date}
+              {moment(item.created_at).format("MMM D, YYYY")}
             </TimelineDate>
-            <TimelineTitle className="sm:-mt-0.5">{item.title}</TimelineTitle>
+            <TimelineTitle className="sm:-mt-0.5">{item.action}</TimelineTitle>
             <TimelineIndicator />
           </TimelineHeader>
-          <TimelineContent>{item.description}</TimelineContent>
+          <TimelineContent>{item.description || ''}</TimelineContent>
         </TimelineItem>
       ))}
     </Timeline>

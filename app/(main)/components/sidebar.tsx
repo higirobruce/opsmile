@@ -17,6 +17,7 @@ import { RiUserHeartLine } from "@remixicon/react"
 import { usePathname } from "next/navigation"
 import { useAuth } from "@/app/context/AuthContext"
 import UserMenu from "@/components/navbar-components/user-menu"
+import Image from "next/image"
 
 // Menu items.
 const items = [
@@ -78,16 +79,19 @@ const items = [
 ]
 
 export function AppSidebar() {
-  let {user} = useAuth()
+  let { user } = useAuth()
   const path = usePathname()
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>
-            <UserMenu />
+          <SidebarGroupLabel className="my-5">
+            <div className="flex flex-row justify-between items-center w-full">
+              <Image className="mr-2" src="/logo1.png" alt="logo" width={120} height={120} />  
+              <UserMenu />
+            </div>
           </SidebarGroupLabel>
-          <SidebarSeparator/>
+          {/* <SidebarSeparator/> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

@@ -12,13 +12,15 @@ import {
 type PaginationProps = {
   currentPage: number
   totalPages: number
-  paginationItemsToDisplay?: number
+  paginationItemsToDisplay?: number,
+  setCurrentPage: (page: number) => void  
 }
 
 export default function SimplePagination({
   currentPage,
   totalPages,
   paginationItemsToDisplay = 5,
+  setCurrentPage
 }: PaginationProps) {
   const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
     currentPage,
@@ -33,6 +35,7 @@ export default function SimplePagination({
         <PaginationItem>
           <PaginationPrevious
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            onClick={() => setCurrentPage(currentPage - 1)}
             href={currentPage === 1 ? undefined : `#/page/${currentPage - 1}`}
             aria-disabled={currentPage === 1 ? true : undefined}
             role={currentPage === 1 ? "link" : undefined}
@@ -42,7 +45,7 @@ export default function SimplePagination({
         {/* Left ellipsis (...) */}
         {showLeftEllipsis && (
           <PaginationItem>
-            <PaginationEllipsis />
+            <PaginationEllipsis onClick={() => setCurrentPage(1)} />
           </PaginationItem>
         )}
 
@@ -50,6 +53,7 @@ export default function SimplePagination({
         {pages.map((page) => (
           <PaginationItem key={page}>
             <PaginationLink
+              onClick={() => setCurrentPage(page)}
               href={`#/page/${page}`}
               isActive={page === currentPage}
             >
@@ -61,7 +65,7 @@ export default function SimplePagination({
         {/* Right ellipsis (...) */}
         {showRightEllipsis && (
           <PaginationItem>
-            <PaginationEllipsis />
+            <PaginationEllipsis onClick={() => setCurrentPage(totalPages)} />
           </PaginationItem>
         )}
 

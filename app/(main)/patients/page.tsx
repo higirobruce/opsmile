@@ -18,7 +18,7 @@ export default function Patients() {
         </div>)
       } */}
       <div className='self-end mb-5'>
-        <SimplePagination currentPage={currentPage} totalPages={totalPages} />
+        <SimplePagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
       </div>
       {
         patientData?.length >= 1 && !loadingPatients && (

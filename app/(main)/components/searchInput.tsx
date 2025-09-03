@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useContext, useId, useState } from "react";
+import { FormEvent, useContext, useEffect, useId, useState } from "react";
 import { AtSignIcon, Search, SearchIcon } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
@@ -28,10 +28,13 @@ export default function SearchInput({
   const [search, setSearch] = useState("");
   const router = useRouter();
   const { token } = useAuth();
- 
 
-  const fetchPatients = async (e: FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    fetchPatients();
+  }, [currentPage,]);
+
+  const fetchPatients = async () => {
+
     setLoadingPatients(true);
     try {
       const response = await fetch(
@@ -51,7 +54,8 @@ export default function SearchInput({
         return;
       }
 
-      setPatientData(data);
+      setPatientData(data?.patients || {});
+      setTotalPages(data?.totalPages || 0);
       setLoadingPatients(false);
     } catch (error) {
       console.error(error);
@@ -62,7 +66,7 @@ export default function SearchInput({
   };
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col justify-center items-center px-4 sm:pt-5 md:pt-20 pb-10 w-full">
+      <div className="flex flex-col justify-center items-center px-4 sm:pt-5 md:pt-10 pb-10 w-full">
         <h1 className="text-2xl md:text-5xl font-extrabold tracking-tight text-center">
           Patient List
         </h1>
@@ -73,7 +77,7 @@ export default function SearchInput({
         {/* Search input */}
         <form
           onSubmit={fetchPatients}
-          className="relative mt-12 w-full max-w-3xl"
+          className="relative mt-5 w-full max-w-3xl"
         >
           {/* Icon */}
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 md:h-6 md:w-6 text-muted-foreground" />

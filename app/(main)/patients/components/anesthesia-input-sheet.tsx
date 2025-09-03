@@ -49,7 +49,7 @@ export default function AnesthesiaInputSheet({
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [pastAnesteticHistoryBool, setPastMedicalHistoryBool] =
     useState<string>("No");
-  const [pastAnesteticHistory, setPastMedicalHistory] = useState<string>("");
+  const [pastAnesteticHistory, setPastAnesteticHistory] = useState<string>("");
   const [knownComplicationsBool, setKnownComplicationsBool] =
     useState<string>("No");
   const [knownComplications, setKnownComplications] = useState<string>("");
@@ -61,6 +61,8 @@ export default function AnesthesiaInputSheet({
   const [files, setFiles] = useState<FileWithPreview[] | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [proposedPlan, setProposedPlan] = useState<string>('')
+  const [clearedForAnesthesiaBool, setClearedForAnesthesiaBool] = useState<string>('')
 
   const handleFileUpload = async (files: FileWithPreview[]) => {
     try {
@@ -91,27 +93,18 @@ export default function AnesthesiaInputSheet({
         },
         body: JSON.stringify({
           patientId: patientData?._id,
-          hasPastAnestheticHistory: pastAnesteticHistoryBool === "Yes",
-          pastAnestheticNotes: pastAnesteticHistory,
-          hasKnownComplications: knownComplicationsBool === "Yes",
-          knownComplicationsNotes: knownComplications,
-          asaScore: asaScore,
-          anesthesiaType: typeAnesthesia,
-          anesthesiaPlan: anesthesiaPlan,
-          surgical_decision: decision,
-          reviewedBy: user?.id,
+          pastAnesteticHistory,
+          proposedPlan,
           consentFileUrl: uploadedFiles,
+          clearedForAnesthesiaBool: clearedForAnesthesiaBool == 'Yes' ? true : false,
           doneById: user?.id // Array of {name, base64Url}
         }),
       });
 
       console.log({
         patientId: patientData?._id,
-        pastAnestheticNotes: pastAnesteticHistory,
-        knownComplicationsNotes: knownComplications,
-        asaScore: asaScore,
-        anesthesiaType: typeAnesthesia,
-        anesthesiaPlan: anesthesiaPlan,
+        pastAnesteticHistory,
+        proposedPlan,
         consentFileUrl: uploadedFiles, // Array of {name, base64Url}
       })
 
@@ -146,135 +139,46 @@ export default function AnesthesiaInputSheet({
         <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto ">
           <DialogHeader>
             <DialogTitle>Capture anesthesia info</DialogTitle>
-            <DialogDescription>
+            {/* <DialogDescription>
               Enter the patient's medical assessment
-            </DialogDescription>
+            </DialogDescription> */}
           </DialogHeader>
           <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
             <div>
-              <Label>Past Anestetic History</Label>
-              <SelectComponent
-                name="pastAnesteticHistoryBool"
-                _setValue={setPastMedicalHistoryBool}
-                value={pastAnesteticHistoryBool}
-                label=""
-                options={[
-                  { value: "Yes", label: "Yes" },
-                  { value: "No", label: "No" },
-                ]}
-              ></SelectComponent>
-
-              {pastAnesteticHistoryBool == "Yes" && (
-                <Textarea
-                  className="mt-2"
-                  onChange={(e) => setPastMedicalHistory(e.target.value)}
-                  value={pastAnesteticHistory}
-                />
-              )}
-            </div>
-
-            <div>
-              <Label>Known complications</Label>
-              <SelectComponent
-                name="knownComplicationsBool"
-                _setValue={setKnownComplicationsBool}
-                value={knownComplicationsBool}
-                label=""
-                options={[
-                  { value: "Yes", label: "Yes" },
-                  { value: "No", label: "No" },
-                ]}
-              ></SelectComponent>
-
-              {knownComplicationsBool == "Yes" && (
-                <Textarea
-                  className="mt-2"
-                  onChange={(e) => setKnownComplications(e.target.value)}
-                  value={knownComplications}
-                />
-              )}
-            </div>
-
-            <div>
-              {/* <Label>ASA Score</Label> */}
-
-              <SelectWithDescription
-                setValue={setASAScore}
-                label="ASA Scores"
-                options={[
-                  {
-                    label: "ASA I: Healthy patient",
-                    description:
-                      "Normal healthy patient with no systemic disease",
-                    value: "I",
-                  },
-                  {
-                    label: "ASA II: Mild systemic disease",
-                    description: "Does not limit daily activities",
-                    value: "II",
-                  },
-                  {
-                    label: "ASA III: Severe systemic disease",
-                    description: " Limits activity but is not incapacitating",
-                    value: "III",
-                  },
-                  {
-                    label: "ASA IV: Severe systemic disease",
-                    description: "Desease that is a constant threat to life",
-                    value: "IV",
-                  },
-                  {
-                    label: "ASA V: Moribund patient",
-                    description:
-                      "Patient is not expected to survive without the operation",
-                    value: "V",
-                  },
-                ]}
-              />
-              
-            </div>
-
-            <div>
-              <Label>Type of Anesthesia</Label>
-              <SelectComponent
-                name="typeAnesthesia"
-                _setValue={setTypeAnesthesia}
-                value={typeAnesthesia}
-                label=""
-                options={[
-                  { value: "GENERAL", label: "General" },
-                  { value: "REGIONAL", label: "Regional" },
-                  { value: "LOCAL", label: "Local" },
-                ]}
-              ></SelectComponent>
-            </div>
-
-            <div>
-              <Label>Decision</Label>
-              <SelectComponent
-                name="typeAnesthesia"
-                _setValue={setDecision}
-                value={decision}
-                label=""
-                options={[
-                  { value: "PROCEED", label: "Proceed" },
-                  { value: "DEFER", label: "Defer" },
-                  { value: "CANCEL", label: "cancel" },
-                ]}
-              ></SelectComponent>
-            </div>
-
-            <div>
-              <Label>Anesthesia plan</Label>
+              <Label>Anesthesia History</Label>
               <Textarea
                 className="mt-2"
-                onChange={(e) => setAnesthesiaPlan(e.target.value)}
-                value={anesthesiaPlan}
+                onChange={(e) => setPastAnesteticHistory(e.target.value)}
+                value={pastAnesteticHistory}
               />
             </div>
 
+            <div>
+              <Label>Proposed plan</Label>
+              <Textarea
+                className="mt-2"
+                onChange={(e) => setProposedPlan(e.target.value)}
+                value={proposedPlan}
+              />
+            </div>
+
+            <div>
+              <Label>Cleared for Anesthesia</Label>
+              <SelectComponent
+                name="clearedForAnesthesiaBool"
+                _setValue={setClearedForAnesthesiaBool}
+                value={clearedForAnesthesiaBool}
+                label=""
+                options={[
+                  { value: "Yes", label: "Yes" },
+                  { value: "No", label: "No" },
+                ]}
+              ></SelectComponent>
+            </div>
+
+
             <div className="mb-4">
-              <Label>Consent Upload</Label>
+              <Label>Anesthesia Consent Upload</Label>
               <FileUpload
                 bucketName="consents"
                 onUploadComplete={(files: FileWithPreview[]) =>

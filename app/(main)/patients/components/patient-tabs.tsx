@@ -78,7 +78,7 @@ export default function PatientTabs({
       <Toaster />
       <ScrollArea>
         <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none bg-transparent px-0 py-1">
-          
+
           <TabsTrigger
             value="tab-1"
             onClick={() => setTab("tab-1")}
@@ -91,7 +91,7 @@ export default function PatientTabs({
             />
             Overview
           </TabsTrigger>
-          
+
           <TabsTrigger
             value="tab-2"
             onClick={() => setTab("tab-2")}
@@ -104,7 +104,7 @@ export default function PatientTabs({
             />
             Nursing
           </TabsTrigger>
-          
+
           <TabsTrigger
             value="tab-3"
             onClick={() => setTab("tab-3")}
@@ -117,7 +117,7 @@ export default function PatientTabs({
             />
             Medical
           </TabsTrigger>
-          
+
           <TabsTrigger
             value="tab-4"
             onClick={() => setTab("tab-4")}
@@ -130,7 +130,7 @@ export default function PatientTabs({
             />
             Lab
           </TabsTrigger>
-          
+
           <TabsTrigger
             value="tab-5"
             onClick={() => setTab("tab-5")}
@@ -182,7 +182,7 @@ export default function PatientTabs({
         </TabsList>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      
+
       {/* Overview */}
       <TabsContent value="tab-1">
         <>
@@ -264,7 +264,7 @@ export default function PatientTabs({
         </>
       </TabsContent>
 
-     
+
 
       {/* Medical */}
       <TabsContent value="tab-3">
@@ -297,11 +297,11 @@ export default function PatientTabs({
                       (mh: any, index: any) => (
                         <MedicalHistoryCard
                           key={index}
-                            label={mh.diagnosis}
-                            sublabel={mh.pastMedicalHistory}
-                            description={mh.reasonForCancellation}
-                            date={moment(mh.created_at).fromNow()}
-                            consentFileUrls={mh.uploadedFiles}
+                          label={mh.diagnosis}
+                          sublabel={mh.pastMedicalHistory}
+                          description={mh.reasonForCancellation}
+                          date={moment(mh.created_at).fromNow()}
+                          consentFileUrls={mh.uploadedFiles}
                         />
                       )
                     )}
@@ -313,7 +313,7 @@ export default function PatientTabs({
         </>
       </TabsContent>
 
- {/* Lab */}
+      {/* Lab */}
       <TabsContent value="tab-4">
         <>
           <div className="flex flex-col space-y-5">
@@ -321,6 +321,8 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
+
+
       {/* Anesthesia */}
       <TabsContent value="tab-5">
         <>
@@ -353,9 +355,9 @@ export default function PatientTabs({
                       (an: any, index: any) => (
                         <MedicalHistoryCard
                           key={index}
-                          label={an.anesthesiaType}
-                          sublabel={[an.anesthesiaPlan]}
-                          description={an.decision}
+                          label={an.clearedForAnesthesiaBool ? 'Cleared for Anesthesia' : 'Not cleared for Anesthesia'}
+                          sublabel={[an.pastAnesteticHistory]}
+                          description={an.proposedPlan}
                           date={moment(an.created_at).fromNow()}
                           consentFileUrls={an.consentFileUrl}
                         />
@@ -413,7 +415,7 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
-      
+
       {/* Progress */}
       <TabsContent value="tab-7">
         <>
@@ -431,8 +433,8 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
-      
-      
+
+
     </Tabs>
   );
 }

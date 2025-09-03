@@ -12,8 +12,6 @@ export default function Dashboard() {
 
         <ChartBarDefault />
         <ChartBarDefault />
-        <ChartBarDefault />
-        <ChartBarDefault />
       </div>
     </div>
   )

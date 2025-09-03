@@ -10,12 +10,12 @@ export default function layout({ children }: { children: React.ReactNode }) {
         style={{
           background: "#ffffff",
           backgroundImage: `
-                radial-gradient(
-                circle at top center,
-                rgba(173, 109, 244, 0.5),
-                transparent 70%
-                )
-            `,
+            radial-gradient(
+              circle at top left,
+              rgba(90, 120, 180, 0.5),
+              transparent 70%
+            )
+          `,
           filter: "blur(80px)",
           backgroundRepeat: "no-repeat",
         }}

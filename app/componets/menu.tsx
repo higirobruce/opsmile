@@ -42,8 +42,8 @@ const navigationLinks = [
   { href: "/", label: "Home", icon: HomeIcon, active: true },
   { href: "/dashboard", label: "Dashboard", icon: ChartBarBig, active: true },
   // { href: "#", label: "Projects", icon: LayersIcon },
-  { href: "/documentation", label: "Documentation", icon: FileTextIcon },
-  { href: "/team", label: "Team", icon: UsersIcon },
+  // { href: "/documentation", label: "Documentation", icon: FileTextIcon },
+  { href: "/patients", label: "Patients", icon: UsersIcon },
 ]
 
 // Language options
@@ -162,9 +162,9 @@ export default function Menu() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           {/* Theme toggle */}
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           {/* Language selector */}
-          <Select defaultValue="en">
+          {/* <Select defaultValue="en">
             <SelectTrigger
               id={`language-${id}`}
               className="[&>svg]:text-muted-foreground/80 hover:bg-accent hover:text-accent-foreground h-8 border-none px-2 shadow-none [&>svg]:shrink-0"
@@ -182,7 +182,7 @@ export default function Menu() {
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select> */}
           {/* User menu */}
           <UserMenu />
         </div>

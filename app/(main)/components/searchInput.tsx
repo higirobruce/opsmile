@@ -34,7 +34,6 @@ export default function SearchInput({
   }, [currentPage,]);
 
   const fetchPatients = async () => {
-
     setLoadingPatients(true);
     try {
       const response = await fetch(
@@ -64,6 +63,13 @@ export default function SearchInput({
       toast.error("Failed to fetch patients");
     }
   };
+
+  const handleSearchSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent default form submission behavior
+    // You can perform any form-specific logic here before fetching
+    console.log('Form submitted, initiating patient fetch.');
+    await fetchPatients(); // Call your fetchPatients function
+  };
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center px-4 sm:pt-5 md:pt-10 pb-10 w-full">
@@ -76,7 +82,7 @@ export default function SearchInput({
 
         {/* Search input */}
         <form
-          onSubmit={fetchPatients}
+          onSubmit={handleSearchSubmit}
           className="relative mt-5 w-full max-w-3xl"
         >
           {/* Icon */}

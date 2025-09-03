@@ -73,6 +73,7 @@ export default function SimplePagination({
         <PaginationItem>
           <PaginationNext
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            onClick={() => setCurrentPage(currentPage + 1)}
             href={
               currentPage === totalPages
                 ? undefined

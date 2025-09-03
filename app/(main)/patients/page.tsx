@@ -1,25 +1,27 @@
 'use client'
 import React, { useState } from 'react'
 import SearchInput from '../components/searchInput'
-import SmallSearchInput from '../components/small-search-input'
-import ComplextTable from './components/complex-table'
-import PatientTabs from './components/patient-tabs'
 import PatientSnapshot from './components/patientSnapshot'
+import SimplePagination from '../components/simple-pagination'
 
 export default function Patients() {
   const [patientData, setPatientData] = useState<any>([])
   const [loadingPatients, setLoadingPatients] = useState<boolean>(false)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
   return (
     <>
-      <SearchInput setLoadingPatients={(loading) => setLoadingPatients(loading)}  setPatientData={(data) => setPatientData(data)} />
+      <SearchInput currentPage={currentPage} setCurrentPage={setCurrentPage} setTotalPages={setTotalPages} setLoadingPatients={(loading) => setLoadingPatients(loading)} setPatientData={(data) => setPatientData(data)} />
       {/* {
         patientData?.length ==0 && (<div>
           <ComplextTable />
         </div>)
       } */}
-      
+      <div className='self-end mb-5'>
+        <SimplePagination currentPage={currentPage} totalPages={totalPages} />
+      </div>
       {
-        patientData?.length>=1 && !loadingPatients &&(
+        patientData?.length >= 1 && !loadingPatients && (
           <div className='flex flex-col space-y-2'>
             {patientData?.map((patient: any, index: number) => <PatientSnapshot isHeaderSection={false} key={index} patientData={patient} />)}
           </div>
@@ -52,7 +54,7 @@ export default function Patients() {
                 <div className='w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700'></div>
                 <div className='w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700'></div>
 
-                
+
               </div>
               <span className="sr-only">Loading...</span>
             </div>

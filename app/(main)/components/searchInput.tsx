@@ -14,9 +14,15 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 export default function SearchInput({
   setPatientData,
   setLoadingPatients,
+  setCurrentPage,
+  setTotalPages,
+  currentPage
 }: {
   setPatientData: (patientId: null | {}) => void;
   setLoadingPatients: (loading: boolean) => void;
+  setCurrentPage: (page: number) => void;
+  setTotalPages: (pages: number) => void;
+  currentPage: number;
 }) {
   const id = useId();
   const [search, setSearch] = useState("");
@@ -29,7 +35,7 @@ export default function SearchInput({
     setLoadingPatients(true);
     try {
       const response = await fetch(
-        `${API_URL}/patients/search?search=${encodeURIComponent(search)}`,
+        `${API_URL}/patients/search?search=${encodeURIComponent(search)}&page=${currentPage}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -58,11 +64,11 @@ export default function SearchInput({
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center px-4 sm:pt-5 md:pt-20 pb-10 w-full">
         <h1 className="text-2xl md:text-5xl font-extrabold tracking-tight text-center">
-          Search Patient
+          Patient List
         </h1>
-        <p className="mt-4 text-sm md:text-lg text-center text-muted-foreground max-w-xl">
+        {/* <p className="mt-4 text-sm md:text-lg text-center text-muted-foreground max-w-xl">
           Use this page to quickly find a patient Names or phone numbers
-        </p>
+        </p> */}
 
         {/* Search input */}
         <form
@@ -75,7 +81,7 @@ export default function SearchInput({
           {/* Giant input */}
           <Input
             type="text"
-            placeholder="Enter Names or phone number"
+            placeholder="Search using: Patient ID, Name, or Phone Number"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             autoFocus

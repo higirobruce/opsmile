@@ -22,6 +22,7 @@ import FileUpload from "../../components/file-upload";
 import { FileWithPreview } from "@/hooks/use-file-upload";
 import { useAuth } from "@/app/context/AuthContext";
 import { set } from "date-fns";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -179,22 +180,22 @@ export default function SurgeryInputSheet({
 
   return (
     <>
-      <Sheet>
-        <SheetTrigger asChild>
+      <Dialog>
+        <DialogTrigger asChild>
           <div>
             <Button variant="outline" onClick={() => setOpen(true)}>
               Add new surgery record
             </Button>
           </div>
-        </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Capture surgery info</SheetTitle>
-            <SheetDescription>
-              Enter the required information for the surgery input sheet.
-            </SheetDescription>
-          </SheetHeader>
-          <div className="grid flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto ">
+          <DialogHeader>
+            <DialogTitle>Capture surgery info</DialogTitle>
+            <DialogDescription>
+              Enter the required information for the surgery input Dialog.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
             <div>
               <Label>Sergeon</Label>
               <SelectComponent
@@ -255,7 +256,7 @@ export default function SurgeryInputSheet({
               />
             </div>
           </div>
-          <SheetFooter>
+          <DialogFooter>
             <Button onClick={handleSubmit} type="submit" disabled={submitting}>
               {submitting && (
                 <LoaderCircleIcon
@@ -266,12 +267,12 @@ export default function SurgeryInputSheet({
               )}
               Save
             </Button>
-            <SheetClose asChild>
+            <DialogClose asChild>
               <Button variant="outline">Close</Button>
-            </SheetClose>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

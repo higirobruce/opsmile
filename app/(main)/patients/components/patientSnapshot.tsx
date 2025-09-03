@@ -26,6 +26,17 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
             setAge(age);
         }
     };
+
+    function formatAge(dob: Date) {
+        const now = moment();
+        const birthDate = moment(dob);
+
+        // Get the difference in years and months
+        const years = now.diff(birthDate, "years");
+        const months = now.diff(birthDate.clone().add(years, "years"), "months");
+
+        return `${years}Yr, ${months}Mon`;
+    }
     return (
         <div className='flex justify-between'>
             <Card className='flex w-full justify-between'>
@@ -72,7 +83,7 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
 
                                         <div className='text-sm flex flex-row items-start space-x-1'>
                                             <RiCalendarEventFill size={16} className='text-sm font-bold' />
-                                            <p className='text-foreground/50'>{age} yrs</p>
+                                            <p className='text-foreground/50'>{formatAge(moment(patientData.dateOfBirth).toDate())}</p>
                                         </div>
 
 

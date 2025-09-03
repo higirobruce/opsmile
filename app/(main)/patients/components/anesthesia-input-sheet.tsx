@@ -101,13 +101,6 @@ export default function AnesthesiaInputSheet({
         }),
       });
 
-      console.log({
-        patientId: patientData?._id,
-        pastAnesteticHistory,
-        proposedPlan,
-        consentFileUrl: uploadedFiles, // Array of {name, base64Url}
-      })
-
       const data = await response.json();
 
       if (!response.ok) {

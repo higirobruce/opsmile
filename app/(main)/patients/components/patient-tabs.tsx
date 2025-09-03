@@ -144,6 +144,7 @@ export default function PatientTabs({
             Anesthesia
           </TabsTrigger>
           <TabsTrigger
+            disabled={!patientData.anesthesia_records[patientData.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
             value="tab-6"
             onClick={() => setTab("tab-6")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
@@ -156,6 +157,7 @@ export default function PatientTabs({
             Surgery
           </TabsTrigger>
           <TabsTrigger
+            disabled={!patientData.anesthesia_records[patientData.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
             value="tab-7"
             onClick={() => setTab("tab-7")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"

@@ -10,7 +10,7 @@ export default function NursingAssess() {
     <>
       {
         !patientData?._id && (<div>
-          <SearchInput setLoadingPatients={(loading) => { }} setPatientData={(data) => setPatientData(data)} />
+          <SearchInput currentPage={1} setCurrentPage={(page) => { }} setTotalPages={(pages) => { }} setLoadingPatients={(loading) => { }} setPatientData={(data) => setPatientData(data)} />
         </div>)
       }
       <div className='flex flex-col space-y-5'>

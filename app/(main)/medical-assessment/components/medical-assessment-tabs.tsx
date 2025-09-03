@@ -202,7 +202,7 @@ export default function PatientTabs({ patientData }: { patientData: any }) {
 
                                     <CardContent className="h-[calc(100vh-40rem)] overflow-scroll ">
 
-                                        <SimpleTimeline />
+                                        <SimpleTimeline patientId={patientData.patientId} />
                                     </CardContent>
                                 </Card>
                             </div>

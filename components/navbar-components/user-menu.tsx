@@ -64,7 +64,7 @@ export default function UserMenu() {
         </DropdownMenuContent>
       </DropdownMenu>}
 
-      {!user && !loading && <SignIn />}
+      {/* {!user && !loading && <SignIn />} */}
     </>
   )
 }

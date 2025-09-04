@@ -71,19 +71,19 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                         </Button> */}
                                     </div>
                                     <div className='flex flex-row space-x-5 mt-2'>
-                                        <div className='text-sm flex items-start space-x-1'>
+                                        <div className='text-sm flex items-start space-x-1 text-foreground/50'>
                                             <RiUser3Fill size={16} className='text-sm font-bold' />
-                                            <p className='text-foreground/50'>{patientData.gender == 'M' ? 'Male' : 'Female'}</p>
+                                            <p>{patientData.gender == 'M' ? 'Male' : 'Female'}</p>
                                         </div>
 
-                                        <div className='text-sm flex flex-row items-start space-x-1'>
+                                        <div className='text-sm flex flex-row items-start space-x-1 text-foreground/50'>
                                             <RiMapPin2Fill size={16} className='text-sm font-bold' />
-                                            <p className='text-foreground/50'>{patientData.countryOfBirth || 'Kigali-Rwanda'}</p>
+                                            <p>{patientData.countryOfBirth || 'Kigali-Rwanda'}</p>
                                         </div>
 
-                                        <div className='text-sm flex flex-row items-start space-x-1'>
+                                        <div className='text-sm flex flex-row items-start space-x-1 text-foreground/50'>
                                             <RiCalendarEventFill size={16} className='text-sm font-bold' />
-                                            <p className='text-foreground/50'>{formatAge(moment(patientData.dateOfBirth).toDate())}</p>
+                                            <p>{formatAge(moment(patientData.dateOfBirth).toDate())}</p>
                                         </div>
 
 

@@ -11,8 +11,8 @@ export default function layout({ children }: { children: React.ReactNode }) {
           background: "#ffffff",
           backgroundImage: `
             radial-gradient(
-              circle at top left,
-              rgba(90, 120, 180, 0.5),
+              circle at top right,
+              rgba(70, 130, 180, 0.5),
               transparent 70%
             )
           `,

@@ -87,7 +87,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="my-5">
             <div className="flex flex-row justify-between items-center w-full">
-              <Image className="mr-2" src="/logo1.png" alt="logo" width={120} height={120} />  
+              <Image className="mr-2" src="/smile+logo.png" alt="logo" width={120} height={120} />  
               <UserMenu />
             </div>
           </SidebarGroupLabel>

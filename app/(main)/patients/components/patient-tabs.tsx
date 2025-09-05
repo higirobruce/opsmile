@@ -245,7 +245,7 @@ export default function PatientTabs({
                             label={mh.diagnosis}
                             sublabel={mh.pastMedicalHistory}
                             description={mh.reasonForCancellation}
-                            date={moment(mh.created_at).fromNow()}
+                            date={moment(mh.createdAt).fromNow()}
                             consentFileUrls={mh.uploadedFiles}
                           />
                         )
@@ -308,7 +308,7 @@ export default function PatientTabs({
                           label={mh.diagnosis}
                           sublabel={mh.pastMedicalHistory}
                           description={mh.reasonForCancellation}
-                          date={moment(mh.created_at).fromNow()}
+                          date={moment(mh.createdAt).fromNow()}
                           consentFileUrls={mh.uploadedFiles}
                         />
                       )
@@ -391,7 +391,7 @@ export default function PatientTabs({
                           label={an.clearedForAnesthesiaBool ? 'Cleared for Anesthesia' : 'Not cleared for Anesthesia'}
                           sublabel={[an.pastAnesteticHistory]}
                           description={an.proposedPlan}
-                          date={moment(an.created_at).fromNow()}
+                          date={moment(an.createdAt).fromNow()}
                           consentFileUrls={an.consentFileUrl}
                         />
                       )

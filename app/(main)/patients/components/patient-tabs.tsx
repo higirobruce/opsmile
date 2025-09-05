@@ -59,6 +59,7 @@ import moment from "moment";
 import AnesthesiaInputSheet from "./anesthesia-input-sheet";
 import SurgeryInputSheet from "./surgery-input-sheet";
 import { Input } from "@/components/ui/input";
+import SimpleBadge from "../../components/simple-badge";
 
 
 export default function PatientTabs({
@@ -321,20 +322,25 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <h1 className="text-2xl font-bold text-foreground/60 ml-5">Pending Lab Requests</h1>
+            {/* <h1 className="text-xl text-foreground/80 ml-5">Pending Lab Requests</h1> */}
             <div className="grid grid-cols-3 gap-5">
               {patientData?.medical_assessments?.map((assessment: any) =>
-                assessment?.labRequests?.map((request: any) => {
-                  return (
-                    <div key={request._id} className="flex flex-col space-y-2 bg-white rounded-lg p-5 border border-gray-200">
-                      <p className="text-lg font-bold">{request}</p>
-                      <Label>Sample collected</Label>
-                      <Input placeholder="Enter sample collected (name)" />
-                      <Label>Result</Label>
-                      <Input placeholder="Enter result" />
-                      <div><Button variant="outline">Save</Button></div>
-                    </div>
-                  )
+                assessment?.labRequests?.map((request: any, index: number) => {
+                  return request?.tests?.map((test: any, index: number) => {
+                    return (
+                      <div key={index} className="flex flex-col space-y-2 bg-white rounded-lg p-5 border border-gray-200">
+                        <div className="flex flex-row justify-between items-center">
+                          <p className="text-lg font-bold">{test}</p>
+                          <SimpleBadge text={request?.status} />
+                        </div>
+                        <Label>Sample collected</Label>
+                        <Input placeholder="Enter sample collected (name)" />
+                        <Label>Result</Label>
+                        <Input placeholder="Enter result" />
+                        <div><Button variant="outline">Save</Button></div>
+                      </div>
+                    )
+                  })
                 })
               )}
 

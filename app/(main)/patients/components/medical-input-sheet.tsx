@@ -104,7 +104,10 @@ export default function MedicalInputSheet({ className,
                     pastMedicalHistory,
                     diagnosis,
                     proposedProcedure,
-                    labRequests: labRequests.map((item) => item.value),
+                    labRequests: {
+                        tests: labRequests.map((item) => item.value),
+                        status: 'pending'
+                    },
                     uploadedFiles: uploadedFiles.map((item) => ({
                         name: item.name,
                         base64Url: item.base64Url

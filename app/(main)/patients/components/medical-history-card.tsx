@@ -23,14 +23,14 @@ export default function MedicalHistoryCard({
       <div className="grid grow gap-2">
         <Label htmlFor={`2`} className="whitespace-pre-line">
           {label + " "}
-          <span className="text-muted-foreground text-xs leading-[inherit] font-normal">
-            ({" "}
+          {/* <span className="text-foreground/50 text-xs leading-[inherit] font-normal">
+            (
             {sublabel}
-            )
-          </span>
+            ) 
+          </span> */}
         </Label>
         <p id={`2-description`} className="text-sm font-bold whitespace-pre-line">
-          {description}
+          {sublabel}
         </p>
 
         <div className="grid md:grid-cols-2 gap-2 ">

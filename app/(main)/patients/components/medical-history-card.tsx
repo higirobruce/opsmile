@@ -21,7 +21,7 @@ export default function MedicalHistoryCard({
   return (
     <div className="border-input has-data-[state=checked]:border-primary/50 relative flex w-full items-start gap-2 rounded-md border p-4 shadow-xs outline-none">
       <div className="grid grow gap-2">
-        <Label htmlFor={`2`}>
+        <Label htmlFor={`2`} className="whitespace-pre-line">
           {label + " "}
           <span className="text-muted-foreground text-xs leading-[inherit] font-normal">
             ({" "}
@@ -29,7 +29,7 @@ export default function MedicalHistoryCard({
             )
           </span>
         </Label>
-        <p id={`2-description`} className="text-sm font-bold">
+        <p id={`2-description`} className="text-sm font-bold whitespace-pre-line">
           {description}
         </p>
 

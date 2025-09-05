@@ -89,7 +89,7 @@ export default function SimpleTimeline({ patientId }: { patientId: string }) {
           <TimelineHeader>
             <TimelineSeparator />
             <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-              {moment(item.created_at).format("MMM D, YYYY")}
+              {moment(item.createdAt).format("MMM D, YYYY")}
             </TimelineDate>
             <TimelineTitle className="sm:-mt-0.5">{item.action}</TimelineTitle>
             <TimelineIndicator />

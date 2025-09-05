@@ -239,6 +239,8 @@ export default function PatientTabs({
                       {patientData?.medical_assessments?.map(
                         (mh: any, index: number) => (
                           <MedicalHistoryCard
+                            requests={false}
+                            labRequests={[]}
                             key={index}
                             label={mh.diagnosis}
                             sublabel={mh.pastMedicalHistory}
@@ -300,6 +302,8 @@ export default function PatientTabs({
                     {patientData?.medical_assessments?.map(
                       (mh: any, index: any) => (
                         <MedicalHistoryCard
+                          requests={true}
+                          labRequests={mh?.labRequests}
                           key={index}
                           label={mh.diagnosis}
                           sublabel={mh.pastMedicalHistory}
@@ -381,6 +385,8 @@ export default function PatientTabs({
                     {patientData?.anesthesia_records?.map(
                       (an: any, index: any) => (
                         <MedicalHistoryCard
+                          requests={false}
+                          labRequests={[]}
                           key={index}
                           label={an.clearedForAnesthesiaBool ? 'Cleared for Anesthesia' : 'Not cleared for Anesthesia'}
                           sublabel={[an.pastAnesteticHistory]}
@@ -427,6 +433,8 @@ export default function PatientTabs({
                   <div className="grid grid-cols-2 gap-3">
                     {patientData?.surgeries?.map((surgery: any, index: any) => (
                       <MedicalHistoryCard
+                        requests={false}
+                        labRequests={[]}
                         key={index}
                         label={surgery.surgeryType}
                         sublabel={[surgery.status]}

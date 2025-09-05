@@ -8,6 +8,8 @@ export default function MedicalHistoryCard({
   description,
   date,
   consentFileUrls,
+  requests,
+  labRequests
 }: {
   label: string;
   sublabel?: string[];
@@ -17,6 +19,8 @@ export default function MedicalHistoryCard({
     name: string;
     base64Url: string;
   }];
+  requests: boolean;
+  labRequests: any[];
 }) {
   return (
     <div className="border-input has-data-[state=checked]:border-primary/50 relative flex w-full items-start gap-2 rounded-md border p-4 shadow-xs outline-none">
@@ -32,6 +36,18 @@ export default function MedicalHistoryCard({
         <p id={`2-description`} className="text-sm font-bold whitespace-pre-line">
           {sublabel}
         </p>
+
+        {requests && (
+          <div className="text-sm whitespace-pre-line">
+            <p className="font-bold">Lab requests: </p>
+            {labRequests?.map((request:any, index:number)=>{
+              return request?.tests?.map((test:any)=><p className="text-xs">{test?.name}</p>)
+            })}
+          </div>
+        )}
+        <div>
+
+        </div>
 
         <div className="grid md:grid-cols-2 gap-2 ">
           <p className="text-xs text-muted-foreground">{date}</p>

@@ -41,7 +41,7 @@ export default function MedicalHistoryCard({
           <div className="text-sm whitespace-pre-line">
             <p className="font-bold">Lab requests: </p>
             {labRequests?.map((request:any, index:number)=>{
-              return request?.tests?.map((test:any)=><p className="text-xs">{test?.name}</p>)
+              return request?.tests?.map((test:any, index:number)=><p key={index} className="text-xs">{test?.name}</p>)
             })}
           </div>
         )}

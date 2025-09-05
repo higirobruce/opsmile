@@ -182,32 +182,46 @@ export default function MedicalInputSheet({ className,
                         <div>
                             <MultiSelect setOptions={setLabRequests} label="Lab requests" options={[
                                 {
-                                    value: 'HEMATOLOGY',
-                                    label: 'Hematology'
+                                    value: 'CBC',
+                                    label: 'Complete Blood Count (CBC)'
                                 },
                                 {
-                                    value: 'BIOCHEMISTRY',
-                                    label: 'Biochemistry'
+                                    value: 'Hemoglobin/Hematocrit',
+                                    label: 'Hemoglobin/Hematocrit'
                                 },
                                 {
                                     value: 'INFECTION-SCREENING',
                                     label: 'Infection screening'
                                 },
                                 {
-                                    value: 'URINALYSIS',
+                                    value: 'Platelet Count',
+                                    label: 'Platelet Count'
+                                },
+                                {
+                                    value: 'Blood Sugar',
+                                    label: 'Blood Sugar'
+                                },
+                                {
+                                    value: 'Electrolytes',
+                                    label: 'Electrolytes'
+                                },
+                                {
+                                    value: 'Bilirubin',
+                                    label: 'Bilirubin'
+                                },
+                                {
+                                    value: 'Creatinine',
+                                    label: 'Creatinine'
+                                },
+                                {
+                                    value: 'Coagulation Profile',
+                                    label: 'Coagulation Profile'
+                                }, {
+                                    value: 'Urinalysis',
                                     label: 'Urinalysis'
-                                },
-                                {
-                                    value: 'CHEST-XRAY',
-                                    label: 'Chest X-Ray'
-                                },
-                                {
-                                    value: 'ECG',
-                                    label: 'Ecg'
-                                },
-                                {
-                                    value: 'ECHOCARDIOGRAM',
-                                    label: 'Echocardiogram'
+                                }, {
+                                    value: 'Chest X-ray',
+                                    label: 'Chest X-ray'
                                 }
 
                             ]} />

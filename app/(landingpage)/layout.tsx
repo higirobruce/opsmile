@@ -21,7 +21,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         }}
       />
       <div className="relative z-10 flex min-h-screen flex-col">
-        <Menu />
+        {/* <Menu /> */}
 
         {children}
       </div>

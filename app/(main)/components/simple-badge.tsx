@@ -15,12 +15,15 @@ export default function SimpleBadge({ text }: { text: string }) {
                         text == 'failed' ?
                             <XIcon className="text-red-500" size={12} aria-hidden="true" />
                             :
-                            text == 'sample-collected' ?
+                            text == 'sample collected' ?
                                 <CheckIcon className="text-blue-500" size={12} aria-hidden="true" />
                                 :
-                                text
+                                ''
             }
-            {text}
+            {text == 'sample collected' ? 'Sample Collected' : null}
+            {text == 'completed' ? 'Completed' : null}
+            {text == 'pending' ? 'Pending' : null}
+            {text == 'failed' ? 'Failed' : null}
 
 
         </Badge>

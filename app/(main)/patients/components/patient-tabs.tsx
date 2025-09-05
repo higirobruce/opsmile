@@ -330,8 +330,8 @@ export default function PatientTabs({
                     return (
                       <div key={index} className="flex flex-col space-y-2 bg-white rounded-lg p-5 border border-gray-200">
                         <div className="flex flex-row justify-between items-center">
-                          <p className="text-lg font-bold">{test}</p>
-                          <SimpleBadge text={request?.status} />
+                          <p className="text-lg font-bold">{test?.name}</p>
+                          <SimpleBadge text={test?.status} />
                         </div>
                         <Label>Sample collected</Label>
                         <Input placeholder="Enter sample collected (name)" />

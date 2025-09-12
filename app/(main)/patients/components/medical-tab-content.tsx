@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import moment from "moment";
 import MedicalHistoryCard from "./medical-history-card";
 import { Button } from "@/components/ui/button";
+import { Timeline, TimelineContent, TimelineDate, TimelineHeader, TimelineIndicator, TimelineItem, TimelineSeparator, TimelineTitle } from "@/components/ui/timeline";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -169,10 +170,10 @@ export default function MedicalTabContent({
                     setLabExams(newExams);
                   }}
                 />
-                <Button size='icon' variant="destructive" onClick={() => setLabExams(labExams.filter((_, i) => i !== index))}><Trash/></Button>
+                <Button size='icon' variant="destructive" onClick={() => setLabExams(labExams.filter((_, i) => i !== index))}><Trash /></Button>
               </div>
             ))}
-            <Button size='icon' variant="outline" className="mt-2 ml-2" onClick={() => setLabExams([...labExams, { testName: '', result: '' }])}><Plus/></Button>
+            <Button size='icon' variant="outline" className="mt-2 ml-2" onClick={() => setLabExams([...labExams, { testName: '', result: '' }])}><Plus /></Button>
           </div>
 
           <div>
@@ -230,22 +231,39 @@ export default function MedicalTabContent({
         <h2 className="text-xl font-semibold mb-3">Medical Assessment History</h2>
         {patientData?.medical_assessments?.length === 0 && <p>No medical assessments found for this patient.</p>}
         {patientData?.medical_assessments?.length > 0 && (
-          <div className="grid grid-cols-1 gap-3">
-            {patientData?.medical_assessments?.map(
-              (mh: any, index: number) => (
-                <MedicalHistoryCard
-                  requests={true}
-                  labRequests={mh?.labRequests}
+          <>
+            <Timeline defaultValue={patientData?.medical_assessments.length}>
+              {patientData?.medical_assessments.map((item: any, index: number) => (
+                <TimelineItem
                   key={index}
-                  label={mh.diagnosis}
-                  sublabel={[mh.pastMedicalHistory]}
-                  description={mh.reasonForCancellation}
-                  date={moment(mh.createdAt).fromNow()}
-                  consentFileUrls={mh.uploadedFiles}
-                />
-              )
-            )}
-          </div>
+                  step={index}
+                  className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+                >
+                  <TimelineHeader>
+                    <TimelineSeparator />
+                    <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
+                      {moment(item.createdAt).format("MMM D, YYYY")}
+                    </TimelineDate>
+                    <TimelineTitle className="sm:-mt-0.5">Medical History: {item.pastMedicalHistory}</TimelineTitle>
+                    <TimelineIndicator />
+                  </TimelineHeader>
+                  <TimelineContent>
+                    <p className="text-sm text-muted-foreground">Diagnosis: {item.diagnosis}</p>
+
+                    <p className="text-sm text-muted-foreground">Cleared for Surgery: {item.clearedForSurgery ? "Yes" : "No"}</p>
+                    {item.labExams?.map((exam: any, index: number) => {
+                      return (
+                        <p className="text-sm text-muted-foreground" key={index}>
+                          {exam.testName}: {exam.result}
+                        </p>
+                      )
+                    })}
+                  </TimelineContent>
+                </TimelineItem>
+              ))}
+            </Timeline>
+          </>
+
         )}
       </div>
     </div>

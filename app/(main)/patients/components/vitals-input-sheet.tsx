@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react"
+import { useCallback, useEffect, useId, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -81,10 +81,18 @@ export default function VitalsInput({ className,
     const [bmi, setBmi] = useState<any>('')
     const [addingVitals, setAddingVitals] = useState(false)
 
+    const handleCalculateBMI = useCallback(() => {
+        if (height && weight) {
+            const bmi = weight / ((height * height) / 10000)
+            if (bmi) {
+                setBmi(bmi.toFixed(2))
+            }
+        }
+    }, [height, weight])
 
     useEffect(() => {
         handleCalculateBMI()
-    }, [height, weight])
+    }, [height, weight, handleCalculateBMI])
 
     const handleSubmit = async () => {
         setSubmitting(true)
@@ -126,14 +134,7 @@ export default function VitalsInput({ className,
         }
     }
 
-    const handleCalculateBMI = () => {
-        if (height && weight) {
-            const bmi = weight / ((height * height)/10000)
-            if (bmi) {
-                setBmi(bmi.toFixed(2))
-            }
-        }
-    }
+
 
     return (
         <>

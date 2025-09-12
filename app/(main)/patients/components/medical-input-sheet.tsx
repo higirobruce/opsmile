@@ -40,18 +40,13 @@ export default function MedicalInputSheet({ className,
     const [open, setOpen] = useState(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
 
-    const [chiefComplaint, setChiefComplaint] = useState<any>('')
     const [clearedForSurgery, setClearedForSurgery] = useState<any>('')
     const [pastMedicalHistory, setPastMedicalHistory] = useState('')
-    const [currentMedication, setCurrentMedication] = useState<string>('')
-    const [allergies, setAllergies] = useState<Tag[]>([])
-    const [provisionalDiagnosis, setProvisionalDiagnosis] = useState<Tag[]>([])
     const [diagnosis, setDiagnosis] = useState<any>()
-    const [proposedProcedure, setProposedProcedure] = useState<any>()
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
     const [uploadedPhotos, setUploadedPhotos] = useState<UploadedFile[]>([]);
     const [reasonForCancellation, setReasonForCancellation] = useState('')
-    const [labRequests, setLabRequests] = useState<Option[]>([])
+    const [labExams, setLabExams] = useState<{ testName: string, result: string }[]>([]);
 
 
     const handleFileUpload = async (files: FileWithPreview[]) => {
@@ -103,13 +98,7 @@ export default function MedicalInputSheet({ className,
                     patientId: patientData?._id,
                     pastMedicalHistory,
                     diagnosis,
-                    proposedProcedure,
-                    labRequests: {
-                        tests: labRequests.map((item) => ({
-                            name: item.label,
-                            status: 'pending'
-                        })),
-                    },
+                    labExams,
                     uploadedFiles: uploadedFiles.map((item) => ({
                         name: item.name,
                         base64Url: item.base64Url
@@ -177,59 +166,31 @@ export default function MedicalInputSheet({ className,
                         </div>
 
                         <div>
-                            <Label>Proposed procedure</Label>
-                            <Textarea
-                                value={proposedProcedure}
-                                onChange={(e) => setProposedProcedure(e.target.value)}
-                            />
-                        </div>
-
-                        <div>
-                            <MultiSelect setOptions={setLabRequests} label="Lab requests" options={[
-                                {
-                                    value: 'CBC',
-                                    label: 'Complete Blood Count (CBC)'
-                                },
-                                {
-                                    value: 'Hemoglobin/Hematocrit',
-                                    label: 'Hemoglobin/Hematocrit'
-                                },
-                                {
-                                    value: 'INFECTION-SCREENING',
-                                    label: 'Infection screening'
-                                },
-                                {
-                                    value: 'Platelet Count',
-                                    label: 'Platelet Count'
-                                },
-                                {
-                                    value: 'Blood Sugar',
-                                    label: 'Blood Sugar'
-                                },
-                                {
-                                    value: 'Electrolytes',
-                                    label: 'Electrolytes'
-                                },
-                                {
-                                    value: 'Bilirubin',
-                                    label: 'Bilirubin'
-                                },
-                                {
-                                    value: 'Creatinine',
-                                    label: 'Creatinine'
-                                },
-                                {
-                                    value: 'Coagulation Profile',
-                                    label: 'Coagulation Profile'
-                                }, {
-                                    value: 'Urinalysis',
-                                    label: 'Urinalysis'
-                                }, {
-                                    value: 'Chest X-ray',
-                                    label: 'Chest X-ray'
-                                }
-
-                            ]} />
+                            <Label>Lab Exams</Label>
+                            {labExams.map((exam, index) => (
+                                <div key={index} className="flex items-center space-x-2 mt-2">
+                                    <Input
+                                        placeholder="Test Name"
+                                        value={exam.testName}
+                                        onChange={(e) => {
+                                            const newExams = [...labExams];
+                                            newExams[index].testName = e.target.value;
+                                            setLabExams(newExams);
+                                        }}
+                                    />
+                                    <Input
+                                        placeholder="Result"
+                                        value={exam.result}
+                                        onChange={(e) => {
+                                            const newExams = [...labExams];
+                                            newExams[index].result = e.target.value;
+                                            setLabExams(newExams);
+                                        }}
+                                    />
+                                    <Button variant="outline" onClick={() => setLabExams(labExams.filter((_, i) => i !== index))}>Remove</Button>
+                                </div>
+                            ))}
+                            <Button variant="outline" className="mt-2" onClick={() => setLabExams([...labExams, { testName: '', result: '' }])}>Add Lab Exam</Button>
                         </div>
 
                         <div>

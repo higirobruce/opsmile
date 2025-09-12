@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -108,16 +108,16 @@ export default function NewPatient({
     }
   };
 
-  const handleCaluculateAge = () => {
+  const handleCaluculateAge = useCallback(() => {
     if (dateOfBirth) {
       const age = new Date().getFullYear() - dateOfBirth.getFullYear();
       setAge(age);
     }
-  };
+  }, [dateOfBirth]);
 
   useEffect(() => {
     handleCaluculateAge();
-  }, [dateOfBirth]);
+  }, [dateOfBirth, handleCaluculateAge]);
 
 
   return (

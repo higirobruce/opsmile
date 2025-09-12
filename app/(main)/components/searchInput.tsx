@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useContext, useEffect, useId, useState } from "react";
+import { FormEvent, useCallback, useContext, useEffect, useId, useState } from "react";
 import { AtSignIcon, Search, SearchIcon } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
@@ -29,11 +29,7 @@ export default function SearchInput({
   const router = useRouter();
   const { token } = useAuth();
 
-  useEffect(() => {
-    fetchPatients();
-  }, [currentPage,]);
-
-  const fetchPatients = async () => {
+  const fetchPatients = useCallback(async () => {
     setLoadingPatients(true);
     try {
       const response = await fetch(
@@ -62,7 +58,11 @@ export default function SearchInput({
 
       toast.error("Failed to fetch patients");
     }
-  };
+  }, [currentPage, search, setLoadingPatients, setPatientData, setTotalPages, token]);
+
+  useEffect(() => {
+    fetchPatients();
+  }, [currentPage]);
 
   const handleSearchSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior

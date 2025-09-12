@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import PatientTabs from "../components/patient-tabs";
 import { useState } from "react";
 import SmallSearchInput from "../../components/small-search-input";
@@ -19,7 +19,7 @@ export default function Patient() {
   const [fetching, setFetching] = useState(true);
   const { token } = useAuth();
 
-  const fetchPatientData = async () => {
+  const fetchPatientData = useCallback(async () => {
     setFetching(true);
     try {
       const response = await fetch(`${API_URL}/patients/${id}`, {
@@ -43,11 +43,11 @@ export default function Patient() {
       console.error(error);
       toast.error("Failed to fetch patient data");
     }
-  };
+  }, [id, token]);
 
   useEffect(() => {
     fetchPatientData();
-  }, [id]);
+  }, [id, fetchPatientData]);
 
 
   return (

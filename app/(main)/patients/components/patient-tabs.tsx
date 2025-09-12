@@ -60,6 +60,8 @@ import AnesthesiaInputSheet from "./anesthesia-input-sheet";
 import SurgeryInputSheet from "./surgery-input-sheet";
 import { Input } from "@/components/ui/input";
 import SimpleBadge from "../../components/simple-badge";
+import ProgressTabContent from "./progress-tab-content";
+import DischargeTabContent from "./discharge-tab-content";
 
 
 export default function PatientTabs({
@@ -74,7 +76,7 @@ export default function PatientTabs({
 
   useEffect(() => {
     console.log(patientData);
-  }, []);
+  }, [patientData]);
   return (
     <Tabs value={tab} defaultValue="tab-1">
       <Toaster />
@@ -243,7 +245,7 @@ export default function PatientTabs({
                             labRequests={[]}
                             key={index}
                             label={mh.diagnosis}
-                            sublabel={mh.pastMedicalHistory}
+                            sublabel={[mh.pastMedicalHistory]}
                             description={mh.reasonForCancellation}
                             date={moment(mh.createdAt).fromNow()}
                             consentFileUrls={mh.uploadedFiles}
@@ -306,7 +308,7 @@ export default function PatientTabs({
                           labRequests={mh?.labRequests}
                           key={index}
                           label={mh.diagnosis}
-                          sublabel={mh.pastMedicalHistory}
+                          sublabel={[mh.pastMedicalHistory]}
                           description={mh.reasonForCancellation}
                           date={moment(mh.createdAt).fromNow()}
                           consentFileUrls={mh.uploadedFiles}
@@ -456,6 +458,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
+            <ProgressTabContent patientData={patientData} refresh={refresh} />
           </div>
         </>
       </TabsContent>
@@ -465,6 +468,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
+            <DischargeTabContent patientData={patientData} refresh={refresh} />
           </div>
         </>
       </TabsContent>

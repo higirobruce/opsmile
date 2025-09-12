@@ -266,7 +266,8 @@ export default function SurgeryInputSheet({
             </div>
             <div>
               <Label>Procedure</Label>
-              <Input
+              <Textarea
+              className="mt-2"
                 value={procedure}
                 onChange={(e) => setProcedure(e.target.value)}
               />

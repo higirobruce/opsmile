@@ -62,6 +62,9 @@ import { Input } from "@/components/ui/input";
 import SimpleBadge from "../../components/simple-badge";
 import ProgressTabContent from "./progress-tab-content";
 import DischargeTabContent from "./discharge-tab-content";
+import MedicalTabContent from "./medical-tab-content";
+import AnesthesiaTabContent from "./anesthesia-tab-content";
+import SurgeryTabContent from "./surgery-tab-content";
 
 
 export default function PatientTabs({
@@ -122,7 +125,7 @@ export default function PatientTabs({
             Medical
           </TabsTrigger>
 
-          <TabsTrigger
+          {/* <TabsTrigger
             value="tab-4"
             onClick={() => setTab("tab-4")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
@@ -133,7 +136,7 @@ export default function PatientTabs({
               aria-hidden="true"
             />
             Lab
-          </TabsTrigger>
+          </TabsTrigger> */}
 
           <TabsTrigger
             value="tab-5"
@@ -192,7 +195,7 @@ export default function PatientTabs({
       {/* Overview */}
       <TabsContent value="tab-1">
         <>
-          <div className="flex flex-col space-y-3">
+          <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
             <div className="grid md:grid-cols-3 gap-3">
               {/* Timeline for the patients interaction with the doctor */}
@@ -279,46 +282,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-
-            {/* Medical History */}
-            <div className="col-span-2">
-              <Card>
-                <CardHeader className="border-b">
-                  <div className="flex flex-row items-center space-x-2 justify-between">
-                    <div className="flex flex-row items-center space-x-3">
-                      <Button variant="outline" size="icon">
-                        <RiMedicineBottleFill size={9} />
-                      </Button>
-                      <p className="text-sm font-semibold">Medical History</p>
-                    </div>
-
-                    <MedicalInputSheet
-                      refresh={refresh}
-                      patientData={patientData}
-                    />
-                  </div>
-                </CardHeader>
-
-                <CardContent className="flex-1 overflow-scroll ">
-                  <div className="grid grid-cols-2 gap-3">
-                    {patientData?.medical_assessments?.map(
-                      (mh: any, index: any) => (
-                        <MedicalHistoryCard
-                          requests={true}
-                          labRequests={mh?.labRequests}
-                          key={index}
-                          label={mh.diagnosis}
-                          sublabel={[mh.pastMedicalHistory]}
-                          description={mh.reasonForCancellation}
-                          date={moment(mh.createdAt).fromNow()}
-                          consentFileUrls={mh.uploadedFiles}
-                        />
-                      )
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <MedicalTabContent patientData={patientData} refresh={refresh} />
           </div>
         </>
       </TabsContent>
@@ -361,47 +325,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            {/* Anesthesia History */}
-            <div className="col-span-2">
-              <Card>
-                <CardHeader className="border-b">
-                  <div className="flex flex-row items-center space-x-2 justify-between">
-                    <div className="flex flex-row items-center space-x-3">
-                      <Button variant="outline" size="icon">
-                        <RiHotelBedLine size={9} />
-                      </Button>
-                      <p className="text-sm font-semibold">
-                        Anesthesia History
-                      </p>
-                    </div>
-
-                    <AnesthesiaInputSheet
-                      refresh={refresh}
-                      patientData={patientData}
-                    />
-                  </div>
-                </CardHeader>
-
-                <CardContent className="flex-1 overflow-scroll ">
-                  <div className="grid grid-cols-2 gap-3">
-                    {patientData?.anesthesia_records?.map(
-                      (an: any, index: any) => (
-                        <MedicalHistoryCard
-                          requests={false}
-                          labRequests={[]}
-                          key={index}
-                          label={an.clearedForAnesthesiaBool ? 'Cleared for Anesthesia' : 'Not cleared for Anesthesia'}
-                          sublabel={[an.pastAnesteticHistory]}
-                          description={an.proposedPlan}
-                          date={moment(an.createdAt).fromNow()}
-                          consentFileUrls={an.consentFileUrl}
-                        />
-                      )
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <AnesthesiaTabContent patientData={patientData} refresh={refresh} />
           </div>
         </>
       </TabsContent>
@@ -411,44 +335,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            {/* Surgery History */}
-
-            <div className="col-span-2">
-              <Card>
-                <CardHeader className="border-b">
-                  <div className="flex flex-row items-center space-x-2 justify-between">
-                    <div className="flex flex-row items-center space-x-3">
-                      <Button variant="outline" size="icon">
-                        <RiScissors2Line size={9} />
-                      </Button>
-                      <p className="text-sm font-semibold">Sugery History</p>
-                    </div>
-
-                    <SurgeryInputSheet
-                      refresh={refresh}
-                      patientData={patientData}
-                    />
-                  </div>
-                </CardHeader>
-
-                <CardContent className="flex-1 overflow-scroll ">
-                  <div className="grid grid-cols-2 gap-3">
-                    {patientData?.surgeries?.map((surgery: any, index: any) => (
-                      <MedicalHistoryCard
-                        requests={false}
-                        labRequests={[]}
-                        key={index}
-                        label={surgery.surgeryType}
-                        sublabel={[surgery.status]}
-                        description={surgery.surgicalNotes}
-                        date={moment(surgery.surgeryDate).fromNow()}
-                        consentFileUrls={surgery.consentFileUrls}
-                      />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <SurgeryTabContent patientData={patientData} refresh={refresh} />
           </div>
         </>
       </TabsContent>

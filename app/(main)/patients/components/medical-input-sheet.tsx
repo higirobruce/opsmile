@@ -14,7 +14,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { LoaderCircleIcon } from "lucide-react"
+import { LoaderCircleIcon, Plus, Trash } from "lucide-react"
 import { toast } from "sonner"
 import { Tag } from "emblor"
 import { Textarea } from "@/components/ui/textarea"
@@ -187,10 +187,10 @@ export default function MedicalInputSheet({ className,
                                             setLabExams(newExams);
                                         }}
                                     />
-                                    <Button variant="outline" onClick={() => setLabExams(labExams.filter((_, i) => i !== index))}>Remove</Button>
+                                    <Button size='icon' variant="destructive" onClick={() => setLabExams(labExams.filter((_, i) => i !== index))}><Trash/></Button>
                                 </div>
                             ))}
-                            <Button variant="outline" className="mt-2" onClick={() => setLabExams([...labExams, { testName: '', result: '' }])}>Add Lab Exam</Button>
+                            <Button size='icon' variant="outline" className="mt-2 ml-2" onClick={() => setLabExams([...labExams, { testName: '', result: '' }])}><Plus/></Button>
                         </div>
 
                         <div>

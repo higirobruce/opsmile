@@ -16,6 +16,7 @@ import moment from "moment";
 import MedicalHistoryCard from "./medical-history-card";
 import { Button } from "@/components/ui/button";
 import { Timeline, TimelineContent, TimelineDate, TimelineHeader, TimelineIndicator, TimelineItem, TimelineSeparator, TimelineTitle } from "@/components/ui/timeline";
+import SimpleTextArea from "../../components/text-area";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -33,9 +34,15 @@ export default function MedicalTabContent({
   const [pastMedicalHistory, setPastMedicalHistory] = useState("");
   const [diagnosis, setDiagnosis] = useState<any>();
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [uploadedLabExams, setUploadedLabExams] = useState<UploadedFile[]>([]);
   const [uploadedPhotos, setUploadedPhotos] = useState<UploadedFile[]>([]);
-  const [reasonForCancellation, setReasonForCancellation] = useState("");
-  const [labExams, setLabExams] = useState<{ testName: string; result: string }[]>([]);
+  const [reasonForPending, setReasonForPending] = useState("");
+  const [labExamsFindings, setLabExamsFindings] = useState<any>('');
+  const [physicalExamsFindings, setPhysicalExamsFindings] = useState<any>('');
+  const [consultativeNotes, setConsultativeNotes] = useState<any>('');
+  const [destinationForTransferred, setDestinationForTransferred] = useState<any>('');
+  const [surgicalDecision, setSurgicalDecision] = useState<any>('');
+  const [surgicalDecisionOther, setSurgicalDecisionOther] = useState<any>('');
 
   const handleFileUpload = async (files: FileWithPreview[]) => {
     try {
@@ -49,6 +56,24 @@ export default function MedicalTabContent({
 
       const processedFiles = await Promise.all(filePromises);
       setUploadedFiles((prev) => [...prev, ...processedFiles]);
+    } catch (error) {
+      console.error("Error processing files:", error);
+      toast.error("Error processing files");
+    }
+  };
+
+  const handleLabExamsFileUpload = async (files: FileWithPreview[]) => {
+    try {
+      const filePromises = files.map(async (file) => {
+        const base64Url = await fileToBase64(file.file as File);
+        return {
+          name: file.file.name,
+          base64Url,
+        };
+      });
+
+      const processedFiles = await Promise.all(filePromises);
+      setUploadedLabExams((prev) => [...prev, ...processedFiles]);
     } catch (error) {
       console.error("Error processing files:", error);
       toast.error("Error processing files");
@@ -73,6 +98,11 @@ export default function MedicalTabContent({
     }
   };
 
+  useEffect(() => {
+    console.log(diagnosis, pastMedicalHistory)
+
+  }, [diagnosis, pastMedicalHistory])
+
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
@@ -86,7 +116,8 @@ export default function MedicalTabContent({
           patientId: patientData?._id,
           pastMedicalHistory,
           diagnosis,
-          labExams,
+          labExams: labExamsFindings,
+          physicalExams: physicalExamsFindings,
           uploadedFiles: uploadedFiles.map((item) => ({
             name: item.name,
             base64Url: item.base64Url,
@@ -95,8 +126,15 @@ export default function MedicalTabContent({
             name: item.name,
             base64Url: item.base64Url,
           })),
-          clearedForSurgery: clearedForSurgery == "Yes" ? true : false,
-          reasonForCancellation,
+          uploadedLabExams: uploadedLabExams.map((item) => ({
+            name: item.name,
+            base64Url: item.base64Url,
+          })),
+          clearedForSurgery: clearedForSurgery == "Cleared for surgery" ? true : false,
+          surgicalDecision: surgicalDecision,
+          consultativeNotes,
+          reasonForPending,
+          destinationForTransferred,
           doneById: user?.id,
         }),
       });
@@ -104,23 +142,23 @@ export default function MedicalTabContent({
       const data = await response.json();
 
       if (!response.ok) {
-        toast.error(data.message || "Error saving medical assessment");
+        toast.error(data.message || "Error saving Consultation record");
         return;
       }
 
-      toast.success("Medical assessment saved");
+      toast.success("Consultation record saved");
       // Clear form fields
       setPastMedicalHistory("");
       setDiagnosis("");
-      setLabExams([]);
+      setLabExamsFindings([]);
       setUploadedFiles([]);
       setUploadedPhotos([]);
       setClearedForSurgery("");
-      setReasonForCancellation("");
+      setReasonForPending("");
       refresh(); // Refresh patient data to show new assessment
     } catch (error) {
       console.error(error);
-      toast.error("Failed to save medical assessment");
+      toast.error("Failed to save Consultation record");
     } finally {
       setSubmitting(false);
     }
@@ -128,28 +166,49 @@ export default function MedicalTabContent({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      {/* Left Column: Form for new Medical Assessment */}
+      {/* Left Column: Form for new Consultation record */}
       <div>
-        <h2 className="text-xl font-semibold mb-3">Add New Medical Assessment</h2>
-        <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-md space-y-3">
+        <h2 className="text-xl font-semibold mb-3">Add New Consultation record</h2>
+        <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
           <div>
-            <Label>Medical History</Label>
-            <Textarea
+            {/* <Label>Medical History</Label> */}
+            <SimpleTextArea label='Medical history' limit={500} setValue={setPastMedicalHistory} value={pastMedicalHistory} />
+            {/* <Textarea
               value={pastMedicalHistory}
+              maxLength={500}
               onChange={(e) => setPastMedicalHistory(e.target.value)}
-            />
+            /> */}
           </div>
 
           <div>
-            <Label>Diagnosis</Label>
-            <Textarea
+            {/* <Label>Diagnosis</Label> */}
+            <SimpleTextArea label='Diagnosis' limit={200} setValue={setDiagnosis} value={diagnosis} />
+            {/* <Textarea
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
-            />
+            /> */}
           </div>
 
-          <div className="col-span-2">
-            <Label>Lab Exams</Label>
+          <div>
+            {/* <Label>Diagnosis</Label> */}
+            <SimpleTextArea label='Physical Exams Findings' limit={500} setValue={setPhysicalExamsFindings} value={physicalExamsFindings} />
+            {/* <Textarea
+              value={diagnosis}
+              onChange={(e) => setDiagnosis(e.target.value)}
+            /> */}
+          </div>
+
+
+          <div>
+            {/* <Label>Diagnosis</Label> */}
+            <SimpleTextArea label='Lab Exams findings' limit={500} setValue={setLabExamsFindings} value={labExamsFindings} />
+            {/* <Textarea
+              value={diagnosis}
+              onChange={(e) => setDiagnosis(e.target.value)}
+            /> */}
+          </div>
+
+          {/* <div className="col-span-2">
             {labExams.map((exam, index) => (
               <div key={index} className="flex items-center space-x-2 mt-2">
                 <Input
@@ -174,9 +233,19 @@ export default function MedicalTabContent({
               </div>
             ))}
             <Button size='icon' variant="outline" className="mt-2 ml-2" onClick={() => setLabExams([...labExams, { testName: '', result: '' }])}><Plus /></Button>
+          </div> */}
+
+          <div className="flex flex-col space-y-1">
+            <Label>Labs results Upload</Label>
+            <FileUpload
+              bucketName="consents"
+              onUploadComplete={(files: FileWithPreview[]) =>
+                handleLabExamsFileUpload(files)
+              }
+            />
           </div>
 
-          <div>
+          <div className="flex flex-col space-y-1">
             <Label>Consent Upload</Label>
             <FileUpload
               bucketName="consents"
@@ -186,7 +255,7 @@ export default function MedicalTabContent({
             />
           </div>
 
-          <div>
+          <div className="flex flex-col space-y-1">
             <Label>Photo Upload</Label>
             <FileUpload
               bucketName="photos"
@@ -195,43 +264,76 @@ export default function MedicalTabContent({
               }
             />
           </div>
+          <div>
+            {/* <Label>Diagnosis</Label> */}
+            <SimpleTextArea label='Consultative Notes' limit={200} setValue={setConsultativeNotes} value={consultativeNotes} />
+            {/* <Textarea
+              value={diagnosis}
+              onChange={(e) => setDiagnosis(e.target.value)}
+            /> */}
+          </div>
 
           <div>
             <SelectComponent
-              _setValue={setClearedForSurgery}
-              value={clearedForSurgery}
+              _setValue={setSurgicalDecision}
+              value={surgicalDecision}
               name="clearedForSurgery"
-              label="Cleared for surgery"
+              label="Sergical Decision"
               options={[
-                { value: "Yes", label: "Yes" },
-                { value: "No", label: "No" },
+                { value: "Cleared for surgery", label: "Cleared for surgery" },
+                { value: "Pending", label: "Pending (with reason)" },
+                { value: "Not Cleared", label: "Not Cleared (Case closed)" },
+                { value: "Transferred", label: "Transfered" },
+                { value: "Other", label: "Other - Specify" },
               ]}
             />
           </div>
 
-          {clearedForSurgery == "No" && (
+          {surgicalDecision == "Pending" && (
             <div>
-              <Label>Reason for Cancellation</Label>
+              <Label>Reason</Label>
               <Textarea
-                value={reasonForCancellation}
-                onChange={(e) => setReasonForCancellation(e.target.value)}
+                value={reasonForPending}
+                className="mt-2"
+                onChange={(e) => setReasonForPending(e.target.value)}
+              />
+            </div>
+          )}
+
+          {surgicalDecision == "Transferred" && (
+            <div>
+              <Label>Transferred to? </Label>
+              <Textarea
+                value={destinationForTransferred}
+                className="mt-2"
+                onChange={(e) => setDestinationForTransferred(e.target.value)}
+              />
+            </div>
+          )}
+          {surgicalDecision == "Other" && (
+            <div>
+              <Label>Specify</Label>
+              <Textarea
+                value={surgicalDecisionOther}
+                className="mt-2"
+                onChange={(e) => setSurgicalDecisionOther(e.target.value)}
               />
             </div>
           )}
 
           <Button className="col-span-2" onClick={handleSubmit} disabled={submitting}>
             {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
-            Save Medical Assessment
+            Save Consultation record
           </Button>
         </div>
       </div>
 
-      {/* Right Column: History of Medical Assessments */}
+      {/* Right Column: History of Consultation records */}
       <div>
-        <h2 className="text-xl font-semibold mb-3">Medical Assessment History</h2>
-        {patientData?.medical_assessments?.length === 0 && <p>No medical assessments found for this patient.</p>}
+        <h2 className="text-xl font-semibold mb-3">Consultation record History</h2>
+        {patientData?.medical_assessments?.length === 0 && <p>No Consultation records found for this patient.</p>}
         {patientData?.medical_assessments?.length > 0 && (
-          <>
+          <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
             <Timeline defaultValue={patientData?.medical_assessments.length}>
               {patientData?.medical_assessments.map((item: any, index: number) => (
                 <TimelineItem
@@ -244,26 +346,36 @@ export default function MedicalTabContent({
                     <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
                       {moment(item.createdAt).format("MMM D, YYYY")}
                     </TimelineDate>
-                    <TimelineTitle className="sm:-mt-0.5">Medical History: {item.pastMedicalHistory}</TimelineTitle>
+                    {/* <TimelineTitle className="sm:-mt-0.5"><b>Medical History:</b> {item.pastMedicalHistory}</TimelineTitle> */}
                     <TimelineIndicator />
                   </TimelineHeader>
                   <TimelineContent>
-                    <p className="text-sm text-muted-foreground">Diagnosis: {item.diagnosis}</p>
+                    <p className="text-sm text-muted-foreground"><b>Medical History:</b> {item.pastMedicalHistory}</p>
+                    <p className="text-sm text-muted-foreground"> <b>Diagnosis:</b> {item.diagnosis}</p>
 
-                    <p className="text-sm text-muted-foreground">Cleared for Surgery: {item.clearedForSurgery ? "Yes" : "No"}</p>
-                    {item.labExams?.map((exam: any, index: number) => {
-                      return (
-                        <p className="text-sm text-muted-foreground" key={index}>
-                          {exam.testName}: {exam.result}
-                        </p>
-                      )
-                    })}
+                    <p className="text-sm text-muted-foreground"> <b>Cleared for Surgery:</b> {item.clearedForSurgery ? "Yes" : "No"}</p>
+                    <div className="text-sm text-muted-foreground whitespace-pre-line"> <b>Physical Exams:</b> <p className="ml-2">{item.physicalExams || '-'}</p></div>
+                    <div className="text-sm text-muted-foreground whitespace-pre-line"> <b>Lab Exams:</b> <p className="ml-2">{item.labExams || '-'}</p>
+                    </div>
+                    <div className="text-sm text-muted-foreground whitespace-pre-line"> <b>Consultative Notes:</b> <p className="ml-2">{item.consultativeNotes || '-'}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground"> <b>Surgical Decision:</b> {item.surgicalDecision || '-'}</p>
+                    {item.surgicalDecision == "Transferred" && (
+                      <p className="text-sm text-muted-foreground"> <b>Transferred to:</b> {item.destinationForTransferred || '-'}</p>
+                    )}
+                    {item.surgicalDecision == "Pending" && (
+                      <p className="text-sm text-muted-foreground"> <b>Reason for Pending:</b> {item.reasonForPending || '-'}</p>
+                    )}
+                    {item.surgicalDecision == "Other" && (
+                      <p className="text-sm text-muted-foreground"> <b>Specify:</b> {item.surgicalDecisionOther || '-'}</p>
+                    )}
+
+
                   </TimelineContent>
                 </TimelineItem>
               ))}
             </Timeline>
-          </>
-
+          </div>
         )}
       </div>
     </div>

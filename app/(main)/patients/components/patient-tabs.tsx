@@ -122,7 +122,7 @@ export default function PatientTabs({
               size={16}
               aria-hidden="true"
             />
-            Medical
+            Consultation{/*Medical */}
           </TabsTrigger>
 
           {/* <TabsTrigger

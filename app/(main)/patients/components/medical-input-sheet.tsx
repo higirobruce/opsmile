@@ -116,16 +116,16 @@ export default function MedicalInputSheet({ className,
             const data = await response.json()
 
             if (!response.ok) {
-                toast.error(data.message || 'Error saving medical assessment')
+                toast.error(data.message || 'Error saving Consultation record')
                 return
             }
 
-            toast.success('Medical assessment saved')
+            toast.success('Consultation record saved')
             setOpen(false)
             refresh()
         } catch (error) {
             console.error(error)
-            toast.error('Failed to save medical assessment')
+            toast.error('Failed to save Consultation record')
         } finally {
             setSubmitting(false)
         }
@@ -137,14 +137,14 @@ export default function MedicalInputSheet({ className,
                 <DialogTrigger asChild>
                     <div>
                         <Button variant="outline" onClick={() => setOpen(true)}>
-                            Add new medical assessment</Button>
+                            Add new Consultation record</Button>
                     </div>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto ">
                     <DialogHeader>
-                        <DialogTitle>Capture patient's medical assessment</DialogTitle>
+                        <DialogTitle>Capture patient's Consultation record</DialogTitle>
                         <DialogDescription>
-                            Enter the patient's medical assessment
+                            Enter the patient's Consultation record
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">

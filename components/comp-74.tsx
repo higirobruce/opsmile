@@ -6,27 +6,24 @@ import { useCharacterLimit } from "@/hooks/use-character-limit"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
-export default function SimpleTextArea({ label, limit, value, setValue }: { label: string, limit: number, value: string, setValue: (value: string) => void }) {
+export default function Component() {
   const id = useId()
-  const maxLength = limit
+  const maxLength = 180
   const {
-    value: v,
+    value,
     characterCount,
     handleChange,
-    maxLength: mLimit,
+    maxLength: limit,
   } = useCharacterLimit({ maxLength })
 
   return (
     <div className="*:not-first:mt-2">
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id}>Textarea with characters left</Label>
       <Textarea
         id={id}
         value={value}
         maxLength={maxLength}
-        onChange={(e) => {
-          setValue(e.target.value)
-          handleChange(e)
-        }}
+        onChange={handleChange}
         aria-describedby={`${id}-description`}
       />
       <p

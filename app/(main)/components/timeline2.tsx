@@ -13,36 +13,6 @@ import moment from "moment";
 import { useCallback, useState } from "react"
 import { useEffect } from "react"
 
-const items = [
-  {
-    id: 1,
-    date: "Mar 15, 2024",
-    title: "Patient Registered",
-    description:
-      "Patient ID: 23-000087",
-  },
-  {
-    id: 2,
-    date: "Mar 22, 2024",
-    title: "Nursing Assessment",
-    description:
-      "Vitals recorded",
-  },
-  {
-    id: 3,
-    date: "Apr 5, 2024",
-    title: "Medical Assessment",
-    description:
-      "Diagnosis: Acute appendicitis. Lab test ordered: CBC.",
-  },
-  {
-    id: 4,
-    date: "Apr 19, 2024",
-    title: "Lab Result Received",
-    description:
-      "CBC shows elevated WBC (15.6).",
-  }
-]
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 

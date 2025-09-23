@@ -60,6 +60,7 @@ export default function DischargeTabContent({
 
   const handleSubmit = async () => {
     setSubmitting(true);
+    setFetching(true)
     try {
       const response = await fetch(`${API_URL}/discharge`, {
         method: "POST",
@@ -95,6 +96,7 @@ export default function DischargeTabContent({
       toast.error("Failed to save discharge record");
     } finally {
       setSubmitting(false);
+      setFetching(false)
     }
   };
 
@@ -140,34 +142,48 @@ export default function DischargeTabContent({
         </div>
         <div>
           <h2 className="text-xl font-semibold mb-3">Discharge History</h2>
-          {fetching && <p>Loading discharge records...</p>}
+          {fetching && (
+            <div className="flex h-96">
+              <div role="status" className="animate-pulse">
+                <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[640px] mb-2.5 mx-auto"></div>
+                <div className="h-2.5 mx-auto bg-gray-300 rounded-full dark:bg-gray-700"></div>
+                <div className="flex items-center justify-center mt-4">
+                  <div className="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                  <div className="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                </div>
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+          )}
           {!fetching && dischargeRecords.length === 0 && <p>No discharge records found for this patient.</p>}
           {!fetching && dischargeRecords.length > 0 && (
-            <Timeline defaultValue={dischargeRecords.length}>
-              {dischargeRecords.map((item: any) => (
-                <TimelineItem
-                  key={item._id}
-                  step={item._id}
-                  className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-                >
-                  <TimelineHeader>
-                    <TimelineSeparator />
-                    <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-                      {moment(item.dischargeDate).format("MMM D, YYYY")}
-                    </TimelineDate>
-                    <TimelineTitle className="sm:-mt-0.5">Discharge Summary: {item.dischargeSummary}</TimelineTitle>
-                    <TimelineIndicator />
-                  </TimelineHeader>
-                  <TimelineContent>
-                    <p className="text-sm text-muted-foreground">Doctor: {item.doctor.firstName} {item.doctor.lastName}</p>
-                    {item.medicationsAtDischarge && item.medicationsAtDischarge.length > 0 && (
-                      <p className="text-sm text-muted-foreground">Medications: {item.medicationsAtDischarge.join(", ")}</p>
-                    )}
-                    <p className="text-sm text-muted-foreground">Follow-up: {item.followUpInstructions}</p>
-                  </TimelineContent>
-                </TimelineItem>
-              ))}
-            </Timeline>
+            <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
+              <Timeline defaultValue={dischargeRecords.length}>
+                {dischargeRecords.map((item: any) => (
+                  <TimelineItem
+                    key={item._id}
+                    step={item._id}
+                    className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+                  >
+                    <TimelineHeader>
+                      <TimelineSeparator />
+                      <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
+                        {moment(item.dischargeDate).format("MMM D, YYYY")}
+                      </TimelineDate>
+                      <TimelineTitle className="sm:-mt-0.5">Discharge Summary: {item.dischargeSummary}</TimelineTitle>
+                      <TimelineIndicator />
+                    </TimelineHeader>
+                    <TimelineContent>
+                      <p className="text-sm text-muted-foreground">Doctor: {item.doctor.firstName} {item.doctor.lastName}</p>
+                      {item.medicationsAtDischarge && item.medicationsAtDischarge.length > 0 && (
+                        <p className="text-sm text-muted-foreground">Medications: {item.medicationsAtDischarge.join(", ")}</p>
+                      )}
+                      <p className="text-sm text-muted-foreground">Follow-up: {item.followUpInstructions}</p>
+                    </TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            </div>
           )}
         </div>
       </div>

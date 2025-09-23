@@ -58,6 +58,7 @@ export default function ProgressTabContent({
 
   const handleSubmit = async () => {
     setSubmitting(true);
+    setFetching(true)
     try {
       const response = await fetch(`${API_URL}/progress`, {
         method: "POST",
@@ -89,6 +90,7 @@ export default function ProgressTabContent({
       toast.error("Failed to save progress note");
     } finally {
       setSubmitting(false);
+      setFetching(false)
     }
   };
 
@@ -97,10 +99,10 @@ export default function ProgressTabContent({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
           <h2 className="text-xl font-semibold mb-3">Add New Progress Note</h2>
-          <div className="space-y-3">
+          <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white space-y-3">
             <div>
-              <Label>Date</Label>
-              <SimpletDatePicker setDate={setDate} date={date} label="" />
+              {/* <Label>Date</Label> */}
+              <SimpletDatePicker setDate={setDate} date={date} label="Date" />
             </div>
             <div>
               <Label>Notes</Label>
@@ -118,30 +120,44 @@ export default function ProgressTabContent({
         </div>
         <div>
           <h2 className="text-xl font-semibold mb-3">Progress History</h2>
-          {fetching && <p>Loading progress notes...</p>}
+          {fetching && (
+            <div className="flex h-96">
+              <div role="status" className="animate-pulse">
+                <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[640px] mb-2.5 mx-auto"></div>
+                <div className="h-2.5 mx-auto bg-gray-300 rounded-full dark:bg-gray-700"></div>
+                <div className="flex items-center justify-center mt-4">
+                  <div className="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                  <div className="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                </div>
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+          )}
           {!fetching && progressNotes.length === 0 && <p>No progress notes found for this patient.</p>}
           {!fetching && progressNotes.length > 0 && (
-            <Timeline defaultValue={progressNotes.length}>
-              {progressNotes.map((item: any) => (
-                <TimelineItem
-                  key={item._id}
-                  step={item._id}
-                  className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-                >
-                  <TimelineHeader>
-                    <TimelineSeparator />
-                    <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-                      {moment(item.date).format("MMM D, YYYY")}
-                    </TimelineDate>
-                    <TimelineTitle className="sm:-mt-0.5">{item.notes}</TimelineTitle>
-                    <TimelineIndicator />
-                  </TimelineHeader>
-                  <TimelineContent>
-                    <p className="text-sm text-muted-foreground">Doctor: {item.doctor.firstName} {item.doctor.lastName}</p>
-                  </TimelineContent>
-                </TimelineItem>
-              ))}
-            </Timeline>
+            <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
+              <Timeline defaultValue={progressNotes.length}>
+                {progressNotes.map((item: any) => (
+                  <TimelineItem
+                    key={item._id}
+                    step={item._id}
+                    className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+                  >
+                    <TimelineHeader>
+                      <TimelineSeparator />
+                      <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
+                        {moment(item.date).format("MMM D, YYYY")}
+                      </TimelineDate>
+                      <TimelineTitle className="sm:-mt-0.5">{item.notes}</TimelineTitle>
+                      <TimelineIndicator />
+                    </TimelineHeader>
+                    <TimelineContent>
+                      <p className="text-sm text-muted-foreground">Doctor: {item.doctor.firstName} {item.doctor.lastName}</p>
+                    </TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            </div>
           )}
         </div>
       </div>

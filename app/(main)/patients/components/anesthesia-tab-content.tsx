@@ -252,7 +252,7 @@ export default function AnesthesiaTabContent({
         <h2 className="text-xl font-semibold mb-3">Anesthesia History</h2>
         {patientData?.anesthesia_records?.length === 0 && <p>No anesthesia records found for this patient.</p>}
         {patientData?.anesthesia_records?.length > 0 && (
-          <div className="grid grid-cols-1 gap-3">
+          <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
             {patientData?.anesthesia_records?.map(
               (an: any, index: any) => (
                 <MedicalHistoryCard

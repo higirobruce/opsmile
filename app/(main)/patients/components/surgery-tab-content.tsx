@@ -292,7 +292,7 @@ export default function SurgeryTabContent({
         <h2 className="text-xl font-semibold mb-3">Surgery History</h2>
         {patientData?.surgeries?.length === 0 && <p>No surgery records found for this patient.</p>}
         {patientData?.surgeries?.length > 0 && (
-          <>
+          <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
 
             <Timeline defaultValue={patientData?.surgeries.length}>
               {patientData?.surgeries.map((item: any) => (
@@ -336,7 +336,7 @@ export default function SurgeryTabContent({
               />
             ))}
           </div> */}
-          </>
+          </div>
 
         )}
       </div>

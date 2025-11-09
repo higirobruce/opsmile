@@ -105,7 +105,7 @@ export default function DischargeTabContent({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
           <h2 className="text-xl font-semibold mb-3">Add New Discharge Record</h2>
-          <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-md space-y-3">
+          <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
             <div>
               <Label>Discharge Date</Label>
               <SimpletDatePicker setDate={setDischargeDate} date={dischargeDate} label="" />

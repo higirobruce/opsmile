@@ -174,7 +174,7 @@ export default function PatientTabs({
               size={16}
               aria-hidden="true"
             />
-            Progress
+            PACU Notes
           </TabsTrigger>
           <TabsTrigger
             value="tab-8"
@@ -199,22 +199,7 @@ export default function PatientTabs({
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
             <div className="grid md:grid-cols-3 gap-3">
               {/* Timeline for the patients interaction with the doctor */}
-              <div className="md:col-span-1">
-                <Card>
-                  <CardHeader className="border-b">
-                    <div className="flex flex-row items-center space-x-2">
-                      <Button variant="outline" size="icon">
-                        <CalendarIcon size={9} />
-                      </Button>
-                      <p className="text-sm font-semibold">Timeline</p>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="flex-1 overflow-scroll ">
-                    <SimpleTimeline patientId={patientData?._id} />
-                  </CardContent>
-                </Card>
-              </div>
+              
 
               {/* Medical History */}
               <div className="col-span-2">

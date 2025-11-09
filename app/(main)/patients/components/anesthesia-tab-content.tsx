@@ -14,6 +14,7 @@ import moment from "moment";
 import MedicalHistoryCard from "./medical-history-card";
 import { Button } from "@/components/ui/button";
 import Checkbox2 from "../../components/checkbox2";
+import AnesthesiaRecordCard from "./anesthesia-card";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -115,7 +116,7 @@ export default function AnesthesiaTabContent({
       {/* Left Column: Form for new Anesthesia Record */}
       <div>
         <h2 className="text-xl font-semibold mb-3">Add New Anesthesia Record</h2>
-        <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-md space-y-3">
+        <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
           <div>
             <Label>Anesthesia History</Label>
             <Textarea
@@ -158,6 +159,8 @@ export default function AnesthesiaTabContent({
                 { value: "GENERAL", label: "General" },
                 { value: "REGIONAL", label: "Regional" },
                 { value: "LOCAL", label: "Local" },
+                { value: "BLOCK", label: "Block" },
+                { value: "WALANT", label: "WALANT" },
               ]}
             ></SelectComponent>
           </div>
@@ -174,7 +177,6 @@ export default function AnesthesiaTabContent({
                 { value: "III", label: "III" },
                 { value: "IV", label: "IV" },
                 { value: "V", label: "V" },
-                { value: "VI", label: "VI" },
               ]}
             ></SelectComponent>
           </div>
@@ -190,6 +192,7 @@ export default function AnesthesiaTabContent({
                 { value: "II", label: "II" },
                 { value: "III", label: "III" },
                 { value: "IV", label: "IV" },
+                { value: "V", label: "V" },
               ]}
             ></SelectComponent>
           </div>
@@ -255,15 +258,9 @@ export default function AnesthesiaTabContent({
           <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
             {patientData?.anesthesia_records?.map(
               (an: any, index: any) => (
-                <MedicalHistoryCard
-                  requests={false}
-                  labRequests={[]}
+                <AnesthesiaRecordCard
                   key={index}
-                  label={an.clearedForAnesthesiaBool ? 'Cleared for Anesthesia' : 'Not cleared for Anesthesia'}
-                  sublabel={[an.pastAnesteticHistory]}
-                  description={an.proposedPlan}
-                  date={moment(an.createdAt).fromNow()}
-                  consentFileUrls={an.consentFileUrl}
+                  record={an}
                 />
               )
             )}

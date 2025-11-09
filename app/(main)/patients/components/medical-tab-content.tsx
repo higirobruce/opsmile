@@ -17,6 +17,7 @@ import MedicalHistoryCard from "./medical-history-card";
 import { Button } from "@/components/ui/button";
 import { Timeline, TimelineContent, TimelineDate, TimelineHeader, TimelineIndicator, TimelineItem, TimelineSeparator, TimelineTitle } from "@/components/ui/timeline";
 import SimpleTextArea from "../../components/text-area";
+import MedicalAssessmentCard from "./medical-asswssment-card";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -256,7 +257,7 @@ export default function MedicalTabContent({
           </div>
 
           <div className="flex flex-col space-y-1">
-            <Label>Photo Upload</Label>
+            <Label>Pre-Operative Photo Upload</Label>
             <FileUpload
               bucketName="photos"
               onUploadComplete={(files: FileWithPreview[]) =>
@@ -334,47 +335,9 @@ export default function MedicalTabContent({
         {patientData?.medical_assessments?.length === 0 && <p>No Consultation records found for this patient.</p>}
         {patientData?.medical_assessments?.length > 0 && (
           <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
-            <Timeline defaultValue={patientData?.medical_assessments.length}>
-              {patientData?.medical_assessments.map((item: any, index: number) => (
-                <TimelineItem
-                  key={index}
-                  step={index}
-                  className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-                >
-                  <TimelineHeader>
-                    <TimelineSeparator />
-                    <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-                      {moment(item.createdAt).format("MMM D, YYYY")}
-                    </TimelineDate>
-                    {/* <TimelineTitle className="sm:-mt-0.5"><b>Medical History:</b> {item.pastMedicalHistory}</TimelineTitle> */}
-                    <TimelineIndicator />
-                  </TimelineHeader>
-                  <TimelineContent>
-                    <p className="text-sm text-muted-foreground"><b>Medical History:</b> {item.pastMedicalHistory}</p>
-                    <p className="text-sm text-muted-foreground"> <b>Diagnosis:</b> {item.diagnosis}</p>
-
-                    <p className="text-sm text-muted-foreground"> <b>Cleared for Surgery:</b> {item.clearedForSurgery ? "Yes" : "No"}</p>
-                    <div className="text-sm text-muted-foreground whitespace-pre-line"> <b>Physical Exams:</b> <p className="ml-2">{item.physicalExams || '-'}</p></div>
-                    <div className="text-sm text-muted-foreground whitespace-pre-line"> <b>Lab Exams:</b> <p className="ml-2">{item.labExams || '-'}</p>
-                    </div>
-                    <div className="text-sm text-muted-foreground whitespace-pre-line"> <b>Consultative Notes:</b> <p className="ml-2">{item.consultativeNotes || '-'}</p>
-                    </div>
-                    <p className="text-sm text-muted-foreground"> <b>Surgical Decision:</b> {item.surgicalDecision || '-'}</p>
-                    {item.surgicalDecision == "Transferred" && (
-                      <p className="text-sm text-muted-foreground"> <b>Transferred to:</b> {item.destinationForTransferred || '-'}</p>
-                    )}
-                    {item.surgicalDecision == "Pending" && (
-                      <p className="text-sm text-muted-foreground"> <b>Reason for Pending:</b> {item.reasonForPending || '-'}</p>
-                    )}
-                    {item.surgicalDecision == "Other" && (
-                      <p className="text-sm text-muted-foreground"> <b>Specify:</b> {item.surgicalDecisionOther || '-'}</p>
-                    )}
-
-
-                  </TimelineContent>
-                </TimelineItem>
-              ))}
-            </Timeline>
+            {patientData?.medical_assessments?.map((record: any, index: number) => (
+              <MedicalAssessmentCard key={index} record={record} />
+            ))}
           </div>
         )}
       </div>

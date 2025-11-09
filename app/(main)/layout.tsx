@@ -26,9 +26,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className='w-full'>
+      <main className='w-full h-screen flex flex-col'>
         <SidebarTrigger />
-        <div className='px-5 md:px-16 py-5 bg-gray-50 min-h-[100vh]'>
+        <div className='bg-sidebar px-5 md:px-16 py-5 h-[calc(100vh-20px)] m-10 rounded-3xl overflow-y-auto border border-r [&::-webkit-scrollbar]:hidden scrollbar-none pr-4 scrollbar-thin'> 
           {children}
         </div>
       </main>

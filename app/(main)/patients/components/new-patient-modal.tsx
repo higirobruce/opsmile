@@ -44,6 +44,32 @@ export default function NewPatient({
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [age, setAge] = useState(0);
   const [guardianRelationship, setGuardianRelationship] = useState('')
+  const [programs, setPrograms] = useState<any[]>([])
+  const [patientProgram, setPatientProgram] = useState('')
+
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const response = await fetch(`${API_URL}/programs`)
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setPrograms(
+          data
+            .filter((program: any) =>
+              program.status === 'active'
+              && moment(program.startDate).isSameOrBefore(moment())
+              && moment(program.endDate).isSameOrAfter(moment())
+            )
+            .map((program: any) => ({ value: program._id, label: program.name })))
+      } catch (error) {
+        console.error("Failed to fetch programs:", error)
+        toast.error("Failed to load programs")
+      }
+    }
+    fetchPrograms()
+  }, [])
 
   const postPatient = async () => {
     setSubmitting(true);
@@ -69,6 +95,7 @@ export default function NewPatient({
           guardianNID: age <= 18 ? guardianNID : null,
           guardianDateOfBirth: age <= 18 ? guardianDateOfBirth : null,
           guardianRelationship: age <= 18 ? guardianRelationship : null,
+          programId: patientProgram,
         }),
       });
 
@@ -211,7 +238,7 @@ export default function NewPatient({
 
             <div>
               <SelectComponent
-                _setValue={()=>{}}
+                _setValue={() => { }}
                 value={''}
                 name="province"
                 label="Province"
@@ -225,7 +252,7 @@ export default function NewPatient({
 
             <div>
               <SelectComponent
-                _setValue={()=>{}}
+                _setValue={() => { }}
                 value={''}
                 name="district"
                 label="District"
@@ -239,7 +266,7 @@ export default function NewPatient({
 
             <div>
               <SelectComponent
-                _setValue={()=>{}}
+                _setValue={() => { }}
                 value={''}
                 name="sector"
                 label="Sector"
@@ -252,7 +279,7 @@ export default function NewPatient({
 
             <div>
               <SelectComponent
-                _setValue={()=>{}}
+                _setValue={() => { }}
                 value={''}
                 name="cell"
                 label="Cell"
@@ -265,7 +292,7 @@ export default function NewPatient({
 
             <div>
               <SelectComponent
-                _setValue={()=>{}}
+                _setValue={() => { }}
                 value={''}
                 name="village"
                 label="Village"
@@ -275,6 +302,18 @@ export default function NewPatient({
                 ]}
               />
             </div>
+
+
+            <div>
+              <SelectComponent
+                _setValue={setPatientProgram}
+                value={patientProgram}
+                name="patientProgram"
+                label="Program"
+                options={programs}
+              />
+            </div>
+            <div></div>
           </div>
 
           {age <= 18 && (
@@ -384,7 +423,7 @@ export default function NewPatient({
                 !gender ||
                 !phoneNumber ||
                 !nid ||
-                !dateOfBirth
+                !dateOfBirth || !patientProgram
               }
             >
               {submitting && (

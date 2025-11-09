@@ -9,6 +9,9 @@ import { SimpletDatePicker } from "@/app/componets/simple-date-picker";
 import moment from "moment";
 import { Timeline, TimelineContent, TimelineDate, TimelineHeader, TimelineIndicator, TimelineItem, TimelineSeparator, TimelineTitle } from "@/components/ui/timeline";
 import { Button } from "@/components/ui/button";
+import FileUpload from "../../components/file-upload";
+import { FileWithPreview } from "@/hooks/use-file-upload";
+import { fileToBase64 } from "./surgery-input-sheet";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -25,6 +28,7 @@ export default function ProgressTabContent({
   const [submitting, setSubmitting] = useState(false);
   const [notes, setNotes] = useState("");
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [uploadedFiles, setUploadedFiles] = useState<{ name: string; base64Url: string }[]>([]);
 
   const fetchProgressNotes = useCallback(async () => {
     setFetching(true);
@@ -51,6 +55,24 @@ export default function ProgressTabContent({
       toast.error("Failed to fetch progress notes");
     }
   }, [patientData?._id, token]);
+
+  const handleFileUpload = async (files: FileWithPreview[]) => {
+    try {
+      const filePromises = files.map(async (file) => {
+        const base64Url = await fileToBase64(file.file as File);
+        return {
+          name: file.file.name,
+          base64Url,
+        };
+      });
+
+      const processedFiles = await Promise.all(filePromises);
+      setUploadedFiles((prev) => [...prev, ...processedFiles]);
+    } catch (error) {
+      console.error("Error processing files:", error);
+      toast.error("Error processing files");
+    }
+  };
 
   useEffect(() => {
     fetchProgressNotes();
@@ -112,6 +134,17 @@ export default function ProgressTabContent({
                 placeholder="Enter progress notes here..."
               />
             </div>
+
+            <div>
+              <Label>PACU Records Upload</Label>
+              <FileUpload
+                bucketName="pacu-records"
+                onUploadComplete={(files: FileWithPreview[]) =>
+                  handleFileUpload(files)
+                }
+              />
+            </div>
+
             <Button onClick={handleSubmit} disabled={submitting}>
               {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
               Save Progress Note

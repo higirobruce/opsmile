@@ -41,8 +41,8 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
         <div className='flex justify-between'>
             <Card className='flex w-full justify-between'>
                 <CardContent>
-                    <div className='sm:grid md:flex flex-row space-x-5 justify-between'>
-                        <div className='flex md:flex-row flex-col md:space-x-2'>
+                    <div className='sm:grid md:grid grid-cols-7 flex-row space-x-5 justify-between'>
+                        <div className='flex md:flex-row flex-col md:space-x-2 col-span-2'>
                             {/* <div className='md:w-40 md:h-40'>
                                 <AvatarComponent source={patientData?.profilePicture || '/avatar2.jpg'} height={40} width={40} />
                             </div> */}
@@ -70,34 +70,36 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                         {/* <Button className='rounded-full' variant="outline" size="smallIcon">
                                         </Button> */}
                                     </div>
-                                    <div className='flex flex-row space-x-5 mt-2'>
-                                        <div className='text-sm flex items-start space-x-1 text-foreground/50'>
-                                            <RiUser3Fill size={16} className='text-sm font-bold' />
-                                            <p>{patientData.gender == 'M' ? 'Male' : 'Female'}</p>
-                                        </div>
 
-                                        <div className='text-sm flex flex-row items-start space-x-1 text-foreground/50'>
-                                            <RiMapPin2Fill size={16} className='text-sm font-bold' />
-                                            <p>{patientData.countryOfBirth || 'Kigali-Rwanda'}</p>
-                                        </div>
-
-                                        <div className='text-sm flex flex-row items-start space-x-1 text-foreground/50'>
-                                            <RiCalendarEventFill size={16} className='text-sm font-bold' />
-                                            <p>{formatAge(moment(patientData.dateOfBirth).toDate())}</p>
-                                        </div>
-
-
-
-
-                                        {/* <div className='text-xs flex flex-row items-center space-x-1'>
-                                            <RiBriefcase4Fill size={14} className='text-xs font-bold' />
-                                            <p className='text-foreground/50'>{patientData.occupation || 'Teacher'}</p>
-                                        </div> */}
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
+
+                        <div className='text-sm flex items-center space-x-1 text-foreground/50'>
+                            <RiUser3Fill size={16} className='text-sm font-bold' />
+                            <p>{patientData.gender == 'M' ? 'Male' : 'Female'}</p>
+                        </div>
+                        <div className='text-sm flex flex-row items-center space-x-1 text-foreground/50'>
+                            <RiMapPin2Fill size={16} className='text-sm font-bold' />
+                            <p>{patientData.countryOfBirth || 'Kigali-Rwanda'}</p>
+                        </div>
+                        <div className='text-sm flex flex-row items-center space-x-1 text-foreground/50'>
+                            <RiCalendarEventFill size={16} className='text-sm font-bold' />
+                            <p>{formatAge(moment(patientData.dateOfBirth).toDate())}</p>
+                        </div>
+                        <div className='flex flex-row space-x-5 mt-2'>
+
+
+
+
+
+
+                            {/* <div className='text-xs flex flex-row items-center space-x-1'>
+                                            <RiBriefcase4Fill size={14} className='text-xs font-bold' />
+                                            <p className='text-foreground/50'>{patientData.occupation || 'Teacher'}</p>
+                                        </div> */}
+                        </div>
+                        {/* <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
 
                             <Vitalscard icon={<LocateIcon />} description='BMI' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bmi || '-'} />
 
@@ -107,7 +109,7 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
 
                             <Vitalscard icon={<LocateIcon />} description='Blood Pressure' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic ? patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureSystolic + '/' + patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bloodPressureDiastolic : '-'} />
 
-                        </div>
+                        </div> */}
                         <div className='md:flex flex-col justify-between hidden'>
                             {!isHeaderSection && (
                                 <Button className='place-self-end' onClick={() => router.push('patients/' + patientData._id)}>

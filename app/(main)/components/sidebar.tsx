@@ -27,15 +27,16 @@ const items = [
     icon: Home,
   },
   {
-    title: "Patients",
-    url: "/patients",
-    icon: RiUserHeartLine,
-  },
-  {
     title: "Programs",
     url: "/programs",
     icon: Scissors,
   },
+  {
+    title: "Patients",
+    url: "/patients",
+    icon: RiUserHeartLine,
+  },
+  
   // {
   //   title: "Medical Assessment",
   //   url: "/medical-assessment",

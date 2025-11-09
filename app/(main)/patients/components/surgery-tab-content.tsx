@@ -15,6 +15,7 @@ import MedicalHistoryCard from "./medical-history-card";
 import { Button } from "@/components/ui/button";
 import { Timeline, TimelineContent, TimelineDate, TimelineHeader, TimelineIndicator, TimelineItem, TimelineSeparator, TimelineTitle } from "@/components/ui/timeline";
 import Link from "next/link";
+import SurgeryRecordCard from "./surgery-card";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -32,6 +33,7 @@ export default function SurgeryTabContent({
   const [procedure, setProcedure] = useState<string>("");
   const [surgeryType, setSurgeryType] = useState<string>("");
   const [estimatedDuration, setEstimatedDuration] = useState<number>(0);
+  const [actualDuration, setActualDuration] = useState<number>(0);
 
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [beforeSurgeryImageUrls, setBeforeSurgeryImageUrls] = useState<UploadedFile[]>([]);
@@ -40,6 +42,12 @@ export default function SurgeryTabContent({
   const [selectedSurgeon, setSelectedSurgeon] = useState<string>("");
   const [selectedAnesthesiologist, setSelectedAnesthesiologist] = useState<string>("");
   const [anesthesiologists, setAnesthesiologists] = useState<any[]>([]);
+  const [selectedSurgicalAssistant, setSelectedSurgicalAssistant] = useState<string>("");
+  
+
+  const [observers, setObservers] = useState<string>("");
+
+
 
   const fetchSurgeons = useCallback(async () => {
     try {
@@ -143,8 +151,11 @@ export default function SurgeryTabContent({
           surgeryType,
           procedure,
           estimatedDuration,
+          actualDuration,
           consentFileUrls: uploadedFiles,
           beforeSurgeryImageUrls,
+          surgicalAssistantId: selectedSurgicalAssistant,
+          observers
         }),
       });
 
@@ -179,7 +190,7 @@ export default function SurgeryTabContent({
       {/* Left Column: Form for new Surgery Record */}
       <div>
         <h2 className="text-xl font-semibold mb-3">Add New Surgery Record</h2>
-        <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-md space-y-3">
+        <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
           <div>
             <Label>Surgeon</Label>
             <SelectComponent
@@ -216,6 +227,33 @@ export default function SurgeryTabContent({
           </div>
 
           <div>
+            <Label>Surgical assistant</Label>
+            <SelectComponent
+              name="selectedSurgicalAssistant"
+              _setValue={setSelectedSurgicalAssistant}
+              value={selectedSurgicalAssistant}
+              label=""
+              options={anesthesiologists?.map((anesthesiologist) => ({
+                key: anesthesiologist._id,
+                value: anesthesiologist._id,
+                label:
+                  anesthesiologist.firstName +
+                  " " +
+                  anesthesiologist.lastName,
+              }))}
+            ></SelectComponent>
+          </div>
+
+          <div>
+            <Label>Observers</Label>
+            <Textarea
+              className="mt-2"
+              value={observers}
+              onChange={(e) => setObservers(e.target.value)}
+            />
+          </div>
+
+          <div>
             <Label>Surgery Type</Label>
             <SelectComponent
               name="surgeryType"
@@ -237,7 +275,7 @@ export default function SurgeryTabContent({
             ></SelectComponent>
           </div>
           <div>
-            <Label>Procedure</Label>
+            <Label>Surgery Notes</Label>
             <Textarea
               className="mt-2"
               value={procedure}
@@ -248,14 +286,27 @@ export default function SurgeryTabContent({
             <Label>Estimated Duration (minutes)</Label>
             <Input
               type="number"
+              className="mt-2"
               value={estimatedDuration}
               onChange={(e) => setEstimatedDuration(Number(e.target.value))}
             />
           </div>
+
+          <div>
+            <Label>Actual Duration (minutes)</Label>
+            <Input
+              type="number"
+              className="mt-2"
+              value={actualDuration}
+              onChange={(e) => setActualDuration(Number(e.target.value))}
+            />
+          </div>
+
           <div>
             <Label>Surgery Date</Label>
             <Input
               type="date"
+              className="mt-2"
               value={surgeryDate ? new Date(surgeryDate).toISOString().split('T')[0] : ''}
               onChange={(e) => setSurgeryDate(new Date(e.target.value))}
             />
@@ -271,7 +322,7 @@ export default function SurgeryTabContent({
             />
           </div>
           <div>
-            <Label>Before Surgery Image Upload</Label>
+            <Label>Intra-operative Photo Upload</Label>
             <FileUpload
               bucketName="before-surgery-images"
               onUploadComplete={(files: FileWithPreview[]) =>
@@ -294,48 +345,9 @@ export default function SurgeryTabContent({
         {patientData?.surgeries?.length > 0 && (
           <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
 
-            <Timeline defaultValue={patientData?.surgeries.length}>
-              {patientData?.surgeries.map((item: any) => (
-                <TimelineItem
-                  key={item._id}
-                  step={item._id}
-                  className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-                >
-                  <TimelineHeader>
-                    <TimelineSeparator />
-                    <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-                      {moment(item.surgeryDate).format("MMM D, YYYY")}
-                    </TimelineDate>
-                    <TimelineTitle className="sm:-mt-0.5">{item.surgeryType}</TimelineTitle>
-                    <TimelineIndicator />
-                  </TimelineHeader>
-                  <TimelineContent>
-                    <p className="text-sm text-muted-foreground">Procedure: {item.procedure}</p>
-                    <p className="text-sm text-muted-foreground">Duration (minutes): {item.estimatedDuration}</p>
-                    <p className="text-sm text-muted-foreground">Surgeon: {item.surgeon.firstName}</p>
-                    {item.consentFileUrls?.map((consent: any, index:number) => {
-                      return <div key={index} className="text-sm text-muted-foreground">Consent: <Link className="text-blue-500" href={consent?.base64Url} target="_blank" rel="noopener noreferrer">{consent?.name}</Link></div>
-                    })}
-                   
-                  </TimelineContent>
-                </TimelineItem>
-              ))}
-            </Timeline>
-
-            {/* <div className="grid grid-cols-1 gap-3">
-            {patientData?.surgeries?.map((surgery: any, index: any) => (
-              <MedicalHistoryCard
-                requests={false}
-                labRequests={[]}
-                key={index}
-                label={surgery.surgeryType}
-                sublabel={[surgery.status]}
-                description={surgery.surgicalNotes}
-                date={moment(surgery.surgeryDate).fromNow()}
-                consentFileUrls={surgery.consentFileUrls}
-              />
+            {patientData?.surgeries?.map((s:any) => (
+              <SurgeryRecordCard key={s._id} record={s} />
             ))}
-          </div> */}
           </div>
 
         )}

@@ -15,7 +15,7 @@ const VitalSignCard: React.FC<any> = ({ vitalSign }) => {
   
 
   return (
-    <Card className="shadow-md hover:shadow-lg transition-all duration-300 rounded-2xl border border-gray-200 mb-4">
+    <Card className="shadow-md hover:shadow-lg transition-all duration-300 rounded-md border border-gray-200 mb-4">
       <CardHeader className="bg-gray-50 rounded-t-2xl">
         
         <p className="text-sm text-gray-500">

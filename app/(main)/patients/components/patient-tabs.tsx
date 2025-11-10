@@ -65,6 +65,7 @@ import DischargeTabContent from "./discharge-tab-content";
 import MedicalTabContent from "./medical-tab-content";
 import AnesthesiaTabContent from "./anesthesia-tab-content";
 import SurgeryTabContent from "./surgery-tab-content";
+import VitalsTabContent from "./vitals-tab-content";
 
 
 export default function PatientTabs({
@@ -199,7 +200,7 @@ export default function PatientTabs({
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
             <div className="grid md:grid-cols-3 gap-3">
               {/* Timeline for the patients interaction with the doctor */}
-              
+
 
               {/* Medical History */}
               <div className="col-span-2">
@@ -250,12 +251,12 @@ export default function PatientTabs({
       </TabsContent>
 
       {/* Nursing */}
-      <TabsContent value="tab-2">
+      <TabsContent value="tab-2" className="w-full">
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <VitalsInput refresh={refresh} patientData={patientData} />
-            <VitalsHistory patientData={patientData} />
+            <VitalsTabContent refresh={refresh} patientData={patientData} />
+            {/* <VitalsHistory patientData={patientData} /> */}
           </div>
         </>
       </TabsContent>

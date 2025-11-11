@@ -146,10 +146,9 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
               value={status}
               name="programStatus"
               options={[
-                { value: "Active", label: "Active" },
-                { value: "Inactive", label: "Inactive" },
-                { value: "Upcoming", label: "Upcoming" },
-                { value: "Completed", label: "Completed" }
+                { value: "active", label: "Active" },
+                { value: "upcoming", label: "Upcoming" },
+                { value: "completed", label: "Completed" }
               ]}
             />
           </div>

@@ -138,7 +138,7 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
             Enter details for the new program
           </SheetDescription>
         </SheetHeader>
-        <div className="grid sm:grid-cols-2 gap-6 px-4 mt-4">
+        <div className="flex flex-col space-y-2 gap-6 px-4 mt-4">
           {/* Required fields */}
           <div className="flex flex-col space-y-4">
             <Label>Name *</Label>

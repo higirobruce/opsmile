@@ -9,20 +9,14 @@ import {
 import moment from "moment";
 import ProgramMore from "./programMore";
 import { Badge } from "@/components/ui/badge";
+import { Program } from "./program-edit-sheet";
 
 interface ProgramTableProps {
-    programs: {
-        _id: string;
-        name: string;
-        description: string;
-        startDate: string;
-        endDate: string;
-        location: string;
-        status: string;
-    }[];
+    programs: Program[];
+    onProgramUpdated: () => void;
 }
 
-export default function ProgramTable({ programs }: ProgramTableProps) {
+export default function ProgramTable({ programs, onProgramUpdated }: ProgramTableProps) {
     return (
         <div>
             <div className="overflow-hidden rounded-md border bg-background">
@@ -57,7 +51,7 @@ export default function ProgramTable({ programs }: ProgramTableProps) {
                                     >
                                         {program.status}
                                     </Badge>
-                                    <ProgramMore programId={program._id} />
+                                    <ProgramMore program={program} onProgramUpdated={onProgramUpdated} />
                                 </TableCell>
                                 
                             </TableRow>

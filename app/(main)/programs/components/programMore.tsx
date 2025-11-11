@@ -1,4 +1,4 @@
-import { BoltIcon, EllipsisIcon, TrashIcon } from "lucide-react"
+import { BoltIcon, EllipsisIcon, EyeIcon, TrashIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -7,8 +7,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ProgramEditSheet } from "./program-edit-sheet";
+import { useRouter } from "next/navigation";
 
-export default function ProgramMore({ programId }: { programId: string }) {
+
+interface ProgramMoreProps {
+  program: any;
+  onProgramUpdated: () => void;
+}
+
+export default function ProgramMore({ program, onProgramUpdated }: ProgramMoreProps) {
+  let router = useRouter()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,14 +31,24 @@ export default function ProgramMore({ programId }: { programId: string }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
+        <ProgramEditSheet program={program} onSave={onProgramUpdated}>
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
             <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
             Edit
           </DropdownMenuItem>
-        <DropdownMenuItem>
-            <TrashIcon size={16} className="opacity-60" aria-hidden="true" />
-            Delete
-          </DropdownMenuItem>
+        </ProgramEditSheet>
+        <DropdownMenuItem onSelect={(e) => {
+          e.preventDefault()
+          // window.open(`/programs/${program.id}`)
+          router.push(`/programs/${program._id}`)
+        }}>
+          <EyeIcon size={16} className="opacity-60" aria-hidden="true" />
+          View
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          <TrashIcon size={16} className="opacity-60 text-red-500" aria-hidden="true" />
+          Delete
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

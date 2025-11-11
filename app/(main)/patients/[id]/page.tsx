@@ -57,7 +57,7 @@ export default function Patient() {
           <Toaster />
           <div className="flex flex-row justify-between">
             {/* Back button */}
-            <Button onClick={() => window.history.back()} variant="outline" className="mr-2 place-self-start">
+            <Button onClick={() => window.history.back()} variant="link" className="mr-2 place-self-start">
               <ArrowLeft />
               Back
             </Button>

@@ -2,16 +2,24 @@
 import React, { useEffect, useState } from 'react'
 import ProgramTable from './components/programTables'
 import ProgramCreateSheet from './components/program-create-sheet'
+import { useAuth } from '@/app/context/AuthContext'
 
 export default function Programs() {
   const [programs, setPrograms] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const {token} = useAuth()
 
   const fetchPrograms = async () => {
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const response = await fetch(`${API_URL}/programs`)
+      const response = await fetch(`${API_URL}/programs`,{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      })
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }

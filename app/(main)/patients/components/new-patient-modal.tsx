@@ -50,7 +50,13 @@ export default function NewPatient({
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const response = await fetch(`${API_URL}/programs`)
+        const response = await fetch(`${API_URL}/programs`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }

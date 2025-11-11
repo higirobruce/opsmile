@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table"
 import moment from "moment";
 import ProgramMore from "./programMore";
+import { Badge } from "@/components/ui/badge";
 
 interface ProgramTableProps {
     programs: {
@@ -45,7 +46,17 @@ export default function ProgramTable({ programs }: ProgramTableProps) {
                                 <TableCell className="py-1">{moment(program.endDate).format('YYYY-MMM-DD')}</TableCell>
                                 <TableCell className="py-1">{program.location}</TableCell>
                                 <TableCell className="py-1 items-center justify-between flex">
-                                    {program.status}
+                                    <Badge
+                                        className={
+                                            program.status === "ongoing"
+                                                ? "bg-green-500 hover:bg-green-500/80"
+                                                : program.status === "upcoming"
+                                                    ? "bg-blue-500 hover:bg-blue-500/80"
+                                                    : "bg-gray-500 hover:bg-gray-500/80"
+                                        }
+                                    >
+                                        {program.status}
+                                    </Badge>
                                     <ProgramMore programId={program._id} />
                                 </TableCell>
                                 

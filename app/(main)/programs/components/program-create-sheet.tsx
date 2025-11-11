@@ -17,6 +17,9 @@ import { LoaderCircleIcon } from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@/app/context/AuthContext"
 import SelectComponent from "../../components/select-component"
+import { SimpletDatePicker } from "@/app/componets/simple-date-picker"
+import moment from "moment"
+import { Toaster } from "@/components/ui/sonner"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
 
@@ -38,8 +41,8 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
   // Program props from programTables.tsx
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
+  const [startDate, setStartDate] = useState<Date | undefined>(moment().toDate())
+  const [endDate, setEndDate] = useState<Date | undefined>(moment().toDate())
   const [location, setLocation] = useState('')
   const [status, setStatus] = useState('')
   const [coordinators, setCoordinators] = useState<User[]>([])
@@ -73,7 +76,7 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
   const handleSubmit = async () => {
     setSubmitting(true)
     try {
-      if (!name || !startDate || !location || !status || !selectedCoordinatorId) {
+      if (!name || !startDate || !location || !selectedCoordinatorId) {
         toast.error("Please fill in all required fields (Name, Start Date, Location, Status, Coordinator)")
         return
       }
@@ -90,7 +93,6 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
           startDate,
           endDate,
           location,
-          status,
           createdById: user?.id,
           coordinatorId: selectedCoordinatorId
         })
@@ -108,8 +110,8 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
       // Reset form fields
       setName('')
       setDescription('')
-      setStartDate('')
-      setEndDate('')
+      setStartDate(moment().toDate())
+      setEndDate(moment().toDate())
       setLocation('')
       setStatus('')
       setSelectedCoordinatorId('')
@@ -125,6 +127,7 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
 
   return (
     <Sheet onOpenChange={setOpen} open={open}>
+      <Toaster />
       <SheetTrigger asChild>
         <Button variant="default">Add New Program</Button>
       </SheetTrigger>
@@ -137,7 +140,7 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
         </SheetHeader>
         <div className="grid sm:grid-cols-2 gap-6 px-4 mt-4">
           {/* Required fields */}
-          <div>
+          <div className="flex flex-col space-y-4">
             <Label>Name *</Label>
             <Input
               value={name}
@@ -146,25 +149,27 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
             />
           </div>
 
-          <div>
-            <Label>Start Date *</Label>
-            <Input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+          <div className="flex flex-col">
+            {/* <Label>Start Date *</Label> */}
+
+            <SimpletDatePicker
+              label="Start Date"
+              date={startDate}
+              setDate={setStartDate}
             />
           </div>
 
           <div>
-            <Label>End Date</Label>
-            <Input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+            {/* <Label>End Date</Label> */}
+            <SimpletDatePicker
+              label="End Date"
+              date={endDate}
+              setDate={setEndDate}
             />
+
           </div>
 
-          <div>
+          <div className="flex flex-col space-y-4">
             <Label>Location *</Label>
             <Input
               value={location}
@@ -173,20 +178,7 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
             />
           </div>
 
-          <div>
-            {/* <Label>Status *</Label> */}
-            <SelectComponent
-            label="Status *"
-              _setValue={setStatus}
-              value={status}
-              name="programStatus"
-              options={[
-                { value: "active", label: "Active" },
-                { value: "upcoming", label: "Upcoming" },
-                { value: "completed", label: "Completed" }
-              ]}
-            />
-          </div>
+
 
           <div>
             <SelectComponent

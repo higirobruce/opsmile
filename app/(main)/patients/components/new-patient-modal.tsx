@@ -58,8 +58,8 @@ export default function NewPatient({
         setPrograms(
           data
             .filter((program: any) =>
-              program.status === 'active'
-              && moment(program.startDate).isSameOrBefore(moment())
+              (program.status !== 'inactive' && program.status !== 'completed')
+              // && moment(program.startDate).isSameOrBefore(moment())
               && moment(program.endDate).isSameOrAfter(moment())
             )
             .map((program: any) => ({ value: program._id, label: program.name })))

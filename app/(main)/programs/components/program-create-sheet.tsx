@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -24,6 +24,12 @@ interface ProgramCreateSheetProps {
   refreshPrograms: () => void;
 }
 
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+}
+
 export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateSheetProps) {
   const { token, user } = useAuth()
   const [open, setOpen] = useState(false)
@@ -36,12 +42,39 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
   const [endDate, setEndDate] = useState('')
   const [location, setLocation] = useState('')
   const [status, setStatus] = useState('')
+  const [coordinators, setCoordinators] = useState<User[]>([])
+  const [selectedCoordinatorId, setSelectedCoordinatorId] = useState<string>('')
+
+  const fetchCoordinators = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_URL}/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setCoordinators(data)
+      } else {
+        toast.error(data.message || 'Failed to fetch coordinators')
+      }
+    } catch (error) {
+      console.error('Error fetching coordinators:', error)
+      toast.error('Failed to fetch coordinators')
+    }
+  }, [token])
+
+  useEffect(() => {
+    if (open) {
+      fetchCoordinators()
+    }
+  }, [open, fetchCoordinators])
 
   const handleSubmit = async () => {
     setSubmitting(true)
     try {
-      if (!name || !startDate || !location || !status) {
-        toast.error("Please fill in required fields (Name, Start Date, Location, Status)")
+      if (!name || !startDate || !location || !status || !selectedCoordinatorId) {
+        toast.error("Please fill in all required fields (Name, Start Date, Location, Status, Coordinator)")
         return
       }
 
@@ -58,7 +91,8 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
           endDate,
           location,
           status,
-          createdById: user?.id
+          createdById: user?.id,
+          coordinatorId: selectedCoordinatorId
         })
       })
 
@@ -78,6 +112,7 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
       setEndDate('')
       setLocation('')
       setStatus('')
+      setSelectedCoordinatorId('')
       // Refresh programs list
       refreshPrograms()
     } catch (error) {
@@ -150,6 +185,19 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
                 { value: "upcoming", label: "Upcoming" },
                 { value: "completed", label: "Completed" }
               ]}
+            />
+          </div>
+
+          <div>
+            <SelectComponent
+              label="Coordinator *"
+              _setValue={setSelectedCoordinatorId}
+              value={selectedCoordinatorId}
+              name="coordinator"
+              options={coordinators.map(coordinator => ({
+                value: coordinator._id,
+                label: `${coordinator.firstName} ${coordinator.lastName}`
+              }))}
             />
           </div>
 

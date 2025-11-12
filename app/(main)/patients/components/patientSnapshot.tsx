@@ -10,11 +10,15 @@ import { Badge } from '@/components/ui/badge'
 import { RiBriefcase4Fill, RiCalendarEventFill, RiMapPin2Fill, RiUser3Fill } from '@remixicon/react'
 import { useRouter } from 'next/navigation'
 import moment from 'moment'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 
 export default function PatientSnapshot({ patientData, isHeaderSection }: { patientData: any, isHeaderSection: boolean }) {
 
     const router = useRouter()
     const [age, setAge] = useState<number>()
+    const [programs, setPrograms] = useState<any[]>([])
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
 
     useEffect(() => {
         handleCaluculateAge(moment(patientData.dateOfBirth).toDate())
@@ -37,6 +41,7 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
 
         return `${years}Yr, ${months}Mon`;
     }
+
     return (
         <div className='flex justify-between'>
             <Card className='flex w-full justify-between'>
@@ -87,18 +92,7 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                             <RiCalendarEventFill size={16} className='text-sm font-bold' />
                             <p>{formatAge(moment(patientData.dateOfBirth).toDate())}</p>
                         </div>
-                        <div className='flex flex-row space-x-5 mt-2'>
-
-
-
-
-
-
-                            {/* <div className='text-xs flex flex-row items-center space-x-1'>
-                                            <RiBriefcase4Fill size={14} className='text-xs font-bold' />
-                                            <p className='text-foreground/50'>{patientData.occupation || 'Teacher'}</p>
-                                        </div> */}
-                        </div>
+                        
                         {/* <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
 
                             <Vitalscard icon={<LocateIcon />} description='BMI' value={patientData?.vital_signs[patientData?.vital_signs?.length - 1]?.bmi || '-'} />

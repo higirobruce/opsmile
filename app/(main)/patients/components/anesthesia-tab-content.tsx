@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { toast } from "sonner";
-import { LoaderCircleIcon, Plus, Trash } from "lucide-react";
+import { LoaderCircleIcon, Plus, Trash, XIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -206,7 +206,7 @@ export default function AnesthesiaTabContent({
             <Label htmlFor="surgicalSafetyChecklistDone">Surgical Safety Checklist Done</Label>
           </div>
           <div>
-            <Label>Medications</Label>
+            <Label className="mr-4">Medications</Label>
             {medications.map((med, index) => (
               <div key={index} className="flex items-center space-x-2 mt-2">
                 <Input
@@ -227,10 +227,14 @@ export default function AnesthesiaTabContent({
                     setMedications(newMeds);
                   }}
                 />
-                <Button variant="outline" onClick={() => setMedications(medications.filter((_, i) => i !== index))}>Remove</Button>
+                <Button variant="destructive" size="icon" onClick={() => setMedications(medications.filter((_, i) => i !== index))}>
+                  <XIcon className="w-4 h-4 " />
+                </Button>
               </div>
             ))}
-            <Button variant="outline" className="mt-2" onClick={() => setMedications([...medications, { name: '', dosage: '' }])}>Add Medication</Button>
+            <Button size="icon" className="mt-2 " onClick={() => setMedications([...medications, { name: '', dosage: '' }])}>
+              <Plus className="w-4 h-4" />
+            </Button>
           </div>
 
           <div className="mb-4">

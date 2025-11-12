@@ -9,6 +9,7 @@ import { toast, Toaster } from "sonner";
 import { set } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -18,6 +19,8 @@ export default function Patient() {
   const [patient, setPatient] = useState<any>({});
   const [fetching, setFetching] = useState(true);
   const { token } = useAuth();
+  const [programs, setPrograms] = useState<any[]>([])
+  const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
 
   const fetchPatientData = useCallback(async () => {
     setFetching(true);
@@ -46,9 +49,46 @@ export default function Patient() {
   }, [id, token]);
 
   useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/programs`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        const data = await response.json()
+        // Filter out completed programs
+        console.log("programs:",data)
+        setPrograms(data.filter((program: any) => program.status !== 'completed'))
+      } catch (error) {
+        console.error('Error fetching programs:', error)
+      }
+    }
+    fetchPrograms()
     fetchPatientData();
   }, [id, fetchPatientData]);
 
+  const handleProgramChange = async (programId: string) => {
+    setSelectedProgram(programId)
+    try {
+      let res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/programs/${programId}/patients/${patient._id}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      let data = await res.json()
+
+      toast.success('Patient successfully tagged to program!')
+      // alert('Patient successfully tagged to program!')
+    } catch (error) {
+      console.error('Error tagging patient to program:', error)
+      toast.error('Failed to tag patient to program.')
+      // alert('Failed to tag patient to program.')
+    }
+  }
 
   return (
     <div className="flex flex-col space-y-5">
@@ -61,8 +101,22 @@ export default function Patient() {
               <ArrowLeft />
               Back
             </Button>
-            <div className="self-end md:w-1/3">
-              <SmallSearchInput setShowModal={(show) => {}} />
+            <div className="self-end md:w-1/3 flex flex-row justify-between items-center space-x-2">
+              <div className='flex flex-row space-x-5 '>
+                <Select onValueChange={handleProgramChange} value={selectedProgram || ''}>
+                  <SelectTrigger className='w-[180px]'>
+                    <SelectValue placeholder='Select Program' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {programs.map((program) => (
+                      <SelectItem key={program._id} value={program._id}>
+                        {program.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <SmallSearchInput setShowModal={(show) => { }} />
             </div>
           </div>
           <div className="w-full">

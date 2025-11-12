@@ -43,7 +43,7 @@ export default function SurgeryTabContent({
   const [selectedAnesthesiologist, setSelectedAnesthesiologist] = useState<string>("");
   const [anesthesiologists, setAnesthesiologists] = useState<any[]>([]);
   const [selectedSurgicalAssistant, setSelectedSurgicalAssistant] = useState<string>("");
-  
+
 
   const [observers, setObservers] = useState<string>("");
 
@@ -190,152 +190,155 @@ export default function SurgeryTabContent({
       {/* Left Column: Form for new Surgery Record */}
       <div>
         <h2 className="text-xl font-semibold mb-3">Add New Surgery Record</h2>
-        <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
-          <div>
-            <Label>Surgeon</Label>
-            <SelectComponent
-              name="selectedSurgeon"
-              _setValue={setSelectedSurgeon}
-              value={selectedSurgeon}
-              label=""
-              options={
-                surgeons?.map((surgeon) => ({
-                  key: surgeon._id,
-                  value: surgeon._id,
-                  label: surgeon.firstName + " " + surgeon.lastName,
-                })) || []
-              }
-            ></SelectComponent>
-          </div>
+        <div className="bg-white p-5 border rounded-xl space-y-3">
+          <div className="grid grid-cols-2 gap-5 ">
+            <div>
+              <Label>Surgeon</Label>
+              <SelectComponent
+                name="selectedSurgeon"
+                _setValue={setSelectedSurgeon}
+                value={selectedSurgeon}
+                label=""
+                options={
+                  surgeons?.map((surgeon) => ({
+                    key: surgeon._id,
+                    value: surgeon._id,
+                    label: surgeon.firstName + " " + surgeon.lastName,
+                  })) || []
+                }
+              ></SelectComponent>
+            </div>
 
-          <div>
-            <Label>Anesthesiologist</Label>
-            <SelectComponent
-              name="selectedAnesthesiologist"
-              _setValue={setSelectedAnesthesiologist}
-              value={selectedAnesthesiologist}
-              label=""
-              options={anesthesiologists?.map((anesthesiologist) => ({
-                key: anesthesiologist._id,
-                value: anesthesiologist._id,
-                label:
-                  anesthesiologist.firstName +
-                  " " +
-                  anesthesiologist.lastName,
-              }))}
-            ></SelectComponent>
-          </div>
+            <div>
+              <Label>Anesthesiologist</Label>
+              <SelectComponent
+                name="selectedAnesthesiologist"
+                _setValue={setSelectedAnesthesiologist}
+                value={selectedAnesthesiologist}
+                label=""
+                options={anesthesiologists?.map((anesthesiologist) => ({
+                  key: anesthesiologist._id,
+                  value: anesthesiologist._id,
+                  label:
+                    anesthesiologist.firstName +
+                    " " +
+                    anesthesiologist.lastName,
+                }))}
+              ></SelectComponent>
+            </div>
 
-          <div>
-            <Label>Surgical assistant</Label>
-            <SelectComponent
-              name="selectedSurgicalAssistant"
-              _setValue={setSelectedSurgicalAssistant}
-              value={selectedSurgicalAssistant}
-              label=""
-              options={anesthesiologists?.map((anesthesiologist) => ({
-                key: anesthesiologist._id,
-                value: anesthesiologist._id,
-                label:
-                  anesthesiologist.firstName +
-                  " " +
-                  anesthesiologist.lastName,
-              }))}
-            ></SelectComponent>
-          </div>
+            <div>
+              <Label>Surgical assistant</Label>
+              <SelectComponent
+                name="selectedSurgicalAssistant"
+                _setValue={setSelectedSurgicalAssistant}
+                value={selectedSurgicalAssistant}
+                label=""
+                options={anesthesiologists?.map((anesthesiologist) => ({
+                  key: anesthesiologist._id,
+                  value: anesthesiologist._id,
+                  label:
+                    anesthesiologist.firstName +
+                    " " +
+                    anesthesiologist.lastName,
+                }))}
+              ></SelectComponent>
+            </div>
 
-          <div>
-            <Label>Observers</Label>
-            <Textarea
-              className="mt-2"
-              value={observers}
-              onChange={(e) => setObservers(e.target.value)}
-            />
-          </div>
+            <div>
+              <Label>Observers</Label>
+              <Textarea
+                className="mt-2"
+                value={observers}
+                onChange={(e) => setObservers(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <Label>Surgery Type</Label>
-            <SelectComponent
-              name="surgeryType"
-              _setValue={setSurgeryType}
-              value={surgeryType}
-              label=""
-              options={[
-                { value: "PRIMARY_LIP_REPAIR", label: "Primary Lip Repair" },
-                { value: "PRIMARY_PALATE_REPAIR", label: "Primary Palate Repair" },
-                { value: "LIP_REVISION", label: "Lip Revision" },
-                { value: "PALATE_REVISION", label: "Palate Revision" },
-                { value: "FISTULA_REPAIR", label: "Fistula Repair" },
-                { value: "ALVEOLAR_BONE_GRAFTING", label: "Alveolar Bone Grafting" },
-                { value: "RHINOPLASTY", label: "Rhinoplasty" },
-                { value: "PHARYNGOPLASTY", label: "Pharyngoplasty" },
-                { value: "ORTHOGNATHIC_SURGERY", label: "Orthognathic Surgery" },
-                { value: "OTHER", label: "Other" },
-              ]}
-            ></SelectComponent>
-          </div>
-          <div>
-            <Label>Surgery Notes</Label>
-            <Textarea
-              className="mt-2"
-              value={procedure}
-              onChange={(e) => setProcedure(e.target.value)}
-            />
-          </div>
-          <div>
-            <Label>Estimated Duration (minutes)</Label>
-            <Input
-              type="number"
-              className="mt-2"
-              value={estimatedDuration}
-              onChange={(e) => setEstimatedDuration(Number(e.target.value))}
-            />
-          </div>
+            <div>
+              <Label>Surgery Type</Label>
+              <SelectComponent
+                name="surgeryType"
+                _setValue={setSurgeryType}
+                value={surgeryType}
+                label=""
+                options={[
+                  { value: "PRIMARY_LIP_REPAIR", label: "Primary Lip Repair" },
+                  { value: "PRIMARY_PALATE_REPAIR", label: "Primary Palate Repair" },
+                  { value: "LIP_REVISION", label: "Lip Revision" },
+                  { value: "PALATE_REVISION", label: "Palate Revision" },
+                  { value: "FISTULA_REPAIR", label: "Fistula Repair" },
+                  { value: "ALVEOLAR_BONE_GRAFTING", label: "Alveolar Bone Grafting" },
+                  { value: "RHINOPLASTY", label: "Rhinoplasty" },
+                  { value: "PHARYNGOPLASTY", label: "Pharyngoplasty" },
+                  { value: "ORTHOGNATHIC_SURGERY", label: "Orthognathic Surgery" },
+                  { value: "OTHER", label: "Other" },
+                ]}
+              ></SelectComponent>
+            </div>
+            <div>
+              <Label>Surgery Notes</Label>
+              <Textarea
+                className="mt-2"
+                value={procedure}
+                onChange={(e) => setProcedure(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label>Estimated Duration (minutes)</Label>
+              <Input
+                type="number"
+                className="mt-2"
+                value={estimatedDuration}
+                onChange={(e) => setEstimatedDuration(Number(e.target.value))}
+              />
+            </div>
 
-          <div>
-            <Label>Actual Duration (minutes)</Label>
-            <Input
-              type="number"
-              className="mt-2"
-              value={actualDuration}
-              onChange={(e) => setActualDuration(Number(e.target.value))}
-            />
-          </div>
+            <div>
+              <Label>Actual Duration (minutes)</Label>
+              <Input
+                type="number"
+                className="mt-2"
+                value={actualDuration}
+                onChange={(e) => setActualDuration(Number(e.target.value))}
+              />
+            </div>
 
-          <div>
-            <Label>Surgery Date</Label>
-            <Input
-              type="date"
-              className="mt-2"
-              value={surgeryDate ? new Date(surgeryDate).toISOString().split('T')[0] : ''}
-              onChange={(e) => setSurgeryDate(new Date(e.target.value))}
-            />
-          </div>
 
-          <div>
-            <Label>Consent Upload</Label>
-            <FileUpload
-              bucketName="consents"
-              onUploadComplete={(files: FileWithPreview[]) =>
-                handleFileUpload(files)
-              }
-            />
-          </div>
-          <div>
-            <Label>Intra-operative Photo Upload</Label>
-            <FileUpload
-              bucketName="before-surgery-images"
-              onUploadComplete={(files: FileWithPreview[]) =>
-                handleBeforeSurgeryImageUpload(files)
-              }
-            />
-          </div>
 
-          <Button onClick={handleSubmit} disabled={submitting}>
+            <div>
+              <Label>Consent Upload</Label>
+              <FileUpload
+                bucketName="consents"
+                onUploadComplete={(files: FileWithPreview[]) =>
+                  handleFileUpload(files)
+                }
+              />
+            </div>
+            <div>
+              <Label>Intra-operative Photo Upload</Label>
+              <FileUpload
+                bucketName="before-surgery-images"
+                onUploadComplete={(files: FileWithPreview[]) =>
+                  handleBeforeSurgeryImageUpload(files)
+                }
+              />
+            </div>
+            <div>
+              <Label>Surgery Date</Label>
+              <Input
+                type="date"
+                className="mt-2"
+                value={surgeryDate ? new Date(surgeryDate).toISOString().split('T')[0] : ''}
+                onChange={(e) => setSurgeryDate(new Date(e.target.value))}
+              />
+            </div>
+          </div>
+          <Button className="w-full" onClick={handleSubmit} disabled={submitting}>
             {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
             Save Surgery Record
           </Button>
         </div>
+
       </div>
 
       {/* Right Column: History of Surgery Records */}
@@ -345,7 +348,7 @@ export default function SurgeryTabContent({
         {patientData?.surgeries?.length > 0 && (
           <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
 
-            {patientData?.surgeries?.map((s:any) => (
+            {patientData?.surgeries?.map((s: any) => (
               <SurgeryRecordCard key={s._id} record={s} />
             ))}
           </div>

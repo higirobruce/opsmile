@@ -4,7 +4,7 @@ import Hero from "../componets/hero";
 
 export default function Home() {
   return (
-    <div className="min-h-screen pb-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="min-h-screen w-full font-[family-name:var(--font-geist-sans)]">
       <main>
         <Hero/>
       </main>

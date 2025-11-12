@@ -134,7 +134,7 @@ export default function VitalsInput({
 
     return (
         <div className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto ">
-            <h2 className="text-lg font-semibold">Capture patient's vital signs</h2>
+            {/* <h2 className="text-lg font-semibold">Capture patient's vital sigxns</h2> */}
             <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
                 <div>
                     <Label>Blood Pressure (Systolic)</Label>

@@ -12,7 +12,7 @@ export default function RadioButtons({ options, setValue }: { options: { label: 
       {/* Radio card #1 */}
       {options.map((op: any) =>
 
-        <div key={op.value} className="border-input has-data-[state=checked]:border-primary/50 relative flex w-full items-start gap-2 rounded-md border p-4 shadow-xs outline-none">
+        <div key={op.value} className=" has-data-[state=checked]:border-primary/50 relative flex w-full items-start gap-2 rounded-md border p-4 shadow-xs outline-none">
           <RadioGroupItem
             value={op.value}
             id={`${id}-1`}

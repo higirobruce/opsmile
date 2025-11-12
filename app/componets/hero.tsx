@@ -17,7 +17,8 @@ export default function Hero() {
       <div className='flex flex-col mx-auto w-[400px] bg-white px-10 pb-10 rounded-lg'>
         {/* <CallToAction/> */}
         <div className='flex flex-col justify-center items-center'>
-          <Image src='/smile+logo.png' alt='logo' width={100} height={100} />
+          <Image src='/logo.png' alt='logo' width={100} height={100} />
+          <p className='text-xl font-bold mb-2 text-foreground/50'>SurgeryUpp</p>
         </div>
         <h1 className='text-lg font-bold mb-2 text-foreground/50'>Login</h1>
 

@@ -135,99 +135,101 @@ export default function VitalsTabContent({
 
     return (
         <div className="grid grid-cols-2 gap-3">
-            <div className="p-4 border rounded-lg">
-                <h2 className="text-lg font-semibold">Capture patient's vital signs</h2>
-                <p className="text-sm font-semibold text-foreground/50">Capture patient's vital signs</p>
-                <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
-                    <div>
-                        <Label>Blood Pressure (Systolic)</Label>
-                        <Input
-                            type="number"
-                            value={bloodPressureSystolic?.toString()}
-                            onChange={(e) => setBloodPressureSystolic(Number(e.target.value))}
-                        />
+            <div>
+                <h2 className="text-xl font-semibold mb-3">Capture patient's vital signs</h2>
+                <div className=" bg-white p-5 border rounded-xl space-y-3">
+                    {/* <p className="text-sm font-semibold text-foreground/50">Capture patient's vital signs</p> */}
+                    <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
+                        <div>
+                            <Label>Blood Pressure (Systolic)</Label>
+                            <Input
+                                type="number"
+                                value={bloodPressureSystolic?.toString()}
+                                onChange={(e) => setBloodPressureSystolic(Number(e.target.value))}
+                            />
+                        </div>
+
+                        <div>
+                            <Label>Blood Pressure (Diastolic)</Label>
+                            <Input
+                                type="number"
+                                value={bloodPressureDiastolic?.toString()}
+                                onChange={(e) => setBloodPressureDiastolic(Number(e.target.value))}
+                            />
+                        </div>
+
+                        <div>
+                            <Label>Pulse rate</Label>
+                            <Input
+                                type="number"
+                                value={pulseRate?.toString()}
+                                onChange={(e) => setPulerRate(Number(e.target.value))}
+                            /></div>
+
+                        <div>
+                            <Label>Respiration rate</Label>
+                            <Input
+                                type="number"
+                                value={respiratoryRate?.toString()}
+                                onChange={(e) => setRespiratoryRate(Number(e.target.value))}
+                            /></div>
+
+                        <div>
+                            <Label>Oxygen saturation</Label>
+                            <Input
+                                type="number"
+                                value={oxygenSaturation?.toString()}
+                                onChange={(e) => setOxygenSaturation(Number(e.target.value))}
+                            /></div>
+
+                        <div>
+                            <Label>Temperature (°C)</Label>
+                            <Input
+                                type="number"
+                                value={temperature?.toString()}
+                                onChange={(e) => setTemperature(Number(e.target.value))}
+                            /></div>
+
+                        <div>
+                            <Label>Height (cm)</Label>
+                            <Input
+                                type="number"
+                                value={height?.toString()}
+                                onChange={(e) => setHeight(Number(e.target.value))}
+                            /></div>
+
+                        <div className="">
+                            <Label>Weight (kg)</Label>
+                            <Input
+                                type="number"
+                                value={weight?.toString()}
+                                onChange={(e) => setWeight(Number(e.target.value))}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <Label>BMI</Label>
+                            <Input
+                                type="number"
+                                disabled
+                                value={bmi?.toString()}
+                            />
+                        </div>
+
+
                     </div>
-
-                    <div>
-                        <Label>Blood Pressure (Diastolic)</Label>
-                        <Input
-                            type="number"
-                            value={bloodPressureDiastolic?.toString()}
-                            onChange={(e) => setBloodPressureDiastolic(Number(e.target.value))}
-                        />
+                    <div className=" px-4 pb-4 sm:justify-start">
+                        <Button onClick={handleSubmit} type="submit" disabled={submitting}>
+                            {submitting && <LoaderCircleIcon
+                                className="-ms-1 animate-spin"
+                                size={16}
+                                aria-hidden="true"
+                            />}
+                            Save vitals
+                        </Button>
                     </div>
-
-                    <div>
-                        <Label>Pulse rate</Label>
-                        <Input
-                            type="number"
-                            value={pulseRate?.toString()}
-                            onChange={(e) => setPulerRate(Number(e.target.value))}
-                        /></div>
-
-                    <div>
-                        <Label>Respiration rate</Label>
-                        <Input
-                            type="number"
-                            value={respiratoryRate?.toString()}
-                            onChange={(e) => setRespiratoryRate(Number(e.target.value))}
-                        /></div>
-
-                    <div>
-                        <Label>Oxygen saturation</Label>
-                        <Input
-                            type="number"
-                            value={oxygenSaturation?.toString()}
-                            onChange={(e) => setOxygenSaturation(Number(e.target.value))}
-                        /></div>
-
-                    <div>
-                        <Label>Temperature (°C)</Label>
-                        <Input
-                            type="number"
-                            value={temperature?.toString()}
-                            onChange={(e) => setTemperature(Number(e.target.value))}
-                        /></div>
-
-                    <div>
-                        <Label>Height (cm)</Label>
-                        <Input
-                            type="number"
-                            value={height?.toString()}
-                            onChange={(e) => setHeight(Number(e.target.value))}
-                        /></div>
-
-                    <div className="">
-                        <Label>Weight (kg)</Label>
-                        <Input
-                            type="number"
-                            value={weight?.toString()}
-                            onChange={(e) => setWeight(Number(e.target.value))}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <Label>BMI</Label>
-                        <Input
-                            type="number"
-                            disabled
-                            value={bmi?.toString()}
-                        />
-                    </div>
-
-
-                </div>
-                <div className=" px-4 pb-4 sm:justify-start">
-                    <Button onClick={handleSubmit} type="submit" disabled={submitting}>
-                        {submitting && <LoaderCircleIcon
-                            className="-ms-1 animate-spin"
-                            size={16}
-                            aria-hidden="true"
-                        />}
-                        Save vitals
-                    </Button>
                 </div>
             </div>
-            <div className="p-4 border rounded-lg">
+            <div className="p-4 border rounded-lg bg-white h-[calc(100vh-200px)] overflow-scroll">
                 <h2 className="text-lg font-semibold">Recorded Vitals</h2>
                 {patientData?.vital_signs.map((vitalSign: any) => (
                     <VitalSignsCard key={vitalSign._id} vitalSign={vitalSign} />

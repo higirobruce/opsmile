@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Smile+",
-  description: "Smile+ is a platform that helps OperationSmile in the operational work.",
+  title: "SurgeryUpp",
+  description: "SurgeryUpp is a platform that helps OperationSmile in the operational work.",
   icons: {
     icon: [
       {

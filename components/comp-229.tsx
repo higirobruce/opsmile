@@ -102,7 +102,7 @@ export default function Component() {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
+            className="bg-background hover:bg-background  w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
           >
             <span className={cn("truncate", !value && "text-muted-foreground")}>
               {value
@@ -118,7 +118,7 @@ export default function Component() {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="border-input w-full min-w-[var(--radix-popper-anchor-width)] p-0"
+          className=" w-full min-w-[var(--radix-popper-anchor-width)] p-0"
           align="start"
         >
           <Command>

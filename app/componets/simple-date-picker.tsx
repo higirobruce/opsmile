@@ -26,7 +26,7 @@ export function SimpletDatePicker({label, setDate, date}:{label:string,date: Dat
           <Button
             variant="outline"
             id="date"
-            className="bg-background hover:bg-background border-input w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
+            className="bg-background hover:bg-background  w-full justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px]"
           >
             {date ? date.toLocaleDateString() : "Select date"}
             <ChevronDownIcon />

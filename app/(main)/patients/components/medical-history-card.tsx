@@ -23,7 +23,7 @@ export default function MedicalHistoryCard({
   labRequests: any[];
 }) {
   return (
-    <div className="border-input has-data-[state=checked]:border-primary/50 relative flex w-full items-start gap-2 rounded-md border p-4 shadow-xs outline-none mb-4">
+    <div className=" has-data-[state=checked]:border-primary/50 relative flex w-full items-start gap-2 rounded-md border p-4 shadow-xs outline-none mb-4">
       <div className="grid grow gap-2">
         <Label htmlFor={`2`} className="whitespace-pre-line">
           {label + " "}

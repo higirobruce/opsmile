@@ -1,6 +1,7 @@
 "use client"
 
 import { set } from "date-fns"
+import { useRouter } from "next/navigation"
 import { createContext, useContext, useEffect, useState, ReactNode } from "react"
 
 interface User {
@@ -40,6 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
     const [token, setToken] = useState<string | null>(null)
     const [loading, setLoading] = useState(true)
+    const router = useRouter()
 
     useEffect(() => {
         // Check for stored authentication on mount
@@ -98,6 +100,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (!response.ok) {
                 return { error: data.message, data: null }
             }
+
+            router.push('/dashboard')
 
             // Store authentication data
             localStorage.setItem('token', data.access_token)

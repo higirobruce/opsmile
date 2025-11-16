@@ -1,8 +1,8 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface VitalSignProps {
-  
+
 }
 
 const getColor = (value: number, range: [number, number], critical?: [number, number]) => {
@@ -12,20 +12,13 @@ const getColor = (value: number, range: [number, number], critical?: [number, nu
 };
 
 const VitalSignCard: React.FC<any> = ({ vitalSign }) => {
-  
+
 
   return (
     <Card className="shadow-md hover:shadow-lg transition-all duration-300 rounded-md border border-gray-200 mb-4">
-      <CardHeader className="bg-gray-50 rounded-t-2xl">
-        
-        <p className="text-sm text-gray-500">
-          Nurse: {vitalSign?.nurse?.firstName || "N/A"} {" "}
-          {vitalSign?.nurse?.lastName || "N/A"} •{" "}
-          {vitalSign?.assessmentDateTime ? new Date(vitalSign?.assessmentDateTime).toLocaleString() : "No Date"}
-        </p>
-      </CardHeader>
 
-      <CardContent className="p-4 space-y-2 text-sm">
+
+      <CardContent className="px-6 space-y-2 text-sm">
         <div className="grid grid-cols-2 gap-x-4 gap-y-1">
           <p>
             <strong>BP:</strong>{" "}
@@ -90,6 +83,18 @@ const VitalSignCard: React.FC<any> = ({ vitalSign }) => {
           </p>
         </div>
       </CardContent>
+
+      <CardFooter className="bg-gray-50 flex flex-row justify-between items-center">
+       
+        <p className="text-xs text-gray-500">
+          Created On: {" "}
+          {vitalSign?.assessmentDateTime ? new Date(vitalSign?.assessmentDateTime).toLocaleString() : "No Date"}
+        </p>
+         <p className="text-xs text-gray-500">
+          Done by: {vitalSign?.nurse?.firstName || "N/A"} {" "}
+          {vitalSign?.nurse?.lastName || "N/A"}
+        </p>
+      </CardFooter>
     </Card>
   );
 };

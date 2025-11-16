@@ -29,9 +29,7 @@ export default function SignInForm() {
     e.preventDefault();
     try {
       const { error } = await signIn(email, password);
-
       if (error) throw error;
-      router.push('/dashboard')
     } catch (error: any) {
       toast.error(error)
     } finally {

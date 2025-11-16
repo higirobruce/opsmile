@@ -114,8 +114,8 @@ export default function Patient() {
             </Button>
             <div className="self-end md:w-1/3 flex flex-row justify-between items-center space-x-2">
               <div className='flex flex-row space-x-5 '>
-                <Select onValueChange={handleProgramChange} value={selectedProgram || patient.program?._id}>
-                  <SelectTrigger className='w-[180px]'>
+                <Select  onValueChange={handleProgramChange} value={selectedProgram || patient.program?._id}>
+                  <SelectTrigger className='w-[180px] border border-gray-300 rounded-md'>
                     <SelectValue placeholder='Select Program' />
                   </SelectTrigger>
                   <SelectContent>

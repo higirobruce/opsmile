@@ -64,14 +64,14 @@ export default function AnesthesiaRecordCard({ record }: { record: any }) {
             <span>Pre-Anesthesia Checklist</span>
           </div>
 
-          <div className="flex items-center space-x-2 text-sm">
+          {/* <div className="flex items-center space-x-2 text-sm">
             {record.surgicalSafetyChecklistDone ? (
               <CheckCircle className="text-green-500 h-4 w-4" />
             ) : (
               <XCircle className="text-red-500 h-4 w-4" />
             )}
             <span>Surgical Safety Checklist</span>
-          </div>
+          </div> */}
         </div>
 
         <Separator />
@@ -82,6 +82,27 @@ export default function AnesthesiaRecordCard({ record }: { record: any }) {
             <h3 className="font-medium text-gray-700">Consent Files</h3>
             <ul className="mt-2 text-sm">
               {record.consentFileUrl.map((file: any, i: number) => (
+                <li key={i} className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-gray-500" />
+                  <a
+                    href={file.base64Url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {file.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {record.anesthesiaChecklistUrl?.length > 0 && (
+          <div>
+            <h3 className="font-medium text-gray-700">Anesthesia Checklist Files</h3>
+            <ul className="mt-2 text-sm">
+              {record.anesthesiaChecklistUrl.map((file: any, i: number) => (
                 <li key={i} className="flex items-center gap-2">
                   <FileText className="h-4 w-4 text-gray-500" />
                   <a

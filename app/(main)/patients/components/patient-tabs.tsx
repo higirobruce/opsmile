@@ -85,7 +85,7 @@ export default function PatientTabs({
     <Tabs value={tab} defaultValue="tab-1">
       <Toaster />
       <ScrollArea>
-        <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none bg-transparent px-0 py-1">
+        <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none border-b bg-transparent px-0 py-1">
 
           {/* <TabsTrigger
             value="tab-1"

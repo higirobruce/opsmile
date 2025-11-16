@@ -15,6 +15,7 @@ import MedicalHistoryCard from "./medical-history-card";
 import { Button } from "@/components/ui/button";
 import Checkbox2 from "../../components/checkbox2";
 import AnesthesiaRecordCard from "./anesthesia-card";
+import AnesthesiaHistoryTabs from "./anesthesia-history-tabs";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -39,6 +40,7 @@ export default function AnesthesiaTabContent({
   const [medications, setMedications] = useState<{ name: string, dosage: string }[]>([]);
 
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [uploadedChecklist, setUploadedChecklist] = useState<UploadedFile[]>([]);
 
   const handleFileUpload = async (files: FileWithPreview[]) => {
     try {
@@ -52,6 +54,24 @@ export default function AnesthesiaTabContent({
 
       const processedFiles = await Promise.all(filePromises);
       setUploadedFiles((prev) => [...prev, ...processedFiles]);
+    } catch (error) {
+      console.error("Error processing files:", error);
+      toast.error("Error processing files");
+    }
+  };
+
+  const handleChecklistUpload = async (files: FileWithPreview[]) => {
+    try {
+      const filePromises = files.map(async (file) => {
+        const base64Url = await fileToBase64(file.file as File);
+        return {
+          name: file.file.name,
+          base64Url,
+        };
+      });
+
+      const processedFiles = await Promise.all(filePromises);
+      setUploadedChecklist((prev) => [...prev, ...processedFiles]);
     } catch (error) {
       console.error("Error processing files:", error);
       toast.error("Error processing files");
@@ -72,13 +92,14 @@ export default function AnesthesiaTabContent({
           pastAnestheticHistory,
           proposedPlan,
           consentFileUrl: uploadedFiles,
+          anesthesiaChecklistUrl: uploadedChecklist,
           clearedForAnesthesiaBool: clearedForAnesthesiaBool == 'Yes' ? true : false,
           doneById: user?.id,
           anesthesiaType,
           asaScore,
           mallampatiScore,
           preanesthesiaChecklistDone,
-          surgicalSafetyChecklistDone,
+          // surgicalSafetyChecklistDone,
           medications
         }),
       });
@@ -197,20 +218,20 @@ export default function AnesthesiaTabContent({
             ></SelectComponent>
           </div>
           <div className="flex items-center space-x-2">
-           
+
             <Input type="checkbox" className="h-4 w-4" id="preanesthesiaChecklistDone" checked={preanesthesiaChecklistDone} onChange={(e) => setPreanesthesiaChecklistDone(e.target.checked)} />
             <Label htmlFor="preanesthesiaChecklistDone">Preanesthesia Checklist Done</Label>
           </div>
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <Input type="checkbox" className="h-4 w-4" id="surgicalSafetyChecklistDone" checked={surgicalSafetyChecklistDone} onChange={(e) => setSurgicalSafetyChecklistDone(e.target.checked)} />
             <Label htmlFor="surgicalSafetyChecklistDone">Surgical Safety Checklist Done</Label>
-          </div>
-          <div>
+          </div> */}
+          <div className="col-span-2">
             <Label className="mr-4">Medications</Label>
             {medications.map((med, index) => (
               <div key={index} className="flex items-center space-x-2 mt-2">
                 <Input
-                  placeholder="Name" 
+                  placeholder="Name"
                   value={med.name}
                   onChange={(e) => {
                     const newMeds = [...medications];
@@ -247,30 +268,27 @@ export default function AnesthesiaTabContent({
             />
           </div>
 
-          <Button onClick={handleSubmit} disabled={submitting}>
-            {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
-            Save Anesthesia Record
-          </Button>
+          <div className="mb-4">
+            <Label>Anesthesia Checklist Upload</Label>
+            <FileUpload
+              bucketName="consents"
+              onUploadComplete={(files: FileWithPreview[]) =>
+                handleChecklistUpload(files)
+              }
+            />
+          </div>
+
+          <div className="col-span-2 w-full">
+            <Button onClick={handleSubmit} disabled={submitting}>
+              {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
+              Save Anesthesia Record
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Right Column: History of Anesthesia Records */}
-      <div>
-        <h2 className="text-xl font-semibold mb-3">Anesthesia History</h2>
-        {patientData?.anesthesia_records?.length === 0 && <p>No anesthesia records found for this patient.</p>}
-        {patientData?.anesthesia_records?.length > 0 && (
-          <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
-            {patientData?.anesthesia_records?.map(
-              (an: any, index: any) => (
-                <AnesthesiaRecordCard
-                  key={index}
-                  record={an}
-                />
-              )
-            )}
-          </div>
-        )}
-      </div>
+      <AnesthesiaHistoryTabs patientData={patientData} />
     </div>
   );
 }

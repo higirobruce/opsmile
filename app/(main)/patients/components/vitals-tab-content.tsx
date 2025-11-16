@@ -118,6 +118,16 @@ export default function VitalsTabContent({
 
             const data = await response.json()
             setSubmitting(false)
+            setBloodPressureSystolic('')
+            setBloodPressureDiastolic('')
+            setHeight('')
+            setWeight('')
+            setTemperature('')
+            setRespiratoryRate('')
+            setPulerRate('')
+            setOxygenSaturation('')
+            setNurseNotes('')
+            setBmi('')
             if (!response.ok) {
                 toast.error(data.message || 'Error submitting vital signs')
                 return

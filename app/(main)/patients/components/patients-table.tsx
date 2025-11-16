@@ -224,7 +224,7 @@ export default function PatientsTable(
                                                 <div
                                                     className={cn(
                                                         header.column.getCanSort() &&
-                                                        "flex h-full cursor-pointer items-center justify-between gap-2 select-none"
+                                                        "font-semibold flex h-full cursor-pointer items-center justify-between gap-2 select-none"
                                                     )}
                                                     onClick={header.column.getToggleSortingHandler()}
                                                     onKeyDown={(e) => {

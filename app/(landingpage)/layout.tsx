@@ -5,52 +5,52 @@ export default function layout({ children }: { children: React.ReactNode }) {
   return (
 
     <div className="min-h-screen w-full relative">
-      {/* Crystal Maze Pattern */}
-      <style>{`
-    @keyframes crystal-shimmer {
-      0%, 100% { 
-        background-position: 0% 0%, 0% 0%, 0% 0%, 50% 50%;
-        background-size: 10px 10px, 10px 10px, 200% 200%, 200% 200%;
-      }
-      50% { 
-        background-position: 1px 1px, -1px -1px, 100% 100%, 50% 50%;
-        background-size: 12px 12px, 12px 12px, 200% 200%, 180% 180%;
-      }
-    }
-  `}</style>
+      {/* Dashed Bottom Left Fade Grid */}
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: `
-        repeating-linear-gradient(
-          60deg,
-          transparent 0px,
-          transparent 1px,
-          rgba(255, 255, 255, 0.05) 1px,
-          rgba(255, 255, 255, 0.05) 2px
-        ),
-        repeating-linear-gradient(
-          -60deg,
-          transparent 0px,
-          transparent 1px,
-          rgba(255, 255, 255, 0.05) 1px,
-          rgba(255, 255, 255, 0.05) 2px
-        ),
-        linear-gradient(
-          60deg,
-          rgba(43, 108, 176, 0.4) 0%,
-          rgba(72, 126, 176, 0.4) 33%,
-          rgba(95, 142, 176, 0.4) 66%,
-          rgba(116, 157, 176, 0.4) 100%
-        ),
-        radial-gradient(
-          circle at 50% 50%,
-          rgba(255, 255, 255, 0.2) 0%,
-          transparent 50%
-        )
+          backgroundImage: `
+        linear-gradient(to right, #e7e5e4 1px, transparent 1px),
+        linear-gradient(to bottom, #e7e5e4 1px, transparent 1px)
       `,
-          backgroundBlendMode: "overlay, overlay, normal, screen",
-          animation: "crystal-shimmer 15s ease-in-out infinite",
+          backgroundSize: "20px 20px",
+          backgroundPosition: "0 0, 0 0",
+          maskImage: `
+            repeating-linear-gradient(
+              to right,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            repeating-linear-gradient(
+              to bottom,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+           radial-gradient(ellipse 80% 80% at 100% 100%, #000 50%, transparent 90%)
+      `,
+          WebkitMaskImage: `
+                   repeating-linear-gradient(
+              to right,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+            repeating-linear-gradient(
+              to bottom,
+              black 0px,
+              black 3px,
+              transparent 3px,
+              transparent 8px
+            ),
+           radial-gradient(ellipse 80% 80% at 100% 100%, #000 50%, transparent 90%)
+      `,
+          maskComposite: "intersect",
+          WebkitMaskComposite: "source-in",
         }}
       />
       {children}

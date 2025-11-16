@@ -19,6 +19,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { toast } from "sonner";
 import { SimpletDatePicker } from "@/app/componets/simple-date-picker";
 import moment from "moment";
+import Select2 from "../../components/select2";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -388,6 +389,8 @@ export default function NewPatient({
                 }}
               />
             </div>
+
+            <Select2/>
 
             <div>
               <SelectComponent

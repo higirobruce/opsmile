@@ -87,7 +87,7 @@ const frameworks = [
   },
 ]
 
-export default function Component() {
+export default function Select2() {
   const id = useId()
   const [open, setOpen] = useState<boolean>(false)
   const [value, setValue] = useState<string>("")

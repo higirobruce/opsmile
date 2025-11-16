@@ -96,7 +96,7 @@ export default function LoginPage() {
                     </div>
                 </div>
 
-                <div className="bg-muted/30 rounded-(--radius) border p-3">
+                {/* <div className="bg-muted/30 rounded-(--radius) border p-3">
                     <p className="text-accent-foreground text-center text-sm">
                         Don't have an account ?
                         <Button
@@ -106,7 +106,7 @@ export default function LoginPage() {
                             <Link href="#">Create account</Link>
                         </Button>
                     </p>
-                </div>
+                </div> */}
             </form>
         </section>
     )

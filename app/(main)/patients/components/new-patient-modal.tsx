@@ -23,7 +23,7 @@ import moment from "moment";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export default function NewPatient({
-  appendNewPatient }: React.ComponentProps<any>) {
+  appendNewPatient, refresh }: React.ComponentProps<any>) {
   const { token } = useAuth();
   const id = useId();
   const [firstName, setFirstName] = useState("");
@@ -46,6 +46,17 @@ export default function NewPatient({
   const [guardianRelationship, setGuardianRelationship] = useState('')
   const [programs, setPrograms] = useState<any[]>([])
   const [patientProgram, setPatientProgram] = useState('')
+  const [provinces, setProvinces] = useState<any[]>([])
+  const [districts, setDistricts] = useState<any[]>([])
+  const [sectors, setSectors] = useState<any[]>([])
+  const [cells, setCells] = useState<any[]>([])
+  const [villages, setVillages] = useState<any[]>([])
+  const [selectedVillage, setSelectedVillage] = useState('')
+  const [selectedCell, setSelectedCell] = useState('')
+  const [selectedSector, setSelectedSector] = useState('')
+  const [selectedProvince, setSelectedProvince] = useState('')
+  const [selectedDistrict, setSelectedDistrict] = useState('')
+
 
   useEffect(() => {
     const fetchPrograms = async () => {
@@ -74,9 +85,150 @@ export default function NewPatient({
         toast.error("Failed to load programs")
       }
     }
+
+    const fetchProvinces = async () => {
+      try {
+        const response = await fetch(`${API_URL}/provinces`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setProvinces(
+          data
+            .map((province: any) => ({ value: province._id, label: province.name })))
+      } catch (error) {
+        console.error("Failed to fetch provinces:", error)
+        toast.error("Failed to load provinces")
+      }
+    }
+    fetchProvinces()
     fetchPrograms()
   }, [])
 
+  useEffect(() => {
+    setSelectedDistrict('')
+    setSelectedSector('')
+    setSelectedCell('')
+    setSelectedVillage('')
+    setDistricts([])
+    setSectors([])
+    setCells([])
+    setVillages([])
+
+    const fetchDistricts = async () => {
+      try {
+        const response = await fetch(`${API_URL}/districts/province/${selectedProvince}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setDistricts(
+          data
+            .map((district: any) => ({ value: district._id, label: district.name })))
+        
+      } catch (error) {
+        console.error("Failed to fetch districts:", error)
+        toast.error("Failed to load districts")
+      }
+    }
+    if (selectedProvince) {
+      fetchDistricts()
+    }
+  }, [selectedProvince])
+
+  useEffect(() => {
+    const fetchSectors = async () => {
+      try {
+        const response = await fetch(`${API_URL}/sectors/district/${selectedDistrict}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setSectors(
+          data
+            .map((sector: any) => ({ value: sector._id, label: sector.name })))
+      } catch (error) {
+        console.error("Failed to fetch sectors:", error)
+        toast.error("Failed to load sectors")
+      }
+    }
+    if (selectedDistrict) {
+      fetchSectors()
+    }
+  }, [selectedDistrict])
+
+  useEffect(() => {
+    const fetchCells = async () => {
+      try {
+        const response = await fetch(`${API_URL}/cells/sector/${selectedSector}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setCells(
+          data
+            .map((cell: any) => ({ value: cell._id, label: cell.name })))
+      } catch (error) {
+        console.error("Failed to fetch cells:", error)
+        toast.error("Failed to load cells")
+      }
+    }
+    if (selectedSector) {
+      fetchCells()
+    }
+  }, [selectedSector])
+
+   useEffect(() => {
+    const fetchCells = async () => {
+      try {
+        const response = await fetch(`${API_URL}/villages/cell/${selectedCell}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setVillages(
+          data
+            .map((village: any) => ({ value: village._id, label: village.name })))
+      } catch (error) {
+        console.error("Failed to fetch villages:", error)
+        toast.error("Failed to load villages")
+      }
+    }
+    if (selectedCell) {
+      fetchCells()
+    }
+  }, [selectedCell])
+  
   const postPatient = async () => {
     setSubmitting(true);
     try {
@@ -102,6 +254,11 @@ export default function NewPatient({
           guardianDateOfBirth: age <= 18 ? guardianDateOfBirth : null,
           guardianRelationship: age <= 18 ? guardianRelationship : null,
           programId: patientProgram,
+          province: selectedProvince,
+          district: selectedDistrict,
+          sector: selectedSector,
+          cell: selectedCell,
+          village: selectedVillage,
         }),
       });
 
@@ -113,6 +270,7 @@ export default function NewPatient({
       }
 
       toast.success("Patient created successfully");
+      refresh();
       setOpen(false);
       setCurrentStep(1);
       setGuardianFirstName("");
@@ -128,6 +286,12 @@ export default function NewPatient({
       setGender("");
       setPhoneNumber("");
       setNID("");
+      setPatientProgram("");
+      setSelectedProvince("");
+      setSelectedDistrict("");
+      setSelectedSector("");
+      setSelectedCell("");
+      setSelectedVillage("");
 
       // Optionally append new patient to list
       if (appendNewPatient) {
@@ -155,7 +319,7 @@ export default function NewPatient({
 
   return (
     <>
-      <Dialog onOpenChange={setOpen}>
+      <Dialog onOpenChange={setOpen} open={open}>
         <DialogTrigger asChild>
           <Button onClick={() => setOpen(true)}>
             Add new Patient
@@ -244,68 +408,53 @@ export default function NewPatient({
 
             <div>
               <SelectComponent
-                _setValue={() => { }}
-                value={''}
+                _setValue={setSelectedProvince}
+                value={selectedProvince}
                 name="province"
                 label="Province"
-                options={[
-                  { value: "PROVINCE 1", label: "Province 1" },
-                  { value: "PROVINCE 2", label: "Province 2" },
-                ]}
+                options={provinces}
               />
             </div>
 
 
             <div>
               <SelectComponent
-                _setValue={() => { }}
-                value={''}
+                _setValue={setSelectedDistrict}
+                value={selectedDistrict}
                 name="district"
                 label="District"
-                options={[
-                  { value: "DISTRICT 1", label: "District 1" },
-                  { value: "DISTRICT 2", label: "District 2" },
-                ]}
+                options={districts}
               />
             </div>
 
 
             <div>
               <SelectComponent
-                _setValue={() => { }}
-                value={''}
+                _setValue={setSelectedSector}
+                value={selectedSector}
                 name="sector"
                 label="Sector"
-                options={[
-                  { value: "SECTOR 1", label: "Sector 1" },
-                  { value: "SECTOR 2", label: "Sector 2" },
-                ]}
+                options={sectors}
               />
             </div>
 
             <div>
               <SelectComponent
-                _setValue={() => { }}
-                value={''}
+                _setValue={setSelectedCell}
+                value={selectedCell}
                 name="cell"
                 label="Cell"
-                options={[
-                  { value: "CELL 1", label: "Cell 1" },
-                  { value: "CELL 2", label: "Cell 2" },
-                ]}
+                options={cells}
               />
             </div>
 
             <div>
               <SelectComponent
-                _setValue={() => { }}
-                value={''}
+                _setValue={setSelectedVillage}
+                value={selectedVillage}
                 name="village"
                 label="Village"
-                options={[
-                  { value: "VILLAGE 1", label: "Village 1" },
-                  { value: "VILLAGE 2", label: "Village 2" },
-                ]}
+                options={villages}
               />
             </div>
 

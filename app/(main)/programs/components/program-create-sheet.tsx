@@ -47,6 +47,16 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
   const [status, setStatus] = useState('')
   const [coordinators, setCoordinators] = useState<User[]>([])
   const [selectedCoordinatorId, setSelectedCoordinatorId] = useState<string>('')
+  const [provinces, setProvinces] = useState<any[]>([])
+  const [districts, setDistricts] = useState<any[]>([])
+  const [sectors, setSectors] = useState<any[]>([])
+  const [cells, setCells] = useState<any[]>([])
+  const [villages, setVillages] = useState<any[]>([])
+  const [selectedVillage, setSelectedVillage] = useState('')
+  const [selectedCell, setSelectedCell] = useState('')
+  const [selectedSector, setSelectedSector] = useState('')
+  const [selectedProvince, setSelectedProvince] = useState('')
+  const [selectedDistrict, setSelectedDistrict] = useState('')
 
   const fetchCoordinators = useCallback(async () => {
     try {
@@ -70,14 +80,156 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
   useEffect(() => {
     if (open) {
       fetchCoordinators()
+
+      const fetchProvinces = async () => {
+        try {
+          const response = await fetch(`${API_URL}/provinces`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+          })
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+          }
+          const data = await response.json()
+          setProvinces(
+            data
+              .map((province: any) => ({ value: province._id, label: province.name })))
+        } catch (error) {
+          console.error("Failed to fetch provinces:", error)
+          toast.error("Failed to load provinces")
+        }
+      }
+      fetchProvinces()
     }
   }, [open, fetchCoordinators])
+
+
+  useEffect(() => {
+    setSelectedDistrict('')
+    setSelectedSector('')
+    setSelectedCell('')
+    setSelectedVillage('')
+    setDistricts([])
+    setSectors([])
+    setCells([])
+    setVillages([])
+
+    const fetchDistricts = async () => {
+      try {
+        const response = await fetch(`${API_URL}/districts/province/${selectedProvince}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setDistricts(
+          data
+            .map((district: any) => ({ value: district._id, label: district.name })))
+
+      } catch (error) {
+        console.error("Failed to fetch districts:", error)
+        toast.error("Failed to load districts")
+      }
+    }
+    if (selectedProvince) {
+      fetchDistricts()
+    }
+  }, [selectedProvince])
+
+  useEffect(() => {
+    const fetchSectors = async () => {
+      try {
+        const response = await fetch(`${API_URL}/sectors/district/${selectedDistrict}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setSectors(
+          data
+            .map((sector: any) => ({ value: sector._id, label: sector.name })))
+      } catch (error) {
+        console.error("Failed to fetch sectors:", error)
+        toast.error("Failed to load sectors")
+      }
+    }
+    if (selectedDistrict) {
+      fetchSectors()
+    }
+  }, [selectedDistrict])
+
+  useEffect(() => {
+    const fetchCells = async () => {
+      try {
+        const response = await fetch(`${API_URL}/cells/sector/${selectedSector}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setCells(
+          data
+            .map((cell: any) => ({ value: cell._id, label: cell.name })))
+      } catch (error) {
+        console.error("Failed to fetch cells:", error)
+        toast.error("Failed to load cells")
+      }
+    }
+    if (selectedSector) {
+      fetchCells()
+    }
+  }, [selectedSector])
+
+  useEffect(() => {
+    const fetchCells = async () => {
+      try {
+        const response = await fetch(`${API_URL}/villages/cell/${selectedCell}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setVillages(
+          data
+            .map((village: any) => ({ value: village._id, label: village.name })))
+      } catch (error) {
+        console.error("Failed to fetch villages:", error)
+        toast.error("Failed to load villages")
+      }
+    }
+    if (selectedCell) {
+      fetchCells()
+    }
+  }, [selectedCell])
 
   const handleSubmit = async () => {
     setSubmitting(true)
     try {
-      if (!name || !startDate || !location || !selectedCoordinatorId) {
-        toast.error("Please fill in all required fields (Name, Start Date, Location, Status, Coordinator)")
+      if (!name || !startDate || !selectedProvince || !selectedDistrict || !selectedSector || !selectedCell || !selectedVillage || !selectedCoordinatorId) {
+        toast.error("Please fill in all required fields (Name, Start Date, Province, District, Sector, Cell, Village, Coordinator)")
         return
       }
 
@@ -92,9 +244,13 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
           description,
           startDate,
           endDate,
-          location,
           createdById: user?.id,
-          coordinatorId: selectedCoordinatorId
+          coordinatorId: selectedCoordinatorId,
+          province: selectedProvince,
+          district: selectedDistrict,
+          sector: selectedSector,
+          cell: selectedCell,
+          village: selectedVillage,
         })
       })
 
@@ -169,12 +325,56 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
 
           </div>
 
-          <div className="flex flex-col space-y-4">
-            <Label>Location *</Label>
-            <Input
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="Program location"
+
+          <div>
+            <SelectComponent
+              _setValue={setSelectedProvince}
+              value={selectedProvince}
+              name="province"
+              label="Province"
+              options={provinces}
+            />
+          </div>
+
+
+          <div>
+            <SelectComponent
+              _setValue={setSelectedDistrict}
+              value={selectedDistrict}
+              name="district"
+              label="District"
+              options={districts}
+            />
+          </div>
+
+
+          <div>
+            <SelectComponent
+              _setValue={setSelectedSector}
+              value={selectedSector}
+              name="sector"
+              label="Sector"
+              options={sectors}
+            />
+          </div>
+
+          <div>
+            <SelectComponent
+              _setValue={setSelectedCell}
+              value={selectedCell}
+              name="cell"
+              label="Cell"
+              options={cells}
+            />
+          </div>
+
+          <div>
+            <SelectComponent
+              _setValue={setSelectedVillage}
+              value={selectedVillage}
+              name="village"
+              label="Village"
+              options={villages}
             />
           </div>
 

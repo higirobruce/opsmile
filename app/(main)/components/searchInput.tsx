@@ -16,13 +16,17 @@ export default function SearchInput({
   setLoadingPatients,
   setCurrentPage,
   setTotalPages,
-  currentPage
+  currentPage,
+  pageSize,
+  setTotalCount,
 }: {
   setPatientData: (patientId: null | {}) => void;
   setLoadingPatients: (loading: boolean) => void;
   setCurrentPage: (page: number) => void;
   setTotalPages: (pages: number) => void;
+  setTotalCount: (count: number) => void;
   currentPage: number;
+  pageSize: number;
 }) {
   const id = useId();
   const [search, setSearch] = useState("");
@@ -33,7 +37,7 @@ export default function SearchInput({
     setLoadingPatients(true);
     try {
       const response = await fetch(
-        `${API_URL}/patients/search?search=${encodeURIComponent(search)}&page=${currentPage}`,
+        `${API_URL}/patients/search?search=${encodeURIComponent(search)}&page=${currentPage}&pageSize=${pageSize}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,6 +55,7 @@ export default function SearchInput({
 
       setPatientData(data?.patients || {});
       setTotalPages(data?.totalPages || 0);
+      setTotalCount(data?.totalCount || 0);
       setLoadingPatients(false);
     } catch (error) {
       console.error(error);
@@ -62,7 +67,7 @@ export default function SearchInput({
 
   useEffect(() => {
     fetchPatients();
-  }, [currentPage]);
+  }, [currentPage, pageSize]);
 
   const handleSearchSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
@@ -110,7 +115,7 @@ export default function SearchInput({
           <Toaster />
         </form>
         <p className="py-1 md:py-5">or</p>
-        <NewPatient />
+        <NewPatient refresh={fetchPatients} />
       </div>
     </div>
   );

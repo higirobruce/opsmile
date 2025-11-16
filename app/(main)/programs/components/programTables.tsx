@@ -38,7 +38,10 @@ export default function ProgramTable({ programs, onProgramUpdated }: ProgramTabl
                                 </TableCell>
                                 <TableCell className="py-1">{moment(program.startDate).format('YYYY-MMM-DD')}</TableCell>
                                 <TableCell className="py-1">{moment(program.endDate).format('YYYY-MMM-DD')}</TableCell>
-                                <TableCell className="py-1">{program.location}</TableCell>
+                                <TableCell className="py-1">{
+                                    (program.province && program.district)
+                                        ? program?.district?.name + '-' + program?.province?.name
+                                        : 'not set'}</TableCell>
                                 <TableCell className="py-1 items-center justify-between flex">
                                     <Badge
                                         className={
@@ -53,7 +56,7 @@ export default function ProgramTable({ programs, onProgramUpdated }: ProgramTabl
                                     </Badge>
                                     <ProgramMore program={program} onProgramUpdated={onProgramUpdated} />
                                 </TableCell>
-                                
+
                             </TableRow>
                         ))}
                     </TableBody>

@@ -59,7 +59,7 @@ export default function Patient() {
         })
         const data = await response.json()
         // Filter out completed programs
-        console.log("programs:",data)
+        console.log("programs:", data)
         setPrograms(data.filter((program: any) => program.status !== 'completed'))
       } catch (error) {
         console.error('Error fetching programs:', error)
@@ -72,7 +72,7 @@ export default function Patient() {
   const handleProgramChange = async (programId: string) => {
     setSelectedProgram(programId)
     try {
-      let res  = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/programs/${programId}/patients/${patient._id}`, {
+      let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/programs/${programId}/patients/${patient._id}`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,6 +80,17 @@ export default function Patient() {
         },
       })
       let data = await res.json()
+
+      let res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/patients/${patient._id}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ programId }),
+      })
+
+      fetchPatientData()
 
       toast.success('Patient successfully tagged to program!')
       // alert('Patient successfully tagged to program!')
@@ -97,20 +108,20 @@ export default function Patient() {
           <Toaster />
           <div className="flex flex-row justify-between">
             {/* Back button */}
-            <Button onClick={() => window.history.back()} variant="link" className="mr-2 place-self-start">
+            <Button onClick={() => window.history.back()} variant="link" className="mr-2 place-self-start cursor-pointer">
               <ArrowLeft />
               Back
             </Button>
             <div className="self-end md:w-1/3 flex flex-row justify-between items-center space-x-2">
               <div className='flex flex-row space-x-5 '>
-                <Select onValueChange={handleProgramChange} value={selectedProgram || ''}>
+                <Select onValueChange={handleProgramChange} value={selectedProgram || patient.program?._id}>
                   <SelectTrigger className='w-[180px]'>
                     <SelectValue placeholder='Select Program' />
                   </SelectTrigger>
                   <SelectContent>
                     {programs.map((program) => (
                       <SelectItem key={program._id} value={program._id}>
-                        {program.name}
+                        <p className='truncate'>{program.name}</p>
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -229,12 +229,12 @@ export default function VitalsTabContent({
                     </div>
                 </div>
             </div>
-            <div className="p-4 border rounded-lg bg-white h-[calc(100vh-200px)] overflow-scroll">
-                <h2 className="text-lg font-semibold">Recorded Vitals</h2>
-                {patientData?.vital_signs.map((vitalSign: any) => (
-                    <VitalSignsCard key={vitalSign._id} vitalSign={vitalSign} />
-                ))}
-            </div>
+            <div>    <h2 className="text-lg font-semibold mb-3">Recorded Vitals</h2>
+                <div className="p-4 border rounded-lg bg-white h-[calc(100vh-200px)] overflow-scroll">
+                    {patientData?.vital_signs.map((vitalSign: any) => (
+                        <VitalSignsCard key={vitalSign._id} vitalSign={vitalSign} />
+                    ))}
+                </div></div>
         </div>
     )
 }

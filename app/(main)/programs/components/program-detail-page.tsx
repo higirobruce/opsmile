@@ -93,7 +93,7 @@ const ProgramDetailsPage: React.FC<{ program: Program | undefined }> = ({ progra
       <div className="grid grid-cols-2 gap-6">
 
         {/* Coordinator Info */}
-        <Card className="shadow-sm border border-gray-200">
+        <Card className="shadow-sm border border-gray-200 max-h-[250px] overflow-y-auto">
           <CardHeader className="rounded-t-md">
             <CardTitle className="text-lg flex items-center gap-2">
               <User className="w-5 h-5 text-gray-600" /> Program Coordinator

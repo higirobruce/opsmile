@@ -75,7 +75,7 @@ export default function PatientTabs({
   patientData: any;
   refresh: () => void;
 }) {
-  const [tab, setTab] = useState("tab-1");
+  const [tab, setTab] = useState("tab-2");
 
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function PatientTabs({
       <ScrollArea>
         <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none bg-transparent px-0 py-1">
 
-          <TabsTrigger
+          {/* <TabsTrigger
             value="tab-1"
             onClick={() => setTab("tab-1")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
@@ -98,7 +98,7 @@ export default function PatientTabs({
               aria-hidden="true"
             />
             Overview
-          </TabsTrigger>
+          </TabsTrigger> */}
 
           <TabsTrigger
             value="tab-2"
@@ -194,15 +194,12 @@ export default function PatientTabs({
       </ScrollArea>
 
       {/* Overview */}
-      <TabsContent value="tab-1">
+      {/* <TabsContent value="tab-1">
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
             <div className="grid md:grid-cols-3 gap-3">
-              {/* Timeline for the patients interaction with the doctor */}
 
-
-              {/* Medical History */}
               <div className="col-span-2">
                 <Card>
                   <CardHeader className="border-b">
@@ -248,7 +245,7 @@ export default function PatientTabs({
             </div>
           </div>
         </>
-      </TabsContent>
+      </TabsContent> */}
 
       {/* Nursing */}
       <TabsContent value="tab-2" className="w-full">

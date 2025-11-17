@@ -390,8 +390,6 @@ export default function NewPatient({
               />
             </div>
 
-            <Select2/>
-
             <div>
               <SelectComponent
                 _setValue={setGender}

@@ -142,6 +142,7 @@ export default function ProgressTabContent({
                 onUploadComplete={(files: FileWithPreview[]) =>
                   handleFileUpload(files)
                 }
+                success={uploadedFiles.length > 0}
               />
             </div>
 

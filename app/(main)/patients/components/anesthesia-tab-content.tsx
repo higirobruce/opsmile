@@ -265,6 +265,7 @@ export default function AnesthesiaTabContent({
               onUploadComplete={(files: FileWithPreview[]) =>
                 handleFileUpload(files)
               }
+              success={uploadedFiles.length > 0}
             />
           </div>
 
@@ -275,6 +276,7 @@ export default function AnesthesiaTabContent({
               onUploadComplete={(files: FileWithPreview[]) =>
                 handleChecklistUpload(files)
               }
+              success={uploadedChecklist.length > 0}
             />
           </div>
 

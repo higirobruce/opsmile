@@ -2,6 +2,7 @@
 
 import {
   AlertCircleIcon,
+  CheckCircleIcon,
   FileArchiveIcon,
   FileIcon,
   FileSpreadsheetIcon,
@@ -23,7 +24,7 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react"
 
 // Create some dummy initial files
-const initialFiles:FileMetadata[] = [
+const initialFiles: FileMetadata[] = [
 ]
 
 const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
@@ -65,10 +66,11 @@ const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
 interface FileUploadProps {
   onUploadComplete?: (files: FileWithPreview[]) => void;
   bucketName?: string;
+  success: boolean
 }
 
 
-export default function FileUpload({ onUploadComplete, bucketName = "consents" }: FileUploadProps) {
+export default function FileUpload({ onUploadComplete, bucketName = "consents", success = false }: FileUploadProps) {
   const maxSize = 100 * 1024 * 1024 // 100MB default
   const maxFiles = 10
   const [uploading, setUploading] = useState(false)
@@ -110,7 +112,7 @@ export default function FileUpload({ onUploadComplete, bucketName = "consents" }
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         data-dragging={isDragging || undefined}
-        className="hover:bg-accent/50 data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 flex min-h-40 flex-col items-center justify-center rounded-xl border border-dashed p-4 transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[input:focus]:ring-[3px] mt-2"
+        className="hover:bg-accent/50 data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 flex min-h-10 flex-col items-center justify-center rounded-xl border border-dashed p-4 transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[input:focus]:ring-[3px] mt-2"
       >
         <input
           {...getInputProps()}
@@ -118,7 +120,22 @@ export default function FileUpload({ onUploadComplete, bucketName = "consents" }
           aria-label="Upload files"
         />
 
-        <div className="flex flex-col items-center justify-center text-center">
+        {!success &&
+
+          <div className="text-success flex items-center gap-1 text-xs">
+            <FileUpIcon className="size-4 opacity-60" />
+            <span>Upload files</span>
+          </div>
+
+        }
+
+        {success && (
+          <div className="text-success flex items-center gap-1 text-xs">
+            <CheckCircleIcon className="size-3 shrink-0 text-green-500" />
+            <span>Files uploaded successfully</span>
+          </div>
+        )}
+        {/* <div className="flex flex-col items-center justify-center text-center">
           <div
             className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border"
             aria-hidden="true"
@@ -136,7 +153,7 @@ export default function FileUpload({ onUploadComplete, bucketName = "consents" }
             <span>∙</span>
             <span>Up to {formatBytes(maxSize)}</span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {errors.length > 0 && (
@@ -191,7 +208,7 @@ export default function FileUpload({ onUploadComplete, bucketName = "consents" }
 
           {/* Upload and Remove buttons */}
           <div className="flex gap-2">
-            <Button 
+            <Button
               onClick={handleUpload}
               disabled={uploading}
             >

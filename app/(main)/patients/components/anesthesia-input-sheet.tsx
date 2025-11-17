@@ -262,6 +262,7 @@ export default function AnesthesiaInputSheet({
                 onUploadComplete={(files: FileWithPreview[]) =>
                   handleFileUpload(files)
                 }
+                success={uploadedFiles.length > 0}
               />
             </div>
           </div>

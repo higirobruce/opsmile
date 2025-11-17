@@ -200,6 +200,7 @@ export default function MedicalInputSheet({ className,
                                 onUploadComplete={(files: FileWithPreview[]) =>
                                     handleFileUpload(files)
                                 }
+                                success={uploadedFiles.length > 0}
                             />
                         </div>
 
@@ -210,6 +211,7 @@ export default function MedicalInputSheet({ className,
                                 onUploadComplete={(files: FileWithPreview[]) =>
                                     handlePhotoUpload(files)
                                 }
+                                success={uploadedPhotos.length > 0}
                             />
                         </div>
 

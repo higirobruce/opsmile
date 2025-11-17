@@ -314,6 +314,7 @@ export default function SurgeryTabContent({
                     onUploadComplete={(files: FileWithPreview[]) =>
                       handleFileUpload(files)
                     }
+                    success={uploadedFiles.length > 0}
                   />
                 </div>
                 <div>
@@ -323,6 +324,7 @@ export default function SurgeryTabContent({
                     onUploadComplete={(files: FileWithPreview[]) =>
                       handleBeforeSurgeryImageUpload(files)
                     }
+                    success={beforeSurgeryImageUrls.length > 0}
                   />
                 </div>
 

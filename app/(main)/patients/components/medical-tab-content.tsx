@@ -243,6 +243,7 @@ export default function MedicalTabContent({
               onUploadComplete={(files: FileWithPreview[]) =>
                 handleLabExamsFileUpload(files)
               }
+              success={uploadedLabExams.length > 0}
             />
           </div>
 
@@ -253,6 +254,7 @@ export default function MedicalTabContent({
               onUploadComplete={(files: FileWithPreview[]) =>
                 handleFileUpload(files)
               }
+              success={uploadedFiles.length > 0}
             />
           </div>
 
@@ -263,6 +265,7 @@ export default function MedicalTabContent({
               onUploadComplete={(files: FileWithPreview[]) =>
                 handlePhotoUpload(files)
               }
+              success={uploadedPhotos.length > 0}
             />
           </div>
           <div>

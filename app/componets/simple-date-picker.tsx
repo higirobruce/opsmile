@@ -17,7 +17,7 @@ export function SimpletDatePicker({label, setDate, date}:{label:string,date: Dat
 //   const [date, setDate] = React.useState<Date | undefined>(undefined)
 
   return (
-    <div className="*:not-first:mt-2">
+    <div className="">
       <Label htmlFor="date" className="px-1">
         {label}
       </Label>

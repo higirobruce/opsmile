@@ -2,6 +2,7 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { FileText, Image as ImageIcon, CheckCircle, XCircle, Clock } from "lucide-react"
+import moment from "moment"
 
 export default function SurgeryRecordCard({ record }: { record: any }) {
   return (
@@ -58,6 +59,8 @@ export default function SurgeryRecordCard({ record }: { record: any }) {
                 {record.status}
               </Badge>
             </p>
+            <p><span className="font-semibold">Start date:</span> {record.surgeryDate ? moment(record.surgeryDate).format("YYYY-MM-DD HH:mm A") : "-"}</p>
+            <p><span className="font-semibold">End date:</span> {record.surgeryEndDate ? moment(record.surgeryEndDate).format("YYYY-MM-DD HH:mm A") : "-"}</p>
             <p><span className="font-semibold">Estimated Duration:</span> {record.estimatedDuration || "-"} min</p>
             <p><span className="font-semibold">Actual Duration:</span> {record.actualDuration || "-"} min</p>
             {/* <p><span className="font-semibold">Blood Loss:</span> {record.bloodLoss ? `${record.bloodLoss} ml` : "-"}</p> */}

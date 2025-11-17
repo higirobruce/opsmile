@@ -120,7 +120,7 @@ export default function ProgressTabContent({
     <div className="flex flex-col space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <h2 className="text-xl font-semibold mb-3">Add New Progress Note</h2>
+          <h2 className="text-xl font-semibold mb-3">Add Progress Note</h2>
           <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white space-y-3">
             <div>
               {/* <Label>Date</Label> */}
@@ -145,7 +145,11 @@ export default function ProgressTabContent({
               />
             </div>
 
-            <Button onClick={handleSubmit} disabled={submitting}>
+            <Button 
+            onClick={handleSubmit} 
+            disabled={true}
+            // disabled={submitting}
+            >
               {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
               Save Progress Note
             </Button>

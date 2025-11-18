@@ -101,7 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 return { error: data.message, data: null }
             }
 
-            router.push('/dashboard')
+            router.push('/programs')
 
             // Store authentication data
             localStorage.setItem('token', data.access_token)

@@ -20,6 +20,7 @@ import {
 import { toast } from 'sonner';
 import { useAuth } from '@/app/context/AuthContext';
 import { useCallback, useEffect, useState } from "react"
+import { ChartCardSkeleton } from "./chart-skeleton-pie"
 
 interface Program {
     _id: string;
@@ -128,8 +129,8 @@ export function ProgramStatusPieChart() {
         fetchProgramStatus();
     }, [fetchProgramStatus]);
 
-    if (loading) return <div className="p-4 border rounded-lg">Loading program status data...</div>;
-    if (error) return <div className="p-4 border rounded-lg text-red-500">Error: {error}</div>;
+    // if (loading) return <div className="p-4 border rounded-lg">Loading program status data...</div>;
+    // if (error) return <div className="p-4 border rounded-lg text-red-500">Error: {error}</div>;
 
     const chartConfig1 = {
         counts: {
@@ -156,5 +157,14 @@ export function ProgramStatusPieChart() {
             color: "var(--chart-5)",
         },
     } satisfies ChartConfig;
-    return <ChartPieDonutActive title="Program Status Overview" description="Current status of all programs" chartConfig={chartConfig1} data={programStatusData} />;
+    return (
+        <>
+            {loading && <ChartCardSkeleton />}
+            {!loading && !error && <ChartPieDonutActive
+                title="Program Status Overview"
+                description="Current status of all programs"
+                chartConfig={chartConfig1}
+                data={programStatusData} />}
+        </>
+    );
 }

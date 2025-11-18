@@ -1,5 +1,5 @@
 'use client'
-import { ArrowBigRight, Calendar, File, FileBadge, FileEdit, ForkKnife, HeartIcon, Home, HousePlus, Inbox, ScanHeart, Scissors, Search, Settings, Space, ToolCaseIcon, User2, UserCheck } from "lucide-react"
+import { ArrowBigRight, Calendar, ChartBarIcon, ChartBarIncreasing, ChartNoAxesColumn, File, FileBadge, FileEdit, ForkKnife, HeartIcon, Home, HousePlus, Inbox, ScanHeart, Scissors, Search, Settings, Space, ToolCaseIcon, User2, UserCheck } from "lucide-react"
 
 import {
   Sidebar,
@@ -13,7 +13,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 import AvatarComponent from "./avatar"
-import { RiUserHeartLine } from "@remixicon/react"
+import { RiDashboard2Fill, RiDashboard3Line, RiDashboardFill, RiUserHeartLine } from "@remixicon/react"
 import { usePathname } from "next/navigation"
 import { useAuth } from "@/app/context/AuthContext"
 import UserMenu from "@/components/navbar-components/user-menu"
@@ -22,9 +22,9 @@ import Image from "next/image"
 // Menu items.
 const items = [
   {
-    title: "Home",
+    title: "Dashboard",
     url: "/dashboard",
-    icon: Home,
+    icon: ChartNoAxesColumn,
   },
   {
     title: "Programs",

@@ -1,52 +1,49 @@
 'use client'
 import React, { useEffect, useState, useCallback } from 'react'
-import ProgramTable from './components/programTables'
-import ProgramCreateSheet from './components/program-create-sheet'
-import { useAuth } from '@/app/context/AuthContext'
+import ProgramSearchInput from '../components/program-searchInput'
+import ProgramsTable from './components/programs-table'
+import { TableSkeleton } from '../components/table-skeleton'
 
 export default function Programs() {
-  const [programs, setPrograms] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const {token} = useAuth()
-
-  const fetchPrograms = useCallback(async () => {
-    try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const response = await fetch(`${API_URL}/programs`,{
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      })
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      const data = await response.json()
-      setPrograms(data)
-      console.log(data[0])
-    } catch (error: any) {
-      setError(error)
-    } finally {
-      setLoading(false)
-    }
-  }, [token])
-
-  useEffect(() => {
-    fetchPrograms()
-  }, [fetchPrograms])
-
-  if (loading) return <div>Loading programs...</div>
+  const [programs, setPrograms] = useState<any>([])
+  const [loading, setLoading] = useState(false)
+ 
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(5)
+  const [totalPages, setTotalPages] = useState(0)
+  const [totalCount, setTotalCount] = useState(0)
 
   return (
     <>
       <div className='flex flex-col space-y-5'>
-        <div className='flex justify-between items-center'>
-          <div className='text-2xl font-bold'>Programs</div>
-        <ProgramCreateSheet refreshPrograms={fetchPrograms} />
+        <ProgramSearchInput
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageSize={pageSize}
+          setTotalPages={setTotalPages}
+          setData={(data) => setPrograms(data)}
+          setLoading={setLoading}
+          setTotalCount={setTotalCount}
+
+        />
+
+        {!loading && programs && <ProgramsTable
+          currentPage={currentPage}
+          pageSize={pageSize}
+          patientData={programs}
+          setCurrentPage={setCurrentPage}
+          setPageSize={setPageSize}
+          setTotalPages={setTotalPages}
+          totalCount={totalCount}
+          totalPages={totalPages}
+        />}
+
+        <div className='flex flex-col space-y-5'>
+          {loading && (
+            <TableSkeleton/>
+          )}
         </div>
-        <ProgramTable programs={programs} onProgramUpdated={fetchPrograms} />
+        {/* <ProgramTable programs={programs} onProgramUpdated={fetchPrograms} /> */}
       </div>
     </>
   )

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ChartPieDonutActive } from "./program-status-pie";
 import { ChartConfig } from "@/components/ui/chart";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartCardSkeleton } from "./chart-skeleton-pie";
 
 interface Patient {
   id: string;
@@ -57,7 +58,7 @@ export function PatientByAgePieChart() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data: {patients: Patient[]} = await response.json();
+        const data: { patients: Patient[] } = await response.json();
 
         if (!Array.isArray(data.patients)) {
           console.error("API response is not an array:", data);
@@ -99,7 +100,7 @@ export function PatientByAgePieChart() {
         );
 
         setPatientAgeData(formattedData);
-        console.log("-------------",formattedData);
+        console.log("-------------", formattedData);
       } catch (err) {
 
         console.error("Failed to fetch patients:", err);
@@ -112,15 +113,23 @@ export function PatientByAgePieChart() {
     fetchPatients();
   }, []);
 
-  if (loading) {
-    return <Card className="flex flex-col"><CardHeader><CardTitle>Loading Patient Age Data...</CardTitle></CardHeader><CardContent>Loading...</CardContent></Card>;
-  }
+  // if (loading) {
+  //   return <Card className="flex flex-col"><CardHeader><CardTitle>Loading Patient Age Data...</CardTitle></CardHeader><CardContent>Loading...</CardContent></Card>;
+  // }
 
-  if (error) {
-    return <Card className="flex flex-col"><CardHeader><CardTitle>Error</CardTitle></CardHeader><CardContent>{error}</CardContent></Card>;
-  }
+  // if (error) {
+  //   return <Card className="flex flex-col"><CardHeader><CardTitle>Error</CardTitle></CardHeader><CardContent>{error}</CardContent></Card>;
+  // }
 
   return (
-    <ChartPieDonutActive title="Patient Age Distribution" description="Age groups of all patients" data={patientAgeData} chartConfig={chartConfig} />
+    <>
+      {loading && <ChartCardSkeleton />}
+      {!loading && !error && <ChartPieDonutActive
+        title="Patient Age Distribution"
+        description="Age groups of all patients"
+        data={patientAgeData}
+        chartConfig={chartConfig}
+      />}
+    </>
   );
 }

@@ -9,35 +9,37 @@ import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import NewPatient from "../patients/components/new-patient-modal";
 import { useAuth } from "@/app/context/AuthContext";
+import ProgramCreateSheet from "../programs/components/program-create-sheet";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-export default function SearchInput({
-  setPatientData,
-  setLoadingPatients,
+export default function ProgramSearchInput({
+  setData: setData,
+  setLoading: setLoading,
   setCurrentPage,
   setTotalPages,
   currentPage,
   pageSize,
   setTotalCount,
 }: {
-  setPatientData: (patientId: null | {}) => void;
-  setLoadingPatients: (loading: boolean) => void;
+  setData: (data:[]) => void;
+  setLoading: (loading: boolean) => void;
   setCurrentPage: (page: number) => void;
   setTotalPages: (pages: number) => void;
   setTotalCount: (count: number) => void;
   currentPage: number;
   pageSize: number;
+
 }) {
   const id = useId();
   const [search, setSearch] = useState("");
   const router = useRouter();
   const { token } = useAuth();
 
-  const fetchPatients = useCallback(async () => {
-    setLoadingPatients(true);
+  const fetchData = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await fetch(
-        `${API_URL}/patients/search?search=${encodeURIComponent(search)}&page=${currentPage}&pageSize=${pageSize}`,
+        `${API_URL}/programs/search?search=${encodeURIComponent(search)}&page=${currentPage}&pageSize=${pageSize}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -45,39 +47,42 @@ export default function SearchInput({
           },
         }
       );
+
       const data = await response.json();
+      console.log(data)
+
       if (!response.ok) {
         toast.error(data.message || "Error fetching patients");
         return;
       }
 
-      setPatientData(data?.patients || {});
+      setData(data?.programs || []);
       setTotalPages(data?.totalPages || 0);
       setTotalCount(data?.totalCount || 0);
-      setLoadingPatients(false);
+      setLoading(false);
     } catch (error) {
       console.error(error);
-      setLoadingPatients(false);
+      setLoading(false);
 
       toast.error("Failed to fetch patients");
     }
-  }, [currentPage, search, setLoadingPatients, setPatientData, setTotalPages, token]);
+  }, [currentPage, search, setLoading, setData, setTotalPages, token]);
 
   useEffect(() => {
-    fetchPatients();
+    fetchData();
   }, [currentPage, pageSize]);
 
   const handleSearchSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
     // You can perform any form-specific logic here before fetching
     console.log('Form submitted, initiating patient fetch.');
-    await fetchPatients(); // Call your fetchPatients function
+    await fetchData(); // Call your fetchPatients function
   };
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center px-4 sm:pt-5 md:pt-10 pb-10 w-full">
         <h1 className="text-2xl md:text-5xl font-extrabold tracking-tight text-center">
-          Patient List
+          Program List
         </h1>
         {/* <p className="mt-4 text-sm md:text-lg text-center text-muted-foreground max-w-xl">
           Use this page to quickly find a patient Names or phone numbers
@@ -94,7 +99,7 @@ export default function SearchInput({
           {/* Giant input */}
           <Input
             type="text"
-            placeholder="Search using: Patient ID, Name, or Phone Number"
+            placeholder="Search using: Name"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             autoFocus
@@ -113,7 +118,7 @@ export default function SearchInput({
           <Toaster />
         </form>
         <p className="py-1 md:py-5">or</p>
-        <NewPatient refresh={fetchPatients} />
+        <ProgramCreateSheet refreshPrograms={fetchData} />
       </div>
     </div>
   );

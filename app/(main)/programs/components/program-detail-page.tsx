@@ -36,14 +36,14 @@ interface Program {
 
 const ProgramDetailsPage: React.FC<{ program: Program | undefined }> = ({ program }) => {
   const statusColors: Record<string, string> = {
-    ongoing: "bg-green-100 text-green-800",
-    completed: "bg-blue-100 text-blue-800",
-    upcoming: "bg-yellow-100 text-yellow-800",
+    ongoing: "bg-primary text-white",
+    completed: "bg-blue-500 text-white",
+    upcoming: "bg-gray-400 text-white",
     cancelled: "bg-red-100 text-red-800",
   };
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="mt-4 space-y-6">
       {/* Program Overview */}
       <Card className="shadow-md border border-gray-200">
         <CardHeader className="rounded-t-md flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -54,7 +54,7 @@ const ProgramDetailsPage: React.FC<{ program: Program | undefined }> = ({ progra
             <p className="text-gray-500">{program?.description}</p>
           </div>
           <Badge
-            className={`${statusColors[program?.status || 'ongoing'] || "bg-gray-100 text-gray-800"} capitalize px-3 py-1 text-sm rounded-md mt-2 sm:mt-0`}
+            className={`${statusColors[program?.status || 'ongoing'] || "bg-gray-100 text-gray-800"} capitalize  text-xs rounded-2xl mt-2 sm:mt-0`}
           >
             {program?.status}
           </Badge>

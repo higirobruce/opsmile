@@ -158,7 +158,6 @@ export default function VitalsTabContent({
                                 onChange={(e) => setBloodPressureSystolic(Number(e.target.value))}
                             />
                         </div>
-
                         <div>
                             <Label>Blood Pressure (Diastolic)</Label>
                             <Input
@@ -167,7 +166,6 @@ export default function VitalsTabContent({
                                 onChange={(e) => setBloodPressureDiastolic(Number(e.target.value))}
                             />
                         </div>
-
                         <div>
                             <Label>Pulse rate</Label>
                             <Input
@@ -175,7 +173,6 @@ export default function VitalsTabContent({
                                 value={pulseRate?.toString()}
                                 onChange={(e) => setPulerRate(Number(e.target.value))}
                             /></div>
-
                         <div>
                             <Label>Respiration rate</Label>
                             <Input
@@ -183,7 +180,6 @@ export default function VitalsTabContent({
                                 value={respiratoryRate?.toString()}
                                 onChange={(e) => setRespiratoryRate(Number(e.target.value))}
                             /></div>
-
                         <div>
                             <Label>Oxygen saturation</Label>
                             <Input
@@ -191,7 +187,6 @@ export default function VitalsTabContent({
                                 value={oxygenSaturation?.toString()}
                                 onChange={(e) => setOxygenSaturation(Number(e.target.value))}
                             /></div>
-
                         <div>
                             <Label>Temperature (°C)</Label>
                             <Input
@@ -199,7 +194,6 @@ export default function VitalsTabContent({
                                 value={temperature?.toString()}
                                 onChange={(e) => setTemperature(Number(e.target.value))}
                             /></div>
-
                         <div>
                             <Label>Height (cm)</Label>
                             <Input
@@ -207,7 +201,6 @@ export default function VitalsTabContent({
                                 value={height?.toString()}
                                 onChange={(e) => setHeight(Number(e.target.value))}
                             /></div>
-
                         <div className="">
                             <Label>Weight (kg)</Label>
                             <Input
@@ -224,8 +217,6 @@ export default function VitalsTabContent({
                                 value={bmi?.toString()}
                             />
                         </div>
-
-
                     </div>
                     <div className=" px-4 pb-4 sm:justify-start">
                         <Button onClick={handleSubmit} type="submit" disabled={submitting}>

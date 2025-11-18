@@ -51,12 +51,12 @@ export default function ProgramPage() {
               Back
             </Button>
             <div className=''>
-              <ProgramEditSheet program={program} onSave={() => { }} children={
+              <ProgramEditSheet program={program} onSave={() => { }}>
                 <Button variant="outline">
                   <Edit2Icon className="" size={10} aria-hidden="true" />
                   Edit
                 </Button>
-              } />
+              </ProgramEditSheet>
             </div>
           </div>
 

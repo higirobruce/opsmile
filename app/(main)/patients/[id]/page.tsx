@@ -68,7 +68,7 @@ export default function Patient() {
     }
     fetchPrograms()
     fetchPatientData();
-  }, [id, fetchPatientData]);
+  }, [id, fetchPatientData, token]);
 
   const handleProgramChange = async (programId: string) => {
     setSelectedProgram(programId)

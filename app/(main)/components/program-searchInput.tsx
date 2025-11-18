@@ -66,7 +66,7 @@ export default function ProgramSearchInput({
 
       toast.error("Failed to fetch patients");
     }
-  }, [currentPage, search, setLoading, setData, setTotalPages, token]);
+  }, [currentPage, search, setLoading, setData, setTotalPages, token, pageSize, setTotalCount]);
 
   useEffect(() => {
     fetchData();

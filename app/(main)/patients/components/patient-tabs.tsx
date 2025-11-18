@@ -4,6 +4,7 @@ import {
   ChartLine,
   Cross,
   Edit,
+  HospitalIcon,
   HouseIcon,
   PanelsTopLeftIcon,
   Plus,
@@ -66,6 +67,7 @@ import MedicalTabContent from "./medical-tab-content";
 import AnesthesiaTabContent from "./anesthesia-tab-content";
 import SurgeryTabContent from "./surgery-tab-content";
 import VitalsTabContent from "./vitals-tab-content";
+import FollowUpTabContent from "./follow-up-tab-content";
 
 
 export default function PatientTabs({
@@ -188,6 +190,20 @@ export default function PatientTabs({
               aria-hidden="true"
             />
             Discharge
+          </TabsTrigger>
+
+          <TabsTrigger
+            value="tab-9"
+            disabled={!patientData['discharges'][0]?.isFollowUp}
+            onClick={() => setTab("tab-9")}
+            className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+          >
+            <HospitalIcon
+              className="-ms-0.5 me-1.5 opacity-60"
+              size={16}
+              aria-hidden="true"
+            />
+            Follow-up
           </TabsTrigger>
         </TabsList>
         <ScrollBar orientation="horizontal" />
@@ -342,6 +358,18 @@ export default function PatientTabs({
           </div>
         </>
       </TabsContent>
+
+      {/* Discharge */}
+      <TabsContent value="tab-9">
+        <>
+          <div className="flex flex-col space-y-5">
+            <PatientSnapshot isHeaderSection={true} patientData={patientData} />
+            <FollowUpTabContent patientData={patientData} refresh={refresh} />
+          </div>
+        </>
+      </TabsContent>
+
+
 
 
     </Tabs>

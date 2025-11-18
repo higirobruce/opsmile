@@ -61,6 +61,11 @@ type Item = {
     phoneNumber: string
     status: "Active" | "Inactive" | "Pending"
     balance: number
+    "discharges": [
+        {
+            isFollowUp: boolean
+        }
+    ]
 }
 
 const columns: ColumnDef<Item>[] = [
@@ -114,7 +119,7 @@ const columns: ColumnDef<Item>[] = [
                     "bg-muted-foreground/60 text-primary-foreground"
                 )}
             >
-                {row.getValue("status") || 'Active'}
+                {row.original["discharges"] && (row.original["discharges"][0]?.isFollowUp ? 'Needs Follow-up' : 'Active')}
             </Badge>
         ),
         size: 120,

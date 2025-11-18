@@ -18,6 +18,7 @@ import { toast, Toaster } from "sonner"
 import { useAuth } from "@/app/context/AuthContext"
 import ProgressiveNotesTimeline, { Note } from "./progressive-note-timeline"
 import { Input } from "@/components/ui/input"
+import SelectComponent from "../../components/select-component"
 
 
 let API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
@@ -29,6 +30,7 @@ export default function AnesthesiaHistoryTabs({ patientData }: { patientData: an
     const [title, setTitle] = useState("")
     const { user } = useAuth()
     const [progressiveNotes, setProgressiveNotes] = useState<Note[]>([])
+    const [noteType, setNoteType] = useState('')
 
 
     useEffect(() => {
@@ -113,7 +115,22 @@ export default function AnesthesiaHistoryTabs({ patientData }: { patientData: an
                     </div>
 
                     <div>
+                        <Label>Title</Label>
                         <Input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    </div>
+
+                    <div>
+                        <SelectComponent
+                            _setValue={setNoteType}
+                            label="Note type"
+                            name="noteType"
+                            options={[
+                                {value:'ANESTHESIA_NOTES', label:'Anesthesia note'},
+                                // {value:'SURGICAL_NOTES', label:'Surgical note'},
+                                // {value:'NURSING_NOTES', label:'Nursing note'}
+                            ]}
+                            value={noteType}
+                        />
                     </div>
 
                     <div>

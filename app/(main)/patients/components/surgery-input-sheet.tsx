@@ -267,7 +267,7 @@ export default function SurgeryInputSheet({
             <div>
               <Label>Procedure</Label>
               <Textarea
-              className="mt-2"
+                className="mt-2"
                 value={procedure}
                 onChange={(e) => setProcedure(e.target.value)}
               />
@@ -293,6 +293,7 @@ export default function SurgeryInputSheet({
             <div>
               <Label>Consent Upload</Label>
               <FileUpload
+                success={uploadedFiles?.length > 0}
                 bucketName="consents"
                 onUploadComplete={(files: FileWithPreview[]) =>
                   handleFileUpload(files)
@@ -302,6 +303,7 @@ export default function SurgeryInputSheet({
             <div>
               <Label>Before Surgery Image Upload</Label>
               <FileUpload
+                success={beforeSurgeryImageUrls?.length > 0}
                 bucketName="before-surgery-images"
                 onUploadComplete={(files: FileWithPreview[]) =>
                   handleBeforeSurgeryImageUpload(files)

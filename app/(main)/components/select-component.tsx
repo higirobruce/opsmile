@@ -98,7 +98,7 @@ export default function SelectComponent({ value, options, label, name, _setValue
   // const [value, setValue] = useState<string>("")
 
   return (
-    <div className="*:not-first:mt-2">
+    <div className="">
       <Label htmlFor={id}>{label}</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>

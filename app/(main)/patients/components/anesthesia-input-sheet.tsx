@@ -101,7 +101,8 @@ export default function AnesthesiaInputSheet({
           mallampatiScore,
           preanesthesiaChecklistDone,
           surgicalSafetyChecklistDone,
-          medications
+          medications,
+          
         }),
       });
 

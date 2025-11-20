@@ -21,7 +21,7 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
     const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
 
     useEffect(() => {
-        handleCaluculateAge(moment(patientData.dateOfBirth).toDate())
+        handleCaluculateAge(moment(patientData?.dateOfBirth).toDate())
     }, [patientData])
 
     const handleCaluculateAge = (dateOfBirth: Date) => {
@@ -52,8 +52,8 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                                 <AvatarComponent source={patientData?.profilePicture || '/avatar2.jpg'} height={40} width={40} />
                             </div> */}
                             <div className='flex flex-col w-full self-start' >
-                                <p className='text-md font-semibold'>{patientData.registrationNumber}</p>
-                                <p className='text-sm'>{patientData.firstName} {patientData.lastName}</p>
+                                <p className='text-md font-semibold'>{patientData?.registrationNumber}</p>
+                                <p className='text-sm'>{patientData?.firstName} {patientData?.lastName}</p>
                             </div>
                         </div>
 
@@ -61,17 +61,17 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
                             <div className='text-sm flex items-center space-x-1 text-foreground/70'>
                                 {/* <RiUser3Fill size={16} className='text-sm font-bold' /> */}
                                 <p>Gender: </p>
-                                <p className='font-bold'>{patientData.gender == 'M' ? 'Male' : 'Female'}</p>
+                                <p className='font-bold'>{patientData?.gender == 'M' ? 'Male' : 'Female'}</p>
                             </div>
                             <div className='text-sm flex flex-row items-center space-x-1 text-foreground/70'>
                                 <p>Age: </p>
-                                <p className='font-bold'>{formatAge(moment(patientData.dateOfBirth).toDate())}</p>
+                                <p className='font-bold'>{formatAge(moment(patientData?.dateOfBirth).toDate())}</p>
                             </div>
                         </div>
 
                         <div className='text-sm flex flex-row items-center space-x-1 text-foreground/70'>
                             <p>Location: </p>
-                            <p className='font-bold truncate'>{(patientData.province && patientData.district) ? patientData.province?.name + '-' + patientData.district?.name : 'Kigali-Rwanda'}</p>
+                            <p className='font-bold truncate'>{(patientData?.province && patientData?.district) ? patientData?.province?.name + '-' + patientData?.district?.name : 'Kigali-Rwanda'}</p>
                         </div>
 
 
@@ -87,7 +87,7 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
 
                     <div className='md:flex flex-col justify-between hidden'>
                         {!isHeaderSection && (
-                            <Button className='place-self-end' onClick={() => router.push('patients/' + patientData._id)}>
+                            <Button className='place-self-end' onClick={() => router.push('patients/' + patientData?._id)}>
                                 <Edit /> More
                             </Button>
                         )}

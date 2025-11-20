@@ -37,6 +37,7 @@ export default function DischargeTabContent({
   const [isFollowUp, setIsFollowUp] = useState(false);
   const [followUpDate, setFollowUpDate] = useState<Date | undefined>(new Date());
   const [followUpDuration, setFollowUpDuration] = useState('')
+  const [customerStatus, setCustomerStatus] = useState('')
 
 
   const fetchDischargeRecords = useCallback(async () => {
@@ -65,6 +66,8 @@ export default function DischargeTabContent({
     }
   }, [patientData?._id, token]);
 
+
+
   useEffect(() => {
     fetchDischargeRecords();
   }, [fetchDischargeRecords]);
@@ -88,7 +91,7 @@ export default function DischargeTabContent({
           diagnosis,
           procedure,
           patientDisposition,
-          reviewDate: patientDisposition === 'Planned review' ? reviewDate : '',
+          reviewDate: patientDisposition === 'Subject for review' ? reviewDate : '',
           isFollowUp,
           followUpInstructions: isFollowUp ? followUpInstructions : '',
           followUpDate: isFollowUp ? followUpDate : '',
@@ -104,6 +107,12 @@ export default function DischargeTabContent({
       }
 
       toast.success("Discharge record saved successfully");
+
+      let userUpdated = await updatingUser();
+
+      if (!user)
+        return
+
       setDischargeSummary("");
       setMedicationsAtDischarge("");
       setFollowUpInstructions("");
@@ -118,6 +127,27 @@ export default function DischargeTabContent({
     }
   };
 
+  const updatingUser = async () => {
+    const responsePatient = await fetch(`${API_URL}/patients/${patientData?._id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: customerStatus }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const dataUser = await responsePatient.json();
+
+
+    if (!responsePatient.ok) {
+      toast.error(dataUser.message || "Error updating patient!");
+      return;
+    }
+
+    return dataUser
+  }
+
   return (
     <div className="flex flex-col space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -129,6 +159,24 @@ export default function DischargeTabContent({
                 {/* <Label>Discharge Date</Label> */}
                 <SimpletDatePicker setDate={setDischargeDate} date={dischargeDate} label="Discharge Date" />
               </div>
+
+              <div>
+                <Label>Diagnosis</Label>
+                <Textarea
+                  value={diagnosis}
+                  onChange={(e) => setDiagnosis(e.target.value)}
+                  placeholder="Enter diagnosis here..."
+                />
+              </div>
+              <div>
+                <Label>Procedure Done</Label>
+                <Textarea
+                  value={procedure}
+                  onChange={(e) => setProcedure(e.target.value)}
+                  placeholder="Enter procedure here..."
+                />
+              </div>
+
               <div>
                 <Label>Discharge recommendations</Label>
                 <Textarea
@@ -139,41 +187,38 @@ export default function DischargeTabContent({
               </div>
 
               <div>
-                <Label>Diagnosis</Label>
-                <Textarea
-                  value={diagnosis}
-                  onChange={(e) => setDiagnosis(e.target.value)}
-                  placeholder="Enter diagnosis here..."
-                />
-              </div>
-
-              <div>
-                <Label>Procedure</Label>
-                <Textarea
-                  value={procedure}
-                  onChange={(e) => setProcedure(e.target.value)}
-                  placeholder="Enter procedure here..."
-                />
-              </div>
-
-              <div>
                 <SelectComponent
                   name="patientDisposition"
                   label="Patient disposition"
                   options={[
-                    { value: "Home", label: "Home" },
+                    { value: "Care Completed", label: "Care Completed" },
+                    { value: "Subject for review", label: "Subject for review" },
                     { value: "Counter-referred", label: "Counter-referred" },
-                    { value: "Planned review", label: "Planned review" },
+                    { value: "Follow up", label: "Follow up" },
                   ]}
                   value={patientDisposition}
-                  _setValue={setPatientDisposition}
+                  _setValue={(v: any) => {
+                    if (v == 'Care Completed') {
+                      setCustomerStatus('Care Completed')
+                    }
+                    if (v == 'Subject for review') {
+                      setCustomerStatus('Subject for review')
+                    }
+                    if (v == 'Counter-referred') {
+                      setCustomerStatus('Counter-referred')
+                    }
+                    if (v == 'Follow up') {
+                      setCustomerStatus('Follow up')
+                    }
+
+                    setPatientDisposition(v)
+                  }}
                 />
               </div>
 
-
               <div>
                 {/* <Label>Review date</Label> */}
-                {patientDisposition === "Planned review" && (
+                {patientDisposition === "Subject for review" && (
                   <SimpletDatePicker setDate={setReviewDate} date={reviewDate} label="Review Date" />
                 )}
               </div>

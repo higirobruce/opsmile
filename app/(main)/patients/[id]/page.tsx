@@ -11,6 +11,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PatientPageSkeleton } from "../components/patient-page-skeleton";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import NewPatientFile from "../components/new-patient-file.modal";
+import moment from "moment";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -22,6 +25,8 @@ export default function Patient() {
   const { token } = useAuth();
   const [programs, setPrograms] = useState<any[]>([])
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
+  const [patientFileId, setPatientFileId] = useState('')
+  const [patientFile, setPatientFile] = useState<any>({})
 
   const fetchPatientData = useCallback(async () => {
     setFetching(true);
@@ -48,6 +53,32 @@ export default function Patient() {
       toast.error("Failed to fetch patient data");
     }
   }, [id, token]);
+
+  const fetchPatientFilesData = async (fileId: string) => {
+    setFetching(true);
+    try {
+      const response = await fetch(`${API_URL}/patient-files/${fileId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.message || "Error fetching patient file");
+        return;
+      }
+      setPatientFile(data);
+      setPatientFileId(data?._id)
+      setFetching(false);
+    } catch (error) {
+      setFetching(false);
+      console.error(error);
+      toast.error("Failed to fetch patient file data");
+    }
+  }
 
   useEffect(() => {
     const fetchPrograms = async () => {
@@ -114,25 +145,33 @@ export default function Patient() {
               Back
             </Button>
             <div className="self-end flex flex-row justify-between items-center space-x-2">
-              {/* <div className='flex flex-row space-x-5 '>
-                <Select  onValueChange={handleProgramChange} value={selectedProgram || patient.program?._id}>
-                  <SelectTrigger className='w-[180px] border border-gray-300 rounded-md'>
-                    <SelectValue placeholder='Select Program' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {programs.map((program) => (
-                      <SelectItem key={program._id} value={program._id}>
-                        <p className='truncate'>{program.name}</p>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div> */}
+              <div className='flex flex-row space-x-5 '>
+                <NewPatientFile patientId={id} refresh={fetchPatientData} />
+              </div>
               <SmallSearchInput setShowModal={(show) => { }} />
             </div>
           </div>
           <div className="w-full">
-            <PatientTabs patientData={patient} refresh={fetchPatientData} />
+            <div className="grid grid-cols-4 gap-2 mb-4">
+              {patient?.patient_files.map((pFile: any, index: number) => {
+                return <Card key={index} onClick={() => fetchPatientFilesData(pFile?._id)} className="w-full max-w-sm hover:shadow-2xl hover:bg-gray-100 cursor-pointer">
+                  <CardHeader>
+                    <CardTitle>
+                      {pFile.program?.name}
+                    </CardTitle>
+                    <CardDescription>
+                      {pFile.status}
+                    </CardDescription>
+                    <p className="text-xs text-foreground/50">{moment(pFile.createdAt).format('YYYY-MMM-DD HH:mm A')}</p>
+
+                  </CardHeader>
+                </Card>
+              })}
+            </div>
+            {
+              patientFileId && !fetching &&
+              <PatientTabs patientFileData={patientFile} refresh={fetchPatientData} />
+            }
           </div>
         </>
       )}
@@ -147,7 +186,7 @@ export default function Patient() {
       )}
 
       {fetching && (
-        <PatientPageSkeleton/>
+        <PatientPageSkeleton />
       )}
     </div>
   );

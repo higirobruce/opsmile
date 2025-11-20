@@ -161,7 +161,8 @@ export default function SurgeryTabContent({
           consentFileUrls: uploadedFiles,
           beforeSurgeryImageUrls,
           surgicalAssistantId: selectedSurgicalAssistant,
-          observers
+          observers,
+          status: 'In PACU'
         }),
       });
 

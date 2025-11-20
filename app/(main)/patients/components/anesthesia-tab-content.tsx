@@ -100,7 +100,8 @@ export default function AnesthesiaTabContent({
           mallampatiScore,
           preanesthesiaChecklistDone,
           // surgicalSafetyChecklistDone,
-          medications
+          medications,
+          status: 'In Surgery'
         }),
       });
 

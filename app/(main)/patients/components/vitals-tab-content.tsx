@@ -102,7 +102,7 @@ export default function VitalsTabContent({
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    patientId: patientData?._id,
+                    patientId: patientData?.patient._id,
                     bloodPressureSystolic,
                     bloodPressureDiastolic,
                     height,
@@ -112,7 +112,9 @@ export default function VitalsTabContent({
                     pulseRate,
                     oxygenSaturation,
                     bmi: weight / (height * height),
-                    nurseId: user?.id
+                    nurseId: user?.id,
+                    status: 'In Consultation',
+                    patientFile: patientData?._id
                 })
             })
 
@@ -232,7 +234,7 @@ export default function VitalsTabContent({
             </div>
             <div>    <h2 className="text-lg font-semibold mb-3">Recorded Vitals</h2>
                 <div className="p-4 border rounded-lg bg-white h-[calc(100vh-200px)] overflow-scroll">
-                    {patientData?.vital_signs.map((vitalSign: any) => (
+                    {patientData?.vital_signs?.map((vitalSign: any) => (
                         <VitalSignsCard key={vitalSign._id} vitalSign={vitalSign} />
                     ))}
                 </div></div>

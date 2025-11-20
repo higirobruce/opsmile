@@ -59,7 +59,7 @@ type Item = {
     district: { name: string, code: string, _id: string }
     program: { _id: string, name: string }
     phoneNumber: string
-    status: "Active" | "Inactive" | "Pending"
+    status: string
     balance: number
     "discharges": [
         {
@@ -115,11 +115,22 @@ const columns: ColumnDef<Item>[] = [
         cell: ({ row }) => (
             <Badge
                 className={cn(
-                    row.getValue("status") === "Inactive" &&
-                    "bg-muted-foreground/60 text-primary-foreground"
+                    row.original.status === "Care Completed" ?
+                        "bg-primary text-primary-foreground" :
+                        row.original.status === "Active" ?
+                            "bg-muted-foreground/60 text-primary-foreground" :
+                            row.original.status === "Subject for review" ?
+                                "bg-yellow-400 text-primary-foreground" :
+                                row.original.status === "Counter-referred" ?
+                                    "bg-blue-400 text-primary-foreground" :
+                                    row.original.status === "Follow up" ?
+                                        "bg-purple-400 text-primary-foreground" :
+                                        "bg-muted-foreground/60 text-primary-foreground"
+
+
                 )}
             >
-                {row.original["discharges"] && (row.original["discharges"][0]?.isFollowUp ? 'Needs Follow-up' : 'Active')}
+                {row.original["status"] ? row.original["status"] : 'In progress'}
             </Badge>
         ),
         size: 120,

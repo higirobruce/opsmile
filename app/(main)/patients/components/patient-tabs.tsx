@@ -71,18 +71,20 @@ import FollowUpTabContent from "./follow-up-tab-content";
 
 
 export default function PatientTabs({
-  patientData,
+  patientFileData,
   refresh,
 }: {
-  patientData: any;
+  patientFileData: any;
   refresh: () => void;
 }) {
   const [tab, setTab] = useState("tab-2");
+  const [patientData, setPatientData] = useState({})
 
 
   useEffect(() => {
-    console.log(patientData);
-  }, [patientData]);
+    setPatientData(patientFileData?.patient)
+  }, [patientFileData]);
+
   return (
     <Tabs value={tab} defaultValue="tab-1">
       <Toaster />
@@ -154,7 +156,7 @@ export default function PatientTabs({
             Anesthesia
           </TabsTrigger>
           <TabsTrigger
-            disabled={!patientData.anesthesia_records[patientData.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
+            // disabled={!patientData?.anesthesia_records[patientData?.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
             value="tab-6"
             onClick={() => setTab("tab-6")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
@@ -167,7 +169,7 @@ export default function PatientTabs({
             Surgery
           </TabsTrigger>
           <TabsTrigger
-            disabled={!patientData.anesthesia_records[patientData.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
+            // disabled={!patientData?.anesthesia_records[patientData?.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
             value="tab-7"
             onClick={() => setTab("tab-7")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
@@ -194,7 +196,7 @@ export default function PatientTabs({
 
           <TabsTrigger
             value="tab-9"
-            disabled={!patientData['discharges'][0]?.isFollowUp}
+            // disabled={!patientData['discharges'][0]?.isFollowUp}
             onClick={() => setTab("tab-9")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
@@ -268,7 +270,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <VitalsTabContent refresh={refresh} patientData={patientData} />
+            <VitalsTabContent refresh={refresh} patientData={patientFileData} />
             {/* <VitalsHistory patientData={patientData} /> */}
           </div>
         </>
@@ -281,7 +283,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <MedicalTabContent patientData={patientData} refresh={refresh} />
+            <MedicalTabContent patientData={patientFileData} refresh={refresh} />
           </div>
         </>
       </TabsContent>
@@ -293,7 +295,7 @@ export default function PatientTabs({
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
             {/* <h1 className="text-xl text-foreground/80 ml-5">Pending Lab Requests</h1> */}
             <div className="grid grid-cols-3 gap-5">
-              {patientData?.medical_assessments?.map((assessment: any) =>
+              {patientFileData?.medical_assessments?.map((assessment: any) =>
                 assessment?.labRequests?.map((request: any, index: number) => {
                   return request?.tests?.map((test: any, index: number) => {
                     return (
@@ -324,7 +326,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <AnesthesiaTabContent patientData={patientData} refresh={refresh} />
+            <AnesthesiaTabContent patientData={patientFileData} refresh={refresh} />
           </div>
         </>
       </TabsContent>
@@ -334,7 +336,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <SurgeryTabContent patientData={patientData} refresh={refresh} />
+            <SurgeryTabContent patientData={patientFileData} refresh={refresh} />
           </div>
         </>
       </TabsContent>
@@ -344,7 +346,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <ProgressTabContent patientData={patientData} refresh={refresh} />
+            <ProgressTabContent patientData={patientFileData} refresh={refresh} />
           </div>
         </>
       </TabsContent>
@@ -354,7 +356,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <DischargeTabContent patientData={patientData} refresh={refresh} />
+            <DischargeTabContent patientData={patientFileData} refresh={refresh} />
           </div>
         </>
       </TabsContent>
@@ -364,7 +366,7 @@ export default function PatientTabs({
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <FollowUpTabContent patientData={patientData} refresh={refresh} />
+            <FollowUpTabContent patientData={patientFileData} refresh={refresh} />
           </div>
         </>
       </TabsContent>

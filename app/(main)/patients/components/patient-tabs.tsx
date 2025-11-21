@@ -73,11 +73,15 @@ import FollowUpTabContent from "./follow-up-tab-content";
 export default function PatientTabs({
   patientFileData,
   refresh,
+  currentTab,
+  setCurrentTab
 }: {
+  currentTab: any,
+  setCurrentTab: React.Dispatch<React.SetStateAction<String>>
   patientFileData: any;
   refresh: () => void;
 }) {
-  const [tab, setTab] = useState("tab-2");
+
   const [patientData, setPatientData] = useState({})
 
 
@@ -86,14 +90,14 @@ export default function PatientTabs({
   }, [patientFileData]);
 
   return (
-    <Tabs value={tab} defaultValue="tab-1">
+    <Tabs value={currentTab} defaultValue="tab-1">
       <Toaster />
       <ScrollArea>
         <TabsList className="text-foreground mb-3 h-auto gap-2 rounded-none border-b bg-transparent px-0 py-1">
 
           {/* <TabsTrigger
             value="tab-1"
-            onClick={() => setTab("tab-1")}
+            onClick={() => setCurrentTab("tab-1")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiUser3Fill
@@ -106,7 +110,7 @@ export default function PatientTabs({
 
           <TabsTrigger
             value="tab-2"
-            onClick={() => setTab("tab-2")}
+            onClick={() => setCurrentTab("tab-2")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiHeartPulseFill
@@ -119,7 +123,7 @@ export default function PatientTabs({
 
           <TabsTrigger
             value="tab-3"
-            onClick={() => setTab("tab-3")}
+            onClick={() => setCurrentTab("tab-3")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiMedicineBottleFill
@@ -132,7 +136,7 @@ export default function PatientTabs({
 
           {/* <TabsTrigger
             value="tab-4"
-            onClick={() => setTab("tab-4")}
+            onClick={() => setCurrentTab("tab-4")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiTestTubeFill
@@ -145,7 +149,7 @@ export default function PatientTabs({
 
           <TabsTrigger
             value="tab-5"
-            onClick={() => setTab("tab-5")}
+            onClick={() => setCurrentTab("tab-5")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiHotelBedFill
@@ -158,7 +162,7 @@ export default function PatientTabs({
           <TabsTrigger
             // disabled={!patientData?.anesthesia_records[patientData?.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
             value="tab-6"
-            onClick={() => setTab("tab-6")}
+            onClick={() => setCurrentTab("tab-6")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiScissors2Fill
@@ -171,7 +175,7 @@ export default function PatientTabs({
           <TabsTrigger
             // disabled={!patientData?.anesthesia_records[patientData?.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
             value="tab-7"
-            onClick={() => setTab("tab-7")}
+            onClick={() => setCurrentTab("tab-7")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiUserHeartFill
@@ -183,7 +187,7 @@ export default function PatientTabs({
           </TabsTrigger>
           <TabsTrigger
             value="tab-8"
-            onClick={() => setTab("tab-8")}
+            onClick={() => setCurrentTab("tab-8")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <RiLogoutBoxRFill
@@ -197,7 +201,7 @@ export default function PatientTabs({
           <TabsTrigger
             value="tab-9"
             // disabled={!patientData['discharges'][0]?.isFollowUp}
-            onClick={() => setTab("tab-9")}
+            onClick={() => setCurrentTab("tab-9")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
           >
             <HospitalIcon
@@ -232,7 +236,7 @@ export default function PatientTabs({
                       <Button
                         className="self-end"
                         variant="outline"
-                        onClick={() => setTab("tab-3")}
+                        onClick={() => setCurrentTab("tab-3")}
                       >
                         <Edit size={9} />
                         Edit

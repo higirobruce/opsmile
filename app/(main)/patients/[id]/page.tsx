@@ -14,6 +14,7 @@ import { PatientPageSkeleton } from "../components/patient-page-skeleton";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import NewPatientFile from "../components/new-patient-file.modal";
 import moment from "moment";
+import SimpleStepper from "../components/stepper";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -27,6 +28,7 @@ export default function Patient() {
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
   const [patientFileId, setPatientFileId] = useState(null)
   const [patientFile, setPatientFile] = useState<any>({})
+   const [tab, setTab] = useState<String>("tab-2");
 
   const fetchPatientData = useCallback(async () => {
     setFetching(true);
@@ -169,6 +171,7 @@ export default function Patient() {
                     <CardDescription>
                       {pFile.status}
                     </CardDescription>
+                    {/* <SimpleStepper/> */}
                     <p className="text-xs text-foreground/50">{moment(pFile.createdAt).format('YYYY-MMM-DD HH:mm A')}</p>
 
                   </CardHeader>
@@ -177,7 +180,7 @@ export default function Patient() {
             </div>
             {
               patientFileId && !fetching &&
-              <PatientTabs patientFileData={patientFile} refresh={fetchPatientFilesData} />
+              <PatientTabs patientFileData={patientFile} refresh={fetchPatientFilesData} currentTab={tab} setCurrentTab={setTab} />
             }
           </div>
         </>

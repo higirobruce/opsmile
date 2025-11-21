@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import SelectComponent from "../../components/select-component";
 import { Switch } from "@/components/ui/switch";
 import SwitchFollowUp from "./switch-follow-up";
+import DischargeCard from "./discharge-card";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -341,33 +342,10 @@ export default function DischargeTabContent({
           )}
           {!fetching && dischargeRecords.length === 0 && <p>No discharge records found for this patient.</p>}
           {!fetching && dischargeRecords.length > 0 && (
-            <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
-              <Timeline defaultValue={dischargeRecords.length}>
-                {dischargeRecords.map((item: any) => (
-                  <TimelineItem
-                    key={item._id}
-                    step={item._id}
-                    className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-                  >
-                    <TimelineHeader>
-                      <TimelineSeparator />
-                      <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-                        {moment(item.dischargeDate).format("MMM D, YYYY")}
-                      </TimelineDate>
-                      <TimelineTitle className="sm:-mt-0.5">Discharge Summary: {item.dischargeSummary}</TimelineTitle>
-                      <TimelineIndicator />
-                    </TimelineHeader>
-                    <TimelineContent>
-                      <p className="text-sm text-muted-foreground">Doctor: {item.doctor.firstName} {item.doctor.lastName}</p>
-                      {item.medicationsAtDischarge && item.medicationsAtDischarge.length > 0 && (
-                        <p className="text-sm text-muted-foreground">Medications: {item.medicationsAtDischarge.join(", ")}</p>
-                      )}
-                      <p className="text-sm text-muted-foreground">Follow-up: {item.followUpInstructions}</p>
-                    </TimelineContent>
-                  </TimelineItem>
-                ))}
-              </Timeline>
-            </div>
+            <>
+              {dischargeRecords?.map((d) => {
+                return <DischargeCard data={d} />
+              })}</>
           )}
         </div>
       </div>

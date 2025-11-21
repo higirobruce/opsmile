@@ -149,7 +149,8 @@ export default function SurgeryTabContent({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          patientId: patientData?._id,
+          patientId: patientData?.patient._id,
+          patientFile: patientData?._id,
           surgeonId: selectedSurgeon,
           anesthesiologistId: selectedAnesthesiologist,
           surgeryDate: surgeryStartDate,
@@ -161,8 +162,7 @@ export default function SurgeryTabContent({
           consentFileUrls: uploadedFiles,
           beforeSurgeryImageUrls,
           surgicalAssistantId: selectedSurgicalAssistant,
-          observers,
-          status: 'In PACU'
+          observers
         }),
       });
 

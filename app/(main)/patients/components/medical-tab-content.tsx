@@ -114,7 +114,8 @@ export default function MedicalTabContent({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          patientId: patientData?._id,
+          patientId: patientData?.patient._id,
+          patientFile: patientData?._id,
           pastMedicalHistory,
           diagnosis,
           labExams: labExamsFindings,

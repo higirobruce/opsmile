@@ -88,7 +88,8 @@ export default function AnesthesiaTabContent({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          patientId: patientData?._id,
+          patientId: patientData?.patient._id,
+          patientFile: patientData?._id,
           pastAnestheticHistory,
           proposedPlan,
           consentFileUrl: uploadedFiles,

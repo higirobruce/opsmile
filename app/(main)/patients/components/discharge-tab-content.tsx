@@ -38,12 +38,16 @@ export default function DischargeTabContent({
   const [followUpDate, setFollowUpDate] = useState<Date | undefined>(new Date());
   const [followUpDuration, setFollowUpDuration] = useState('')
   const [customerStatus, setCustomerStatus] = useState('')
+  const [reviewLocation, setRevieLocation] = useState('')
+  const [referralDate, setReferralDate] = useState<Date | undefined>(moment().add('1M').toDate())
+  const [referralLocation, setReferralLocation] = useState('')
+  const [followUpAction, setFollowUpAction] = useState('')
 
 
   const fetchDischargeRecords = useCallback(async () => {
     setFetching(true);
     try {
-      const response = await fetch(`${API_URL}/discharge/patient/${patientData?._id}`, {
+      const response = await fetch(`${API_URL}/discharge/patient/${patientData?.patient?._id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -83,7 +87,8 @@ export default function DischargeTabContent({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          patientId: patientData?._id,
+          patientId: patientData?.patient?._id,
+          patientFile: patientData?._id,
           doctorId: user?.id,
           dischargeDate,
           dischargeSummary,
@@ -92,10 +97,11 @@ export default function DischargeTabContent({
           procedure,
           patientDisposition,
           reviewDate: patientDisposition === 'Subject for review' ? reviewDate : '',
-          isFollowUp,
-          followUpInstructions: isFollowUp ? followUpInstructions : '',
-          followUpDate: isFollowUp ? followUpDate : '',
-          followUpDuration: isFollowUp ? Number(followUpDuration) : ''
+          reviewLocation: patientDisposition === 'Subject for review' ? reviewLocation : '',
+          referralDate: patientDisposition === 'Counter-referred' ? referralDate : '',
+          referralLocation: patientDisposition === 'Counter-referred' ? referralLocation : '',
+          followUpDate: patientDisposition == 'Follow up' ? followUpDate : '',
+          followUpAction: patientDisposition == 'Follow up' ? followUpAction : '',
         }),
       });
 
@@ -223,17 +229,64 @@ export default function DischargeTabContent({
                 )}
               </div>
 
+              {/* <Label>Review date</Label> */}
+              {patientDisposition === "Subject for review" && (
+                <div>
+                  <Label>Review Location</Label>
+                  <Input placeholder="Enter review location here" value={reviewLocation} onChange={(e) => setRevieLocation(e.target.value)} />
+                </div>
+              )}
 
+              {/* <Label>Review date</Label> */}
+              {patientDisposition === "Counter-referred" && (
+                <div>
+                  <SimpletDatePicker setDate={setReferralDate} date={referralDate} label="Referral Date" />
+                </div>
+              )}
+
+              {/* <Label>Review date</Label> */}
+              {patientDisposition === "Counter-referred" && (
+                <div>
+                  <Label>Referral ocation</Label>
+                  <Input placeholder="Enter referral location here" value={referralLocation} onChange={(e) => setReferralLocation(e.target.value)} />
+                </div>
+              )}
+
+              {/* <Label>Review date</Label> */}
+              {patientDisposition === "Follow up" && (
+                <div>
+                  <SimpletDatePicker setDate={setFollowUpDate} date={followUpDate} label="Referral Date" />
+                </div>
+              )}
+
+              {patientDisposition === "Follow up" && (
+                <div>
+                  <SelectComponent
+                    name="followUpAction"
+                    label="Follow up Action"
+                    options={[
+                      { value: "Physical Evaluation", label: "Physical Evaluation" },
+                      { value: "Care completed", label: "Care completed" },
+                      { value: "Next Appointment", label: "Next Appointment" },
+                    ]}
+                    value={followUpAction}
+                    _setValue={(v: any) => {
+                      setFollowUpAction(v)
+                    }}
+                  />
+                </div>
+              )}
+
+              {/* 
               <SwitchFollowUp
                 isFollowUp={isFollowUp}
                 setIsFollowUp={setIsFollowUp}
                 label="Follow Up"
                 sublabel="Is this a follow up discharge?"
                 description="If checked, this discharge record will be marked as a follow up."
-              />
+              /> */}
 
-
-              <div>
+              {/* <div>
                 {isFollowUp && (
                   <SimpletDatePicker setDate={setFollowUpDate} date={followUpDate} label="Follow Up Date" />
                 )}
@@ -250,7 +303,6 @@ export default function DischargeTabContent({
                   </div>
                 )}
               </div>
-
               <div>
                 {isFollowUp && (
                   <div>
@@ -263,9 +315,7 @@ export default function DischargeTabContent({
                     />
                   </div>
                 )}
-              </div>
-
-
+              </div> */}
 
             </div>
             <Button onClick={handleSubmit} disabled={submitting}>

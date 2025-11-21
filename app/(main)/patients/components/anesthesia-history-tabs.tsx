@@ -38,7 +38,7 @@ export default function AnesthesiaHistoryTabs({ patientData }: { patientData: an
     }, [patientData?.id])
 
     async function getProgressiveNotes() {
-        const res = await fetch(`${API_URL}/progressive-notes/patient/${patientData?._id}/type/ANESTHESIA_NOTES`)
+        const res = await fetch(`${API_URL}/progressive-notes/patient/${patientData?.patient?._id}/type/ANESTHESIA_NOTES`)
         const data = await res.json()
         setProgressiveNotes(data)
 
@@ -54,7 +54,8 @@ export default function AnesthesiaHistoryTabs({ patientData }: { patientData: an
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                patient: patientData?.id,
+                patient: patientData?.patient?.id,
+                patientFile: patientData?._id,
                 doneBy: user?.id,
                 type: "ANESTHESIA_NOTES",
                 date: date?.toISOString(),
@@ -125,7 +126,7 @@ export default function AnesthesiaHistoryTabs({ patientData }: { patientData: an
                             label="Note type"
                             name="noteType"
                             options={[
-                                {value:'ANESTHESIA_NOTES', label:'Anesthesia note'},
+                                { value: 'ANESTHESIA_NOTES', label: 'Anesthesia note' },
                                 // {value:'SURGICAL_NOTES', label:'Surgical note'},
                                 // {value:'NURSING_NOTES', label:'Nursing note'}
                             ]}

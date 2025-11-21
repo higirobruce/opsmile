@@ -12,15 +12,20 @@ import { Button } from "@/components/ui/button";
 import FileUpload from "../../components/file-upload";
 import { FileWithPreview } from "@/hooks/use-file-upload";
 import { fileToBase64 } from "./surgery-input-sheet";
+import ProgressiveNotesTimeline, { Note } from "./progressive-note-timeline";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export default function ProgressTabContent({
   patientData,
   refresh,
+  title,
+  type
 }: {
   patientData: any;
   refresh: () => void;
+  title: string
+  type: string
 }) {
   const { token, user } = useAuth();
   const [progressNotes, setProgressNotes] = useState<any[]>([]);
@@ -29,32 +34,33 @@ export default function ProgressTabContent({
   const [notes, setNotes] = useState("");
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; base64Url: string }[]>([]);
+  const [progressiveNotes, setProgressiveNotes] = useState<Note[]>([])
 
-  const fetchProgressNotes = useCallback(async () => {
-    setFetching(true);
-    try {
-      const response = await fetch(`${API_URL}/progress/patient/${patientData?._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+  // const fetchProgressNotes = useCallback(async () => {
+  //   setFetching(true);
+  //   try {
+  //     const response = await fetch(`${API_URL}/progress/patient/${patientData?.patient?._id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (!response.ok) {
-        toast.error(data.message || "Error fetching progress notes");
-        return;
-      }
+  //     if (!response.ok) {
+  //       toast.error(data.message || "Error fetching progress notes");
+  //       return;
+  //     }
 
-      setProgressNotes(data);
-      setFetching(false);
-    } catch (error) {
-      setFetching(false);
-      console.error(error);
-      toast.error("Failed to fetch progress notes");
-    }
-  }, [patientData?._id, token]);
+  //     setProgressNotes(data);
+  //     setFetching(false);
+  //   } catch (error) {
+  //     setFetching(false);
+  //     console.error(error);
+  //     toast.error("Failed to fetch progress notes");
+  //   }
+  // }, [patientData?._id, token]);
 
   const handleFileUpload = async (files: FileWithPreview[]) => {
     try {
@@ -75,46 +81,50 @@ export default function ProgressTabContent({
   };
 
   useEffect(() => {
-    fetchProgressNotes();
-  }, [fetchProgressNotes]);
+    getProgressiveNotes();
+  }, [patientData?._id, token]);
 
-  const handleSubmit = async () => {
-    setSubmitting(true);
+
+  async function getProgressiveNotes() {
     setFetching(true)
-    try {
-      const response = await fetch(`${API_URL}/progress`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          patientId: patientData?._id,
-          doctorId: user?.id,
-          date,
-          notes,
-        }),
-      });
+    const res = await fetch(`${API_URL}/progressive-notes/patient/${patientData?.patient?._id}/type/${type}`)
+    const data = await res.json()
+    setProgressiveNotes(data)
+    setFetching(false)
 
-      const data = await response.json();
+    console.log('progressiveNotes', data)
+    return data
+  }
 
-      if (!response.ok) {
-        toast.error(data.message || "Error saving progress note");
-        return;
-      }
-
-      toast.success("Progress note saved successfully");
-      setNotes("");
-      setDate(new Date());
-      fetchProgressNotes();
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to save progress note");
-    } finally {
-      setSubmitting(false);
-      setFetching(false)
-    }
-  };
+  async function handleSubmit() {
+    setSubmitting(true)
+    fetch(`${API_URL}/progressive-notes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        patient: patientData?.patient.id,
+        patientFile: patientData._id,
+        doneBy: user?.id,
+        type,
+        date: date?.toISOString(),
+        notes,
+        title
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data._id) {
+          console.log('------', data)
+          toast.error(data.message || "Error adding notes");
+          return;
+        }
+        getProgressiveNotes()
+        toast.success("Notes added successfully");
+      })
+      .finally(() => setSubmitting(false))
+  }
 
   return (
     <div className="flex flex-col space-y-5">
@@ -136,7 +146,7 @@ export default function ProgressTabContent({
             </div>
 
             <div>
-              <Label>PACU Records Upload</Label>
+              <Label>{title} Records Upload</Label>
               <FileUpload
                 bucketName="pacu-records"
                 onUploadComplete={(files: FileWithPreview[]) =>
@@ -146,13 +156,13 @@ export default function ProgressTabContent({
               />
             </div>
 
-            <Button 
-            onClick={handleSubmit} 
-            disabled={true}
-            // disabled={submitting}
+            <Button
+              onClick={handleSubmit}
+              // disabled={true}
+            disabled={submitting}
             >
               {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
-              Save Progress Note
+              Save {title} Note
             </Button>
           </div>
         </div>
@@ -171,30 +181,10 @@ export default function ProgressTabContent({
               </div>
             </div>
           )}
-          {!fetching && progressNotes.length === 0 && <p>No progress notes found for this patient.</p>}
-          {!fetching && progressNotes.length > 0 && (
-            <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
-              <Timeline defaultValue={progressNotes.length}>
-                {progressNotes.map((item: any) => (
-                  <TimelineItem
-                    key={item._id}
-                    step={item._id}
-                    className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-                  >
-                    <TimelineHeader>
-                      <TimelineSeparator />
-                      <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-                        {moment(item.date).format("MMM D, YYYY")}
-                      </TimelineDate>
-                      <TimelineTitle className="sm:-mt-0.5">{item.notes}</TimelineTitle>
-                      <TimelineIndicator />
-                    </TimelineHeader>
-                    <TimelineContent>
-                      <p className="text-sm text-muted-foreground">Doctor: {item.doctor.firstName} {item.doctor.lastName}</p>
-                    </TimelineContent>
-                  </TimelineItem>
-                ))}
-              </Timeline>
+          {!fetching && progressiveNotes.length === 0 && <p>No progress notes found for this patient.</p>}
+          {!fetching && progressiveNotes.length > 0 && (
+            <div className="mt-2 p-4">
+              <ProgressiveNotesTimeline notes={progressiveNotes} />
             </div>
           )}
         </div>

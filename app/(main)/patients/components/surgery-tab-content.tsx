@@ -201,11 +201,11 @@ export default function SurgeryTabContent({
       <TabsList className="h-auto rounded-none border-b bg-transparent p-0">
         <TabsTrigger value="tab-1" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Pre-Operative</TabsTrigger>
         <TabsTrigger value="tab-2" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Intra-Operative</TabsTrigger>
-        <TabsTrigger value="tab-3" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Post-Operative</TabsTrigger>
         <TabsTrigger value="tab-4" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">PACU</TabsTrigger>
+        <TabsTrigger value="tab-3" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Post-Operative</TabsTrigger>
       </TabsList>
       <TabsContent value="tab-1" className="w-full">
-        <ProgressTabContent patientData={patientData} refresh={refresh} />
+        <ProgressTabContent title='Pre-op' type='PRE_OP_NOTES' patientData={patientData} refresh={refresh} />
       </TabsContent>
 
       <TabsContent value="tab-2" className="w-full">
@@ -273,7 +273,7 @@ export default function SurgeryTabContent({
                 <div>
                   <Label>Observers</Label>
                   <Textarea
-                    className="mt-2"
+                    className=""
                     value={observers}
                     onChange={(e) => setObservers(e.target.value)}
                   />
@@ -303,7 +303,7 @@ export default function SurgeryTabContent({
                 <div>
                   <Label>Surgery Notes</Label>
                   <Textarea
-                    className="mt-2"
+                    className=""
                     value={procedure}
                     onChange={(e) => setProcedure(e.target.value)}
                   />
@@ -396,12 +396,13 @@ export default function SurgeryTabContent({
           </div>
         </div>
       </TabsContent>
-      <TabsContent value="tab-3" className="w-full">
-        <ProgressTabContent patientData={patientData} refresh={refresh} />
-      </TabsContent>
       <TabsContent value="tab-4" className="w-full">
-        <ProgressTabContent patientData={patientData} refresh={refresh} />
+        <ProgressTabContent title='PACU' type='PACU_NOTES' patientData={patientData} refresh={refresh} />
       </TabsContent>
+      <TabsContent value="tab-3" className="w-full">
+        <ProgressTabContent title='Post-Op' type='POST_OP_NOTES' patientData={patientData} refresh={refresh} />
+      </TabsContent>
+      
 
     </Tabs>
 

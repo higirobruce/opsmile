@@ -54,10 +54,10 @@ export default function Patient() {
     }
   }, [id, token]);
 
-  const fetchPatientFilesData = async (fileId: string) => {
+  const fetchPatientFilesData = async () => {
     setFetching(true);
     try {
-      const response = await fetch(`${API_URL}/patient-files/${fileId}`, {
+      const response = await fetch(`${API_URL}/patient-files/${patientFileId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -101,6 +101,13 @@ export default function Patient() {
     fetchPatientData();
   }, [id, fetchPatientData, token]);
 
+
+  useEffect(() => {
+
+    fetchPatientFilesData()
+
+  }, [patientFileId])
+
   const handleProgramChange = async (programId: string) => {
     setSelectedProgram(programId)
     try {
@@ -133,6 +140,7 @@ export default function Patient() {
     }
   }
 
+
   return (
     <div className="flex flex-col space-y-5">
       {patient?._id && (
@@ -154,7 +162,7 @@ export default function Patient() {
           <div className="w-full">
             <div className="grid grid-cols-4 gap-2 mb-4">
               {patient?.patient_files.map((pFile: any, index: number) => {
-                return <Card key={index} onClick={() => fetchPatientFilesData(pFile?._id)} className="w-full max-w-sm hover:shadow-2xl hover:bg-gray-100 cursor-pointer">
+                return <Card key={index} onClick={() => setPatientFileId(pFile._id)} className="w-full max-w-sm hover:shadow-2xl hover:bg-gray-100 cursor-pointer">
                   <CardHeader>
                     <CardTitle>
                       {pFile.program?.name}
@@ -170,7 +178,7 @@ export default function Patient() {
             </div>
             {
               patientFileId && !fetching &&
-              <PatientTabs patientFileData={patientFile} refresh={fetchPatientData} />
+              <PatientTabs patientFileData={patientFile} refresh={fetchPatientFilesData} />
             }
           </div>
         </>

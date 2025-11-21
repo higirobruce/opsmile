@@ -147,7 +147,7 @@ export default function PatientTabs({
             Lab
           </TabsTrigger> */}
 
-          <TabsTrigger
+          {/* <TabsTrigger
             value="tab-5"
             onClick={() => setCurrentTab("tab-5")}
             className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
@@ -158,7 +158,7 @@ export default function PatientTabs({
               aria-hidden="true"
             />
             Anesthesia
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger
             // disabled={!patientData?.anesthesia_records[patientData?.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
             value="tab-6"
@@ -170,21 +170,9 @@ export default function PatientTabs({
               size={16}
               aria-hidden="true"
             />
-            Surgery
+            Peri-operative
           </TabsTrigger>
-          <TabsTrigger
-            // disabled={!patientData?.anesthesia_records[patientData?.anesthesia_records?.length - 1 || 0]?.clearedForAnesthesiaBool}
-            value="tab-7"
-            onClick={() => setCurrentTab("tab-7")}
-            className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-          >
-            <RiUserHeartFill
-              className="-ms-0.5 me-1.5 opacity-60"
-              size={16}
-              aria-hidden="true"
-            />
-            PACU Notes
-          </TabsTrigger>
+          
           <TabsTrigger
             value="tab-8"
             onClick={() => setCurrentTab("tab-8")}
@@ -326,14 +314,14 @@ export default function PatientTabs({
 
 
       {/* Anesthesia */}
-      <TabsContent value="tab-5">
+      {/* <TabsContent value="tab-5">
         <>
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
             <AnesthesiaTabContent patientData={patientFileData} refresh={refresh} />
           </div>
         </>
-      </TabsContent>
+      </TabsContent> */}
 
       {/* Surgery */}
       <TabsContent value="tab-6">
@@ -341,16 +329,6 @@ export default function PatientTabs({
           <div className="flex flex-col space-y-5">
             <PatientSnapshot isHeaderSection={true} patientData={patientData} />
             <SurgeryTabContent patientData={patientFileData} refresh={refresh} />
-          </div>
-        </>
-      </TabsContent>
-
-      {/* Progress */}
-      <TabsContent value="tab-7">
-        <>
-          <div className="flex flex-col space-y-5">
-            <PatientSnapshot isHeaderSection={true} patientData={patientData} />
-            <ProgressTabContent patientData={patientFileData} refresh={refresh} />
           </div>
         </>
       </TabsContent>

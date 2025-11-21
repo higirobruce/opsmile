@@ -18,6 +18,8 @@ import { Button } from "@/components/ui/button";
 import { Timeline, TimelineContent, TimelineDate, TimelineHeader, TimelineIndicator, TimelineItem, TimelineSeparator, TimelineTitle } from "@/components/ui/timeline";
 import SimpleTextArea from "../../components/text-area";
 import MedicalAssessmentCard from "./medical-asswssment-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AnesthesiaTabContent from "./anesthesia-tab-content";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -124,10 +126,7 @@ export default function MedicalTabContent({
             name: item.name,
             base64Url: item.base64Url,
           })),
-          uploadedPhotos: uploadedPhotos.map((item) => ({
-            name: item.name,
-            base64Url: item.base64Url,
-          })),
+
           uploadedLabExams: uploadedLabExams.map((item) => ({
             name: item.name,
             base64Url: item.base64Url,
@@ -168,50 +167,56 @@ export default function MedicalTabContent({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      {/* Left Column: Form for new Consultation record */}
-      <div>
-        <h2 className="text-xl font-semibold mb-3">Add New Consultation record</h2>
-        <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
+    <Tabs defaultValue="tab-1" className="items-start w-full">
+      <TabsList className="h-auto rounded-none border-b bg-transparent p-0">
+        <TabsTrigger value="tab-1" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">General</TabsTrigger>
+        <TabsTrigger value="tab-2" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Anesthesia</TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab-1" className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Left Column: Form for new Consultation record */}
           <div>
-            {/* <Label>Medical History</Label> */}
-            <SimpleTextArea label='Medical history' limit={500} setValue={setPastMedicalHistory} value={pastMedicalHistory} />
-            {/* <Textarea
+            <h2 className="text-xl font-semibold mb-3">Add New Consultation record</h2>
+            <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
+              <div>
+                {/* <Label>Medical History</Label> */}
+                <SimpleTextArea label='Medical history' limit={500} setValue={setPastMedicalHistory} value={pastMedicalHistory} />
+                {/* <Textarea
               value={pastMedicalHistory}
               maxLength={500}
               onChange={(e) => setPastMedicalHistory(e.target.value)}
             /> */}
-          </div>
+              </div>
 
-          <div>
-            {/* <Label>Diagnosis</Label> */}
-            <SimpleTextArea label='Diagnosis' limit={200} setValue={setDiagnosis} value={diagnosis} />
-            {/* <Textarea
+              <div>
+                {/* <Label>Diagnosis</Label> */}
+                <SimpleTextArea label='Diagnosis' limit={200} setValue={setDiagnosis} value={diagnosis} />
+                {/* <Textarea
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
             /> */}
-          </div>
+              </div>
 
-          <div>
-            {/* <Label>Diagnosis</Label> */}
-            <SimpleTextArea label='Physical Exams Findings' limit={500} setValue={setPhysicalExamsFindings} value={physicalExamsFindings} />
-            {/* <Textarea
+              <div>
+                {/* <Label>Diagnosis</Label> */}
+                <SimpleTextArea label='Physical Exams Findings' limit={500} setValue={setPhysicalExamsFindings} value={physicalExamsFindings} />
+                {/* <Textarea
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
             /> */}
-          </div>
+              </div>
 
 
-          <div>
-            {/* <Label>Diagnosis</Label> */}
-            <SimpleTextArea label='Lab Exams findings' limit={500} setValue={setLabExamsFindings} value={labExamsFindings} />
-            {/* <Textarea
+              <div>
+                {/* <Label>Diagnosis</Label> */}
+                <SimpleTextArea label='Lab Exams findings' limit={500} setValue={setLabExamsFindings} value={labExamsFindings} />
+                {/* <Textarea
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
             /> */}
-          </div>
+              </div>
 
-          {/* <div className="col-span-2">
+              {/* <div className="col-span-2">
             {labExams.map((exam, index) => (
               <div key={index} className="flex items-center space-x-2 mt-2">
                 <Input
@@ -238,114 +243,111 @@ export default function MedicalTabContent({
             <Button size='icon' variant="outline" className="mt-2 ml-2" onClick={() => setLabExams([...labExams, { testName: '', result: '' }])}><Plus /></Button>
           </div> */}
 
-          <div className="flex flex-col space-y-1">
-            <Label>Labs results Upload</Label>
-            <FileUpload
-              bucketName="consents"
-              onUploadComplete={(files: FileWithPreview[]) =>
-                handleLabExamsFileUpload(files)
-              }
-              success={uploadedLabExams.length > 0}
-            />
-          </div>
+              <div className="flex flex-col space-y-1">
+                <Label>Labs results Upload</Label>
+                <FileUpload
+                  bucketName="consents"
+                  onUploadComplete={(files: FileWithPreview[]) =>
+                    handleLabExamsFileUpload(files)
+                  }
+                  success={uploadedLabExams.length > 0}
+                />
+              </div>
 
-          <div className="flex flex-col space-y-1">
-            <Label>Consent Upload</Label>
-            <FileUpload
-              bucketName="consents"
-              onUploadComplete={(files: FileWithPreview[]) =>
-                handleFileUpload(files)
-              }
-              success={uploadedFiles.length > 0}
-            />
-          </div>
+              <div className="flex flex-col space-y-1">
+                <Label>Consent Upload</Label>
+                <FileUpload
+                  bucketName="consents"
+                  onUploadComplete={(files: FileWithPreview[]) =>
+                    handleFileUpload(files)
+                  }
+                  success={uploadedFiles.length > 0}
+                />
+              </div>
 
-          <div className="flex flex-col space-y-1">
-            <Label>Pre-Operative Photo Upload</Label>
-            <FileUpload
-              bucketName="photos"
-              onUploadComplete={(files: FileWithPreview[]) =>
-                handlePhotoUpload(files)
-              }
-              success={uploadedPhotos.length > 0}
-            />
-          </div>
-          <div>
-            {/* <Label>Diagnosis</Label> */}
-            <SimpleTextArea label='Consultative Notes' limit={200} setValue={setConsultativeNotes} value={consultativeNotes} />
-            {/* <Textarea
+
+              <div>
+                {/* <Label>Diagnosis</Label> */}
+                <SimpleTextArea label='Consultative Notes' limit={200} setValue={setConsultativeNotes} value={consultativeNotes} />
+                {/* <Textarea
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
             /> */}
+              </div>
+
+              <div>
+                <SelectComponent
+                  _setValue={setSurgicalDecision}
+                  value={surgicalDecision}
+                  name="clearedForSurgery"
+                  label="Sergical Decision"
+                  options={[
+                    { value: "Cleared for surgery", label: "Cleared for surgery" },
+                    { value: "Pending", label: "Pending (with reason)" },
+                    { value: "Not Cleared", label: "Not Cleared (Case closed)" },
+                    { value: "Transferred", label: "Transfered" },
+                    { value: "Other", label: "Other - Specify" },
+                  ]}
+                />
+              </div>
+
+              {surgicalDecision == "Pending" && (
+                <div>
+                  <Label>Reason</Label>
+                  <Textarea
+                    value={reasonForPending}
+                    className="mt-2"
+                    onChange={(e) => setReasonForPending(e.target.value)}
+                  />
+                </div>
+              )}
+
+              {surgicalDecision == "Transferred" && (
+                <div>
+                  <Label>Transferred to? </Label>
+                  <Textarea
+                    value={destinationForTransferred}
+                    className="mt-2"
+                    onChange={(e) => setDestinationForTransferred(e.target.value)}
+                  />
+                </div>
+              )}
+              {surgicalDecision == "Other" && (
+                <div>
+                  <Label>Specify</Label>
+                  <Textarea
+                    value={surgicalDecisionOther}
+                    className="mt-2"
+                    onChange={(e) => setSurgicalDecisionOther(e.target.value)}
+                  />
+                </div>
+              )}
+
+              <Button className="col-span-2" onClick={handleSubmit} disabled={submitting}>
+                {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
+                Save Consultation record
+              </Button>
+            </div>
           </div>
 
+          {/* Right Column: History of Consultation records */}
           <div>
-            <SelectComponent
-              _setValue={setSurgicalDecision}
-              value={surgicalDecision}
-              name="clearedForSurgery"
-              label="Sergical Decision"
-              options={[
-                { value: "Cleared for surgery", label: "Cleared for surgery" },
-                { value: "Pending", label: "Pending (with reason)" },
-                { value: "Not Cleared", label: "Not Cleared (Case closed)" },
-                { value: "Transferred", label: "Transfered" },
-                { value: "Other", label: "Other - Specify" },
-              ]}
-            />
+            <h2 className="text-xl font-semibold mb-3">Consultation record History</h2>
+            {patientData?.medical_assessments?.length === 0 && <p>No Consultation records found for this patient.</p>}
+            {patientData?.medical_assessments?.length > 0 && (
+              <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
+                {patientData?.medical_assessments?.map((record: any, index: number) => (
+                  <MedicalAssessmentCard key={index} record={record} />
+                ))}
+              </div>
+            )}
           </div>
-
-          {surgicalDecision == "Pending" && (
-            <div>
-              <Label>Reason</Label>
-              <Textarea
-                value={reasonForPending}
-                className="mt-2"
-                onChange={(e) => setReasonForPending(e.target.value)}
-              />
-            </div>
-          )}
-
-          {surgicalDecision == "Transferred" && (
-            <div>
-              <Label>Transferred to? </Label>
-              <Textarea
-                value={destinationForTransferred}
-                className="mt-2"
-                onChange={(e) => setDestinationForTransferred(e.target.value)}
-              />
-            </div>
-          )}
-          {surgicalDecision == "Other" && (
-            <div>
-              <Label>Specify</Label>
-              <Textarea
-                value={surgicalDecisionOther}
-                className="mt-2"
-                onChange={(e) => setSurgicalDecisionOther(e.target.value)}
-              />
-            </div>
-          )}
-
-          <Button className="col-span-2" onClick={handleSubmit} disabled={submitting}>
-            {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
-            Save Consultation record
-          </Button>
         </div>
-      </div>
+      </TabsContent>
+      <TabsContent value="tab-2" className="w-full">
+        <AnesthesiaTabContent patientData={patientData} refresh={refresh} />
+      </TabsContent>
+    </Tabs>
 
-      {/* Right Column: History of Consultation records */}
-      <div>
-        <h2 className="text-xl font-semibold mb-3">Consultation record History</h2>
-        {patientData?.medical_assessments?.length === 0 && <p>No Consultation records found for this patient.</p>}
-        {patientData?.medical_assessments?.length > 0 && (
-          <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
-            {patientData?.medical_assessments?.map((record: any, index: number) => (
-              <MedicalAssessmentCard key={index} record={record} />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
   );
 }

@@ -202,6 +202,7 @@ export default function SurgeryTabContent({
         <TabsTrigger value="tab-1" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Pre-Operative</TabsTrigger>
         <TabsTrigger value="tab-2" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Intra-Operative</TabsTrigger>
         <TabsTrigger value="tab-3" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Post-Operative</TabsTrigger>
+        <TabsTrigger value="tab-4" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">PACU</TabsTrigger>
       </TabsList>
       <TabsContent value="tab-1" className="w-full">
         <ProgressTabContent patientData={patientData} refresh={refresh} />
@@ -396,6 +397,9 @@ export default function SurgeryTabContent({
         </div>
       </TabsContent>
       <TabsContent value="tab-3" className="w-full">
+        <ProgressTabContent patientData={patientData} refresh={refresh} />
+      </TabsContent>
+      <TabsContent value="tab-4" className="w-full">
         <ProgressTabContent patientData={patientData} refresh={refresh} />
       </TabsContent>
 

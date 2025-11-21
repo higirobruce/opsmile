@@ -138,7 +138,7 @@ export default function AnesthesiaTabContent({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       {/* Left Column: Form for new Anesthesia Record */}
       <div>
-        <h2 className="text-xl font-semibold mb-3">Add New Anesthesia Record</h2>
+        {/* <h2 className="text-xl font-semibold mb-3">Add New Anesthesia Record</h2> */}
         <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
           <div>
             <Label>Anesthesia History</Label>

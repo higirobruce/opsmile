@@ -25,7 +25,7 @@ export default function Patient() {
   const { token } = useAuth();
   const [programs, setPrograms] = useState<any[]>([])
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
-  const [patientFileId, setPatientFileId] = useState('')
+  const [patientFileId, setPatientFileId] = useState(null)
   const [patientFile, setPatientFile] = useState<any>({})
 
   const fetchPatientData = useCallback(async () => {
@@ -103,9 +103,8 @@ export default function Patient() {
 
 
   useEffect(() => {
-
-    fetchPatientFilesData()
-
+    if (patientFileId)
+      fetchPatientFilesData()
   }, [patientFileId])
 
   const handleProgramChange = async (programId: string) => {

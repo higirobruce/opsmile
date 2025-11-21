@@ -343,8 +343,8 @@ export default function DischargeTabContent({
           {!fetching && dischargeRecords.length === 0 && <p>No discharge records found for this patient.</p>}
           {!fetching && dischargeRecords.length > 0 && (
             <>
-              {dischargeRecords?.map((d) => {
-                return <DischargeCard data={d} />
+              {dischargeRecords?.map((d, index) => {
+                return <DischargeCard data={d} key={index}/>
               })}</>
           )}
         </div>

@@ -92,12 +92,7 @@ export default function DischargesTimeline({ notes }: { notes: Note[] }) {
                                     <p className="text-xs font-semibold">Follow up Action</p>
                                     <p className="text-xs">{item.referralLocation || '-'}</p>
                                 </div>}
-
-
-
                             </div>
-
-
                         </TimelineTitle>
                         <TimelineIndicator />
                     </TimelineHeader>

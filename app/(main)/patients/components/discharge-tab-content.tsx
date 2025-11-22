@@ -273,7 +273,6 @@ export default function DischargeTabContent({
                     label="Follow up Action"
                     options={[
                       { value: "Physical Evaluation", label: "Physical Evaluation" },
-                      { value: "Care completed", label: "Care completed" },
                       { value: "Next Appointment", label: "Next Appointment" },
                     ]}
                     value={followUpAction}

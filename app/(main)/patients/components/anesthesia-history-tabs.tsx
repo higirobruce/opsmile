@@ -23,7 +23,7 @@ import SelectComponent from "../../components/select-component"
 
 let API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
 
-export default function AnesthesiaHistoryTabs({ patientData }: { patientData: any }) {
+export default function AnesthesiaHistoryTabs({ patientData, refresh }: { patientData: any, refresh: any }) {
     const [submitting, setSubmitting] = useState(false)
     const [date, setDate] = useState<Date | undefined>(moment().toDate())
     const [notes, setNotes] = useState("")
@@ -34,7 +34,8 @@ export default function AnesthesiaHistoryTabs({ patientData }: { patientData: an
 
 
     useEffect(() => {
-        getProgressiveNotes()
+        // getProgressiveNotes()
+        setProgressiveNotes(patientData?.notes)
     }, [patientData?.id])
 
     async function getProgressiveNotes() {
@@ -70,7 +71,7 @@ export default function AnesthesiaHistoryTabs({ patientData }: { patientData: an
                     toast.error(data.message || "Error adding anesthesia notes");
                     return;
                 }
-                getProgressiveNotes()
+                refresh()
                 toast.success("Anesthesia notes added successfully");
             })
             .finally(() => setSubmitting(false))

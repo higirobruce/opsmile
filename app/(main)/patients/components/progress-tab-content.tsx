@@ -82,7 +82,9 @@ export default function ProgressTabContent({
 
   useEffect(() => {
     // getProgressiveNotes();
-    setProgressiveNotes(patientData?.notes)
+    let allNotes = patientData?.notes;
+    let filteredNotes = allNotes?.filter((n: any) => n.type === type)
+    setProgressiveNotes(filteredNotes)
     setFetching(false)
   }, [patientData?._id, token]);
 

@@ -292,7 +292,7 @@ export default function AnesthesiaTabContent({
       </div>
 
       {/* Right Column: History of Anesthesia Records */}
-      <AnesthesiaHistoryTabs patientData={patientData} />
+      <AnesthesiaHistoryTabs refresh={refresh} patientData={patientData} />
     </div>
   );
 }

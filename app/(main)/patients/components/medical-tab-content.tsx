@@ -280,7 +280,7 @@ export default function MedicalTabContent({
                   _setValue={setSurgicalDecision}
                   value={surgicalDecision}
                   name="clearedForSurgery"
-                  label="Sergical Decision"
+                  label="Surgical Decision"
                   options={[
                     { value: "Cleared for surgery", label: "Cleared for surgery" },
                     { value: "Pending", label: "Pending (with reason)" },

@@ -13,6 +13,7 @@ import SelectComponent from "../../components/select-component";
 import { Switch } from "@/components/ui/switch";
 import SwitchFollowUp from "./switch-follow-up";
 import DischargeCard from "./discharge-card";
+import DischargesTimeline from "./discharges-timeline";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -45,37 +46,42 @@ export default function DischargeTabContent({
   const [followUpAction, setFollowUpAction] = useState('')
 
 
-  const fetchDischargeRecords = useCallback(async () => {
-    setFetching(true);
-    try {
-      const response = await fetch(`${API_URL}/discharge/patient/${patientData?.patient?._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+  // const fetchDischargeRecords = useCallback(async () => {
+  //   setFetching(true);
+  //   try {
+  //     const response = await fetch(`${API_URL}/discharge/patient/${patientData?.patient?._id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (!response.ok) {
-        toast.error(data.message || "Error fetching discharge records");
-        return;
-      }
+  //     console.log()
+  //     if (!response.ok) {
+  //       toast.error(data.message || "Error fetching discharge records");
+  //       return;
+  //     }
 
-      setDischargeRecords(data);
-      setFetching(false);
-    } catch (error) {
-      setFetching(false);
-      console.error(error);
-      toast.error("Failed to fetch discharge records");
-    }
-  }, [patientData?.patient?._id, token]);
+  //     setDischargeRecords(data);
+  //     setFetching(false);
+  //   } catch (error) {
+  //     setFetching(false);
+  //     console.error(error);
+  //     toast.error("Failed to fetch discharge records");
+  //   }
+  // }, [patientData?.patient?._id, token]);
 
 
 
   useEffect(() => {
-    fetchDischargeRecords();
-  }, [fetchDischargeRecords]);
+    // fetchDischargeRecords();
+    setDischargeRecords(patientData?.discharges)
+
+    console.log('Diiiiii', patientData?.discharges)
+    setFetching(false)
+  }, []);
 
   const handleSubmit = async () => {
     setSubmitting(true);
@@ -124,7 +130,7 @@ export default function DischargeTabContent({
       setMedicationsAtDischarge("");
       setFollowUpInstructions("");
       setDischargeDate(new Date());
-      fetchDischargeRecords();
+      refresh()
     } catch (error) {
       console.error(error);
       toast.error("Failed to save discharge record");
@@ -340,13 +346,10 @@ export default function DischargeTabContent({
               </div>
             </div>
           )}
-          {/* {!fetching && dischargeRecords.length === 0 && <p>No discharge records found for this patient.</p>}
+          {!fetching && dischargeRecords.length === 0 && <p>No discharge records found for this patient.</p>}
           {!fetching && dischargeRecords.length > 0 && (
-            <>
-              {dischargeRecords?.map((d, index) => {
-                return <DischargeCard data={d} key={index}/>
-              })}</>
-          )} */}
+            <DischargesTimeline notes={dischargeRecords}/>
+          )}
         </div>
       </div>
     </div>

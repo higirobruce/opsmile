@@ -28,7 +28,7 @@ export default function MedicalAssessmentCard({ record }: { record: any }) {
                 {/* Clinical Summary */}
                 <div>
                     <h3 className="font-medium text-gray-700">Clinical Summary</h3>
-                    <div className="mt-2 space-y-1 text-xs">
+                    <div className="mt-2 space-y-3 text-xs">
                         <p><span className="font-semibold">Past Medical History:</span> {record.pastMedicalHistory || "N/A"}</p>
                         <p><span className="font-semibold">Physical Exams:</span> {record.physicalExams || "N/A"}</p>
                         <p><span className="font-semibold">Lab Exams:</span> {record.labExams || "N/A"}</p>

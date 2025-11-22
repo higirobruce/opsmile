@@ -162,20 +162,21 @@ export default function Patient() {
             </div>
           </div>
           <div className="w-full">
-            <div className="grid grid-cols-4 gap-2 mb-4">
+            <div className="grid grid-cols-4 gap-2 mb-2">
               {patient?.patient_files.map((pFile: any, index: number) => {
                 return <Card key={index} onClick={() => setPatientFileId(pFile._id)} className={
-                  cn(`w-full max-w-sm hover:shadow-2xl bg-white hover:bg-gray-100 cursor-pointer ${pFile?._id == patientFileId && 'bg-gray-100 border-primary'}`)
-                  }>
+                  cn(`w-full max-w-sm hover:shadow-2xl bg-white hover:bg-gray-100 cursor-pointer ${pFile?._id == patientFileId && 'bg-gray-50 border-primary'}`)
+                }>
                   <CardHeader>
-                    <CardTitle className="text-xs font-semibold">
+                    <CardDescription className="text-xs font-semibold flex flex-row items-baseline justify-between">
                       {pFile.program?.name}
-                    </CardTitle>
+                      <p className="text-xs text-foreground/50">{moment(pFile.createdAt).format('YYYY-MMM-DD')}</p>
+                    </CardDescription>
                     {/* <CardDescription>
                       {pFile.status}
                     </CardDescription> */}
                     {/* <SimpleStepper/> */}
-                    <p className="text-xs text-foreground/50">{moment(pFile.createdAt).format('YYYY-MMM-DD HH:mm A')}</p>
+
 
                   </CardHeader>
                 </Card>

@@ -81,7 +81,9 @@ export default function ProgressTabContent({
   };
 
   useEffect(() => {
-    getProgressiveNotes();
+    // getProgressiveNotes();
+    setProgressiveNotes(patientData?.notes)
+    setFetching(false)
   }, [patientData?._id, token]);
 
 
@@ -91,8 +93,6 @@ export default function ProgressTabContent({
     const data = await res.json()
     setProgressiveNotes(data)
     setFetching(false)
-
-    console.log('progressiveNotes', data)
     return data
   }
 
@@ -120,7 +120,7 @@ export default function ProgressTabContent({
           toast.error(data.message || "Error adding notes");
           return;
         }
-        getProgressiveNotes()
+        refresh()
         toast.success("Notes added successfully");
       })
       .finally(() => setSubmitting(false))
@@ -159,7 +159,7 @@ export default function ProgressTabContent({
             <Button
               onClick={handleSubmit}
               // disabled={true}
-            disabled={submitting}
+              disabled={submitting}
             >
               {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
               Save {title} Note

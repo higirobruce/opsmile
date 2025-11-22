@@ -14,6 +14,9 @@ import { Switch } from "@/components/ui/switch";
 import SwitchFollowUp from "./switch-follow-up";
 import FileUpload from "../../components/file-upload";
 import { FileWithPreview } from "@/hooks/use-file-upload";
+import ClinicalSummaryTab from "./clinical-summary-card";
+import { TabList } from "react-aria-components";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -84,6 +87,7 @@ export default function FollowUpTabContent({
       toast.error("Failed to fetch discharge records");
     }
   }, [patientData?._id, token]);
+  
 
   useEffect(() => {
     fetchFollowUpRecords();
@@ -106,6 +110,7 @@ export default function FollowUpTabContent({
       toast.error("Error processing files");
     }
   };
+
   const handleSubmit = async () => {
     setSubmitting(true);
     setFetching(true)
@@ -203,65 +208,85 @@ export default function FollowUpTabContent({
           </div>
         </div>
         <div>
-          <h2 className="text-xl font-semibold mb-3">Follow-up History</h2>
-          {fetching && (
-            <div className="flex h-96">
-              <div role="status" className="animate-pulse">
-                <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[640px] mb-2.5 mx-auto"></div>
-                <div className="h-2.5 mx-auto bg-gray-300 rounded-full dark:bg-gray-700"></div>
-                <div className="flex items-center justify-center mt-4">
-                  <div className="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                  <div className="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+
+
+          <Tabs defaultValue="tab-1">
+            <TabsList className="h-auto rounded-none border-b bg-transparent p-0">
+              <TabsTrigger value="tab-1" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Clinical summary</TabsTrigger>
+              <TabsTrigger value="tab-2" className="relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary">Follow up History</TabsTrigger>
+
+            </TabsList>
+            <TabsContent value="tab-2">
+              <h2 className="text-xl font-semibold mb-3">Follow-up History</h2>
+              {fetching && (
+                <div className="flex h-96">
+                  <div role="status" className="animate-pulse">
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[640px] mb-2.5 mx-auto"></div>
+                    <div className="h-2.5 mx-auto bg-gray-300 rounded-full dark:bg-gray-700"></div>
+                    <div className="flex items-center justify-center mt-4">
+                      <div className="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                      <div className="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                    </div>
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>
-          )}
-          {!fetching && followUpRecords.length === 0 && <p>No discharge records found for this patient.</p>}
-          {!fetching && followUpRecords.length > 0 && (
-            <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
-              <Timeline defaultValue={followUpRecords.length}>
-                {followUpRecords.map((item: any) => (
-                  <TimelineItem
-                    key={item._id}
-                    step={item._id}
-                    className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-                  >
-                    <TimelineHeader>
-                      <TimelineSeparator />
-                      <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-                        {moment(item.createdAt).format("MMM D, YYYY")}
-                      </TimelineDate>
-                      <TimelineTitle className="sm:-mt-0.5">Follow-up recommendations: {item.dischargeSummary}</TimelineTitle>
-                      <TimelineIndicator />
-                    </TimelineHeader>
-                    <TimelineContent>
-                      <p className="text-sm text-muted-foreground">Status: {item.currentStatus}</p>
+              )}
 
-                      <p className="text-sm text-muted-foreground">Next Actions: {item.nextActions}</p>
+              {!fetching && followUpRecords.length === 0 && <p>No discharge records found for this patient.</p>}
+              {!fetching && followUpRecords.length > 0 && (
+                <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
+                  <ClinicalSummaryTab patientData={patientData} />
+                  <Timeline defaultValue={followUpRecords.length}>
+                    {followUpRecords.map((item: any) => (
+                      <TimelineItem
+                        key={item._id}
+                        step={item._id}
+                        className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+                      >
+                        <TimelineHeader>
+                          <TimelineSeparator />
+                          <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
+                            {moment(item.createdAt).format("MMM D, YYYY")}
+                          </TimelineDate>
+                          <TimelineTitle className="sm:-mt-0.5">Follow-up recommendations: {item.dischargeSummary}</TimelineTitle>
+                          <TimelineIndicator />
+                        </TimelineHeader>
+                        <TimelineContent>
+                          <p className="text-sm text-muted-foreground">Status: {item.currentStatus}</p>
 
-                      {item.postOperativePictures?.length > 0 && (
-                        <div>
-                          <h3 className="font-medium text-gray-700">Intra-operative Picture</h3>
-                          <div className="mt-2 grid grid-cols-3 gap-3">
-                            {item.postOperativePictures.map((img: any, i: number) => (
-                              <a key={i} href={img.base64Url} target="_blank" rel="noopener noreferrer">
-                                <img
-                                  src={img.base64Url}
-                                  alt={img.name}
-                                  className="rounded-lg border h-24 w-full object-cover"
-                                />
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </TimelineContent>
-                  </TimelineItem>
-                ))}
-              </Timeline>
-            </div>
-          )}
+                          <p className="text-sm text-muted-foreground">Next Actions: {item.nextActions}</p>
+
+                          {item.postOperativePictures?.length > 0 && (
+                            <div>
+                              <h3 className="font-medium text-gray-700">Intra-operative Picture</h3>
+                              <div className="mt-2 grid grid-cols-3 gap-3">
+                                {item.postOperativePictures.map((img: any, i: number) => (
+                                  <a key={i} href={img.base64Url} target="_blank" rel="noopener noreferrer">
+                                    <img
+                                      src={img.base64Url}
+                                      alt={img.name}
+                                      className="rounded-lg border h-24 w-full object-cover"
+                                    />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </TimelineContent>
+                      </TimelineItem>
+                    ))}
+                  </Timeline>
+                </div>
+              )}
+
+            </TabsContent>
+
+            <TabsContent value="tab-1">
+              <ClinicalSummaryTab patientData={patientData}/>
+            </TabsContent>
+          </Tabs>
+
+
         </div>
       </div>
     </div>

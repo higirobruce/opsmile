@@ -133,7 +133,7 @@ export default function ProgressTabContent({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
           <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Add Progress Note</h2>
-          <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white space-y-3">
+          <div className=" overflow-scroll p-5 border rounded-xl bg-white space-y-3">
             <div>
               {/* <Label>Date</Label> */}
               <SimpletDatePicker setDate={setDate} date={date} label="Date" />

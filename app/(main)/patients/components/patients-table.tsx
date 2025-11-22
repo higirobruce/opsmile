@@ -118,14 +118,14 @@ const columns: ColumnDef<Item>[] = [
                     row.original.status === "Care Completed" ?
                         "bg-primary text-foreground" :
                         row.original.status === "Active" ?
-                            "bg-muted-foreground text-foreground" :
+                            "bg-muted-foreground/30 text-foreground" :
                             row.original.status === "Subject for review" ?
                                 "bg-yellow-400 text-foreground" :
                                 row.original.status === "Counter-referred" ?
                                     "bg-blue-400 text-foreground" :
                                     row.original.status === "Follow up" ?
                                         "bg-purple-400 text-foreground" :
-                                        "bg-muted-foreground text-foreground"
+                                        "bg-muted-foreground/30 text-foreground"
 
 
                 )}

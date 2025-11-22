@@ -20,75 +20,53 @@ import UserMenu from "@/components/navbar-components/user-menu"
 import Image from "next/image"
 
 // Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: ChartNoAxesColumn,
-  },
-  {
-    title: "Programs",
-    url: "/programs",
-    icon: Scissors,
-  },
-  {
-    title: "Patients",
-    url: "/patients",
-    icon: RiUserHeartLine,
-  },
-  
-  // {
-  //   title: "Medical Assessment",
-  //   url: "/medical-assessment",
-  //   icon: ScanHeart,
-  // },
-  // {
-  //   title: "Anesthesia",
-  //   url: "/anesthesia",
-  //   icon: HeartIcon,
-  // },
-  // {
-  //   title: "Surgery",
-  //   url: "/surgery",
-  //   icon: Scissors,
-  // },
-  // {
-  //   title: "Progress notes",
-  //   url: "progress-notes",
-  //   icon: FileEdit,
-  // },
-  // {
-  //   title: "Postoperative (ward)",
-  //   url: "/postoperative",
-  //   icon: FileEdit,
-  // },
-  // {
-  //   title: "Discharge",
-  //   url: "/discharge",
-  //   icon: ArrowBigRight,
-  // },
-  // {
-  //   title: "Follow-up",
-  //   url: "/follow-up",
-  //   icon: UserCheck,
-  // },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
-]
+
+
 
 export function AppSidebar() {
   let { user } = useAuth()
+
   const path = usePathname()
+
+  const items = [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: ChartNoAxesColumn,
+    },
+    ...(user?.role == 'admin' || user?.role == 'coordinator'
+      ? [
+        {
+          title: "Programs",
+          url: "/programs",
+          icon: Scissors,
+        },
+      ]
+      : []),
+    {
+      title: "Patients",
+      url: "/patients",
+      icon: RiUserHeartLine,
+    },
+    ...(user?.role == 'admin'
+      ? [
+        {
+          title: "Settings",
+          url: "/settings",
+          icon: Settings,
+        },
+      ]
+      : [])
+  ]
+
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="my-5">
             <div className="flex flex-row justify-between items-center w-full">
-              <Image className="mr-2" src="/logo.png" alt="logo" width={80} height={80} />  
+              <Image className="mr-2" src="/logo.png" alt="logo" width={80} height={80} />
               <UserMenu />
             </div>
           </SidebarGroupLabel>

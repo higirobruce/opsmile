@@ -69,7 +69,7 @@ export default function DischargeTabContent({
       console.error(error);
       toast.error("Failed to fetch discharge records");
     }
-  }, [patientData?._id, token]);
+  }, [patientData?.patient?._id, token]);
 
 
 
@@ -135,7 +135,7 @@ export default function DischargeTabContent({
   };
 
   const updatingUser = async () => {
-    const responsePatient = await fetch(`${API_URL}/patients/${patientData?._id}`, {
+    const responsePatient = await fetch(`${API_URL}/patients/${patientData?.patient?._id}`, {
       method: 'PUT',
       body: JSON.stringify({ status: customerStatus }),
       headers: {
@@ -340,13 +340,13 @@ export default function DischargeTabContent({
               </div>
             </div>
           )}
-          {!fetching && dischargeRecords.length === 0 && <p>No discharge records found for this patient.</p>}
+          {/* {!fetching && dischargeRecords.length === 0 && <p>No discharge records found for this patient.</p>}
           {!fetching && dischargeRecords.length > 0 && (
             <>
               {dischargeRecords?.map((d, index) => {
                 return <DischargeCard data={d} key={index}/>
               })}</>
-          )}
+          )} */}
         </div>
       </div>
     </div>

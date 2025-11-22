@@ -15,7 +15,7 @@ import SwitchFollowUp from "./switch-follow-up";
 import FileUpload from "../../components/file-upload";
 import { FileWithPreview } from "@/hooks/use-file-upload";
 import ClinicalSummaryTab from "./clinical-summary-card";
-import { TabList } from "react-aria-components";
+import { DatePicker, TabList } from "react-aria-components";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const fileToBase64 = (file: File): Promise<string> => {
@@ -49,23 +49,27 @@ export default function FollowUpTabContent({
   const [dischargeSummary, setDischargeSummary] = useState("");
   const [medicationsAtDischarge, setMedicationsAtDischarge] = useState<string>("");
   const [followUpInstructions, setFollowUpInstructions] = useState("");
-  const [diagnosis, setDiagnosis] = useState("")
-  const [procedure, setProcedure] = useState("")
-  const [patientDisposition, setPatientDisposition] = useState("")
+
+  const [discharges, setDischarges] = useState<any>()
   const [reviewDate, setReviewDate] = useState<Date | undefined>(new Date());
-  const [isFollowUp, setIsFollowUp] = useState(false);
+  const [reviewOutcome, setReviewOutcome] = useState('');
+  const [callOutcome, setCallOutcome] = useState('');
   const [followUpDate, setFollowUpDate] = useState<Date | undefined>(new Date());
-  const [followUpDuration, setFollowUpDuration] = useState('')
+  const [nextStep, setNextStep] = useState('')
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [currentStatus, setCurrentStatus] = useState('')
   const [recommendations, setRecommendations] = useState('')
   const [nextActions, setNextActions] = useState('')
-
+  const [callDate, setCallDate] = useState<Date | undefined>(new Date());
+  const [followUpNotes, setFollowUpNotes] = useState('')
 
   const fetchFollowUpRecords = useCallback(async () => {
+    setDischarges(patientData?.discharges?.length > 0
+      ? patientData?.discharges[patientData?.discharges?.length - 1]
+      : '-')
     setFetching(true);
     try {
-      const response = await fetch(`${API_URL}/follow-ups/patient/${patientData?._id}`, {
+      const response = await fetch(`${API_URL}/follow-ups/patient/${patientData?.patient?._id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -87,29 +91,12 @@ export default function FollowUpTabContent({
       toast.error("Failed to fetch discharge records");
     }
   }, [patientData?._id, token]);
-  
+
 
   useEffect(() => {
     fetchFollowUpRecords();
   }, [fetchFollowUpRecords]);
 
-  const handleFileUpload = async (files: FileWithPreview[]) => {
-    try {
-      const filePromises = files.map(async (file) => {
-        const base64Url = await fileToBase64(file.file as File);
-        return {
-          name: file.file.name,
-          base64Url,
-        };
-      });
-
-      const processedFiles = await Promise.all(filePromises);
-      setUploadedFiles((prev) => [...prev, ...processedFiles]);
-    } catch (error) {
-      console.error("Error processing files:", error);
-      toast.error("Error processing files");
-    }
-  };
 
   const handleSubmit = async () => {
     setSubmitting(true);
@@ -122,22 +109,25 @@ export default function FollowUpTabContent({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          patient: patientData?._id,
-          postOperativePictures: uploadedFiles?.length > 0 ? uploadedFiles : [],
-          currentStatus,
-          recommendations,
-          nextActions
+          patient: patientData?.patient?._id,
+          patientFile: patientData?._id,
+          nextStep,
+          reviewOutcome,
+          callOutcome,
+          callDate,
+          followUpDate
+
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        toast.error(data.message || "Error saving discharge record");
+        toast.error(data.message || "Error saving follow up record");
         return;
       }
 
-      toast.success("Discharge record saved successfully");
+      toast.success("Follow up record saved successfully");
       setDischargeSummary("");
       setMedicationsAtDischarge("");
       setFollowUpInstructions("");
@@ -145,7 +135,7 @@ export default function FollowUpTabContent({
       fetchFollowUpRecords();
     } catch (error) {
       console.error(error);
-      toast.error("Failed to save discharge record");
+      toast.error("Failed to save follow up record");
     } finally {
       setSubmitting(false);
       setFetching(false)
@@ -156,13 +146,144 @@ export default function FollowUpTabContent({
     <div className="flex flex-col space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <h2 className="text-xl font-semibold mb-3">Add New Follow-up Record</h2>
-          <div className="bg-white p-5 border rounded-xl space-y-3">
+          <h2 className="text-xl font-semibold mb-3">Patient disposition: {discharges?.patientDisposition}</h2>
+          {discharges?.patientDisposition === 'Subject for review' &&
+            <div className="bg-white p-5 border rounded-xl space-y-3">
+              <div>
+                <p className="font-semibold">Subject for review</p>
+                <p className="text-xs">{discharges.reviewLocation}, {moment(discharges.reviewDate).format('YYYY-MMM-DD HH:MM A')}</p>
+
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="font-semibold">Diagnosis</p>
+                  <p className="text-xs text-foreground/60">{discharges.diagnosis}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Procedure</p>
+                  <p className="text-xs text-foreground/60">{discharges.procedure}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Discharge Recommendations</p>
+                  <p className="text-xs text-foreground/60">{discharges.dischargeSummary}</p>
+                </div>
+              </div>
+              <Label>Review outcome</Label>
+              <Textarea
+                value={reviewOutcome}
+                onChange={(e) => setReviewOutcome(e.target.value)}
+                placeholder="Enter review outcome here..."
+              />
+              <Button className="mt-3" disabled={submitting} onClick={handleSubmit} variant='default'>Save</Button>
+            </div>
+          }
+
+          {discharges?.patientDisposition === 'Counter-referred' &&
+            <div className="bg-white p-5 border rounded-xl space-y-3">
+
+              <div>
+                <p className="font-semibold">Counter Reffered</p>
+                <p className="text-xs">{discharges.referralLocation}, {moment(discharges.referralDate).format('YYYY-MMM-DD HH:MM A')}</p>
+
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="font-semibold">Diagnosis</p>
+                  <p className="text-xs text-foreground/60">{discharges.diagnosis}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Procedure</p>
+                  <p className="text-xs text-foreground/60">{discharges.procedure}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Discharge Recommendations</p>
+                  <p className="text-xs text-foreground/60">{discharges.dischargeSummary}</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="font-semibold">Follow up call recording</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <SimpletDatePicker date={callDate} label="Call date" setDate={setCallDate} />
+                  <div>
+                    <Label>Call outcome</Label>
+                    <Textarea
+                      value={callOutcome}
+                      onChange={(e) => setCallOutcome(e.target.value)}
+                      placeholder="Enter call outcome here..."
+                    />
+                  </div>
+                  <div>
+                    <SelectComponent
+                      name="nextStep"
+                      label="Next step"
+                      options={[
+                        { value: "Next call", label: "Next call" },
+                        { value: "Review needed", label: "Review needed" },
+                        { value: "Care completed", label: "Care completed" },
+                      ]}
+                      value={nextStep}
+                      _setValue={(v: any) => {
+                        setNextStep(v)
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <Button className="mt-3" disabled={submitting} onClick={handleSubmit} variant='default'>Save</Button>
+
+              </div>
+            </div>
+          }
+
+          {discharges?.patientDisposition === 'Follow up' &&
+            <div className="bg-white p-5 border rounded-xl space-y-3">
+              <div>
+                <p className="font-semibold">Follow up action</p>
+                <p className="text-xs">{discharges.followUpAction}, {moment(discharges.followUpDate).format('YYYY-MMM-DD HH:MM A')}</p>
+
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="font-semibold">Diagnosis</p>
+                  <p className="text-xs text-foreground/60">{discharges.diagnosis}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Procedure</p>
+                  <p className="text-xs text-foreground/60">{discharges.procedure}</p>
+                </div>
+
+                <div>
+                  <p className="font-semibold">Discharge Recommendations</p>
+                  <p className="text-xs text-foreground/60">{discharges.dischargeSummary}</p>
+                </div>
+              </div>
+
+              <div >
+                <Label>Phyisical follow up notes</Label>
+                <Textarea
+                  value={followUpNotes}
+                  onChange={(e) => setFollowUpNotes(e.target.value)}
+                  placeholder="Enter Physical follow notes here..."
+                />
+              </div>
+
+
+              <Button className="mt-3" disabled={submitting} onClick={handleSubmit} variant='default'>Save</Button>
+            </div>
+          }
+
+
+          {/* <div className="bg-white p-5 border rounded-xl space-y-3">
             <div className="grid grid-cols-2 gap-5 ">
-              {/* <div className="flex flex-col justify-items-start"> */}
-              {/* <Label>Discharge Date</Label> */}
-              {/* <SimpletDatePicker setDate={setDischargeDate} date={dischargeDate} label="Discharge Date" /> */}
-              {/* </div> */}
 
               <div>
                 <Label>Post-Operative pictures</Label>
@@ -201,11 +322,11 @@ export default function FollowUpTabContent({
               </div>
 
             </div>
-            <Button onClick={handleSubmit} disabled={submitting}>
+            <Button className="mt-3" onClick={handleSubmit} disabled={submitting}>
               {submitting && <LoaderCircleIcon className="-ms-1 animate-spin" size={16} aria-hidden="true" />}
               Save Follow-up Record
             </Button>
-          </div>
+          </div> */}
         </div>
         <div>
 
@@ -217,7 +338,7 @@ export default function FollowUpTabContent({
 
             </TabsList>
             <TabsContent value="tab-2">
-              <h2 className="text-xl font-semibold mb-3">Follow-up History</h2>
+              {/* <h2 className="text-xl font-semibold mb-3">Follow-up History</h2> */}
               {fetching && (
                 <div className="flex h-96">
                   <div role="status" className="animate-pulse">
@@ -235,7 +356,7 @@ export default function FollowUpTabContent({
               {!fetching && followUpRecords.length === 0 && <p>No discharge records found for this patient.</p>}
               {!fetching && followUpRecords.length > 0 && (
                 <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">
-                  <ClinicalSummaryTab patientData={patientData} />
+                  {/* <ClinicalSummaryTab patientData={patientData} /> */}
                   <Timeline defaultValue={followUpRecords.length}>
                     {followUpRecords.map((item: any) => (
                       <TimelineItem
@@ -282,7 +403,7 @@ export default function FollowUpTabContent({
             </TabsContent>
 
             <TabsContent value="tab-1">
-              <ClinicalSummaryTab patientData={patientData}/>
+              <ClinicalSummaryTab patientData={patientData} />
             </TabsContent>
           </Tabs>
 

@@ -26,7 +26,7 @@ export default function ClinicalSummaryTab({ patientData }: { patientData: any }
         console.log(patientData)
     }, [])
     return (
-        <div className='bg-white rounded-md p-4 '>
+        <div className='bg-white rounded-xl p-4 border '>
             {
                 lastVitalsRecord && (<>
                     <p className='font-semibold text-md mb-2'>Vitals</p>

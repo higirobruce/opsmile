@@ -15,6 +15,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import NewPatientFile from "../components/new-patient-file.modal";
 import moment from "moment";
 import SimpleStepper from "../components/stepper";
+import { cn } from "@/lib/utils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -28,7 +29,7 @@ export default function Patient() {
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
   const [patientFileId, setPatientFileId] = useState(null)
   const [patientFile, setPatientFile] = useState<any>({})
-   const [tab, setTab] = useState<String>("tab-2");
+  const [tab, setTab] = useState<String>("tab-2");
 
   const fetchPatientData = useCallback(async () => {
     setFetching(true);
@@ -163,14 +164,16 @@ export default function Patient() {
           <div className="w-full">
             <div className="grid grid-cols-4 gap-2 mb-4">
               {patient?.patient_files.map((pFile: any, index: number) => {
-                return <Card key={index} onClick={() => setPatientFileId(pFile._id)} className="w-full max-w-sm hover:shadow-2xl hover:bg-gray-100 cursor-pointer">
+                return <Card key={index} onClick={() => setPatientFileId(pFile._id)} className={
+                  cn(`w-full max-w-sm hover:shadow-2xl bg-white hover:bg-gray-100 cursor-pointer ${pFile?._id == patientFileId && 'bg-gray-100 border-primary'}`)
+                  }>
                   <CardHeader>
-                    <CardTitle>
+                    <CardTitle className="text-xs font-semibold">
                       {pFile.program?.name}
                     </CardTitle>
-                    <CardDescription>
+                    {/* <CardDescription>
                       {pFile.status}
-                    </CardDescription>
+                    </CardDescription> */}
                     {/* <SimpleStepper/> */}
                     <p className="text-xs text-foreground/50">{moment(pFile.createdAt).format('YYYY-MMM-DD HH:mm A')}</p>
 

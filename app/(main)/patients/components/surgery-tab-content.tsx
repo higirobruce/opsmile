@@ -153,12 +153,12 @@ export default function SurgeryTabContent({
           patientFile: patientData?._id,
           surgeonId: selectedSurgeon,
           anesthesiologistId: selectedAnesthesiologist,
-          surgeryDate: surgeryStartDate,
-          surgeryEndDate,
+          // surgeryDate: surgeryStartDate,
+          // surgeryEndDate,
           surgeryType,
           procedure,
           estimatedDuration,
-          actualDuration: surgeryEndDate && surgeryStartDate ? (surgeryEndDate.getTime() - surgeryStartDate.getTime()) / (1000 * 60) : 0,
+          actualDuration,
           consentFileUrls: uploadedFiles,
           beforeSurgeryImageUrls,
           surgicalAssistantId: selectedSurgicalAssistant,
@@ -342,15 +342,15 @@ export default function SurgeryTabContent({
               />
             </div> */}
 
-                <div className="rounded-md border border-gray-300 p-4">
+                {/* <div className="rounded-md border border-gray-300 p-4 col-span-2">
                   <Label className="font-semibold text-gray-700">Surgery Start Time</Label>
                   <DateAndTimePicker key="surgeryDate" date={surgeryStartDate} setDate={setSurgeryStartDate} />
                 </div>
 
-                <div className="rounded-md border border-gray-300 p-4">
+                <div className="rounded-md border border-gray-300 p-4 col-span-2">
                   <Label className="font-semibold text-gray-700">Surgery End Time</Label>
                   <DateAndTimePicker key="surgeryEndDate" date={surgeryEndDate} setDate={setSurgeryEndDate} />
-                </div>
+                </div> */}
 
                 <div>
                   <Label>Estimated Duration (minutes)</Label>
@@ -366,9 +366,9 @@ export default function SurgeryTabContent({
                   <Input
                     type="number"
                     className="mt-2"
-                    value={surgeryEndDate && surgeryStartDate ? (moment(surgeryEndDate).diff(moment(surgeryStartDate), 'minutes')) : 0}
-                    disabled={true}
-                  // onChange={(e) => setActualDuration(Number(e.target.value))}
+                    value={actualDuration}
+                    // disabled={true}
+                    onChange={(e) => setActualDuration(Number(e.target.value))}
                   />
                 </div>
               </div>
@@ -402,7 +402,7 @@ export default function SurgeryTabContent({
       <TabsContent value="tab-3" className="w-full">
         <ProgressTabContent title='Post-Op' type='POST_OP_NOTES' patientData={patientData} refresh={refresh} />
       </TabsContent>
-      
+
 
     </Tabs>
 

@@ -214,7 +214,7 @@ export default function SurgeryTabContent({
 
 
           <div>
-            <h2 className="text-xl font-semibold mb-3">Add New Surgery Record</h2>
+            <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Add New Surgery Record</h2>
             <div className="bg-white p-5 border rounded-xl space-y-3">
               <div className="grid grid-cols-2 gap-5 ">
                 <div>
@@ -382,7 +382,7 @@ export default function SurgeryTabContent({
 
           {/* Right Column: History of Surgery Records */}
           <div>
-            <h2 className="text-xl font-semibold mb-3">Surgery History</h2>
+            <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Surgery History</h2>
             {patientData?.surgeries?.length === 0 && <p>No surgery records found for this patient.</p>}
             {patientData?.surgeries?.length > 0 && (
               <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">

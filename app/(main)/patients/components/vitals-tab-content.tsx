@@ -148,7 +148,7 @@ export default function VitalsTabContent({
     return (
         <div className="grid grid-cols-2 gap-3">
             <div>
-                <h2 className="text-xl font-semibold mb-3">Capture patient's vital signs</h2>
+                <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Capture patient's vital signs</h2>
                 <div className=" bg-white p-5 border rounded-xl space-y-3">
                     {/* <p className="text-sm font-semibold text-foreground/50">Capture patient's vital signs</p> */}
                     <div className="grid sm:grid-cols-2 flex-1 auto-rows-min gap-6 px-4 overflow-scroll">
@@ -232,7 +232,7 @@ export default function VitalsTabContent({
                     </div>
                 </div>
             </div>
-            <div>    <h2 className="text-lg font-semibold mb-3">Recorded Vitals</h2>
+            <div>    <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Recorded Vitals</h2>
                 <div className="p-4 border rounded-lg bg-white h-[calc(100vh-200px)] overflow-scroll">
                     {patientData?.vital_signs?.map((vitalSign: any) => (
                         <VitalSignsCard key={vitalSign._id} vitalSign={vitalSign} />

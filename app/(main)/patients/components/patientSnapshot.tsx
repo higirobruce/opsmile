@@ -44,39 +44,39 @@ export default function PatientSnapshot({ patientData, isHeaderSection }: { pati
 
     return (
         <div className='flex justify-between'>
-            <Card className='flex w-full justify-between'>
+            <Card className='flex w-full justify-between bg-white'>
                 <CardContent className='flex flex-row justify-between items-baseline'>
                     <div className='sm:grid md:grid grid-cols-6 flex-row space-x-5 justify-between items-baseline'>
                         <div className='flex md:flex-row flex-col md:space-x-2'>
                             {/* <div className='md:w-40 md:h-40'>
                                 <AvatarComponent source={patientData?.profilePicture || '/avatar2.jpg'} height={40} width={40} />
                             </div> */}
-                            <div className='flex flex-col w-full self-start' >
+                            <div className='flex flex-col w-full self-start text-foreground' >
                                 <p className='text-md font-semibold'>{patientData?.registrationNumber}</p>
                                 <p className='text-sm'>{patientData?.firstName} {patientData?.lastName}</p>
                             </div>
                         </div>
 
                         <div>
-                            <div className='text-sm flex items-center space-x-1 text-foreground/70'>
+                            <div className='text-sm flex items-center space-x-1 text-foreground'>
                                 {/* <RiUser3Fill size={16} className='text-sm font-bold' /> */}
                                 <p>Gender: </p>
                                 <p className='font-bold'>{patientData?.gender == 'M' ? 'Male' : 'Female'}</p>
                             </div>
-                            <div className='text-sm flex flex-row items-center space-x-1 text-foreground/70'>
+                            <div className='text-sm flex flex-row items-center space-x-1 text-foreground'>
                                 <p>Age: </p>
                                 <p className='font-bold'>{formatAge(moment(patientData?.dateOfBirth).toDate())}</p>
                             </div>
                         </div>
 
-                        <div className='text-sm flex flex-row items-center space-x-1 text-foreground/70'>
+                        <div className='text-sm flex flex-row items-center space-x-1 text-foreground'>
                             <p>Location: </p>
                             <p className='font-bold truncate'>{(patientData?.province && patientData?.district) ? patientData?.province?.name + '-' + patientData?.district?.name : 'Kigali-Rwanda'}</p>
                         </div>
 
 
 
-                        <div className='text-sm flex flex-row items-center space-x-1 text-foreground/70'>
+                        <div className='text-sm flex flex-row items-center space-x-1 text-foreground'>
                             <p>Program: </p>
                             <p className='text-xs truncate font-bold'>{patientData?.program?.name || 'No Program'}</p>
                         </div>

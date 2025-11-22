@@ -146,29 +146,29 @@ export default function FollowUpTabContent({
     <div className="flex flex-col space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <h2 className="text-xl font-semibold mb-3">Patient disposition: {discharges?.patientDisposition}</h2>
+          <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Patient disposition: {discharges?.patientDisposition}</h2>
           {discharges?.patientDisposition === 'Subject for review' &&
             <div className="bg-white p-5 border rounded-xl space-y-3">
               <div>
-                <p className="font-semibold">Subject for review</p>
+                <p className="font-semibold text-sm text-">Subject for review</p>
                 <p className="text-xs">{discharges.reviewLocation}, {moment(discharges.reviewDate).format('YYYY-MMM-DD HH:MM A')}</p>
 
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="font-semibold">Diagnosis</p>
-                  <p className="text-xs text-foreground/60">{discharges.diagnosis}</p>
+                  <p className="font-semibold text-sm text-">Diagnosis</p>
+                  <p className="text-xs text-foreground">{discharges.diagnosis}</p>
                 </div>
 
                 <div>
                   <p className="font-semibold">Procedure</p>
-                  <p className="text-xs text-foreground/60">{discharges.procedure}</p>
+                  <p className="text-xs text-foreground">{discharges.procedure}</p>
                 </div>
 
                 <div>
                   <p className="font-semibold">Discharge Recommendations</p>
-                  <p className="text-xs text-foreground/60">{discharges.dischargeSummary}</p>
+                  <p className="text-xs text-foreground">{discharges.dischargeSummary}</p>
                 </div>
               </div>
               <Label>Review outcome</Label>
@@ -185,30 +185,30 @@ export default function FollowUpTabContent({
             <div className="bg-white p-5 border rounded-xl space-y-3">
 
               <div>
-                <p className="font-semibold">Counter Reffered</p>
+                <p className="font-semibold text-sm text-">Counter Reffered</p>
                 <p className="text-xs">{discharges.referralLocation}, {moment(discharges.referralDate).format('YYYY-MMM-DD HH:MM A')}</p>
 
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="font-semibold">Diagnosis</p>
-                  <p className="text-xs text-foreground/60">{discharges.diagnosis}</p>
+                  <p className="font-semibold text-sm text-">Diagnosis</p>
+                  <p className="text-xs text-foreground">{discharges.diagnosis}</p>
                 </div>
 
                 <div>
-                  <p className="font-semibold">Procedure</p>
-                  <p className="text-xs text-foreground/60">{discharges.procedure}</p>
+                  <p className="font-semibold text-sm text-">Procedure</p>
+                  <p className="text-xs text-foreground">{discharges.procedure}</p>
                 </div>
 
                 <div>
-                  <p className="font-semibold">Discharge Recommendations</p>
-                  <p className="text-xs text-foreground/60">{discharges.dischargeSummary}</p>
+                  <p className="font-semibold text-sm text-">Discharge Recommendations</p>
+                  <p className="text-xs text-foreground">{discharges.dischargeSummary}</p>
                 </div>
               </div>
 
               <div>
-                <p className="font-semibold">Follow up call recording</p>
+                <p className="font-semibold text-sm text-">Follow up call recording</p>
                 <div className="grid grid-cols-2 gap-4">
                   <SimpletDatePicker date={callDate} label="Call date" setDate={setCallDate} />
                   <div>
@@ -245,25 +245,25 @@ export default function FollowUpTabContent({
           {discharges?.patientDisposition === 'Follow up' &&
             <div className="bg-white p-5 border rounded-xl space-y-3">
               <div>
-                <p className="font-semibold">Follow up action</p>
+                <p className="font-semibold text-sm text-">Follow up action</p>
                 <p className="text-xs">{discharges.followUpAction}, {moment(discharges.followUpDate).format('YYYY-MMM-DD HH:MM A')}</p>
 
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="font-semibold">Diagnosis</p>
-                  <p className="text-xs text-foreground/60">{discharges.diagnosis}</p>
+                  <p className="font-semibold text-sm text-">Diagnosis</p>
+                  <p className="text-xs text-foreground">{discharges.diagnosis}</p>
                 </div>
 
                 <div>
-                  <p className="font-semibold">Procedure</p>
-                  <p className="text-xs text-foreground/60">{discharges.procedure}</p>
+                  <p className="font-semibold text-sm text-">Procedure</p>
+                  <p className="text-xs text-foreground">{discharges.procedure}</p>
                 </div>
 
                 <div>
-                  <p className="font-semibold">Discharge Recommendations</p>
-                  <p className="text-xs text-foreground/60">{discharges.dischargeSummary}</p>
+                  <p className="font-semibold text-sm text-">Discharge Recommendations</p>
+                  <p className="text-xs text-foreground">{discharges.dischargeSummary}</p>
                 </div>
               </div>
 

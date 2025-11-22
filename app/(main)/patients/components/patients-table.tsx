@@ -116,16 +116,16 @@ const columns: ColumnDef<Item>[] = [
             <Badge
                 className={cn(
                     row.original.status === "Care Completed" ?
-                        "bg-primary text-primary-foreground" :
+                        "bg-primary text-foreground" :
                         row.original.status === "Active" ?
-                            "bg-muted-foreground/60 text-primary-foreground" :
+                            "bg-muted-foreground text-foreground" :
                             row.original.status === "Subject for review" ?
-                                "bg-yellow-400 text-primary-foreground" :
+                                "bg-yellow-400 text-foreground" :
                                 row.original.status === "Counter-referred" ?
-                                    "bg-blue-400 text-primary-foreground" :
+                                    "bg-blue-400 text-foreground" :
                                     row.original.status === "Follow up" ?
-                                        "bg-purple-400 text-primary-foreground" :
-                                        "bg-muted-foreground/60 text-primary-foreground"
+                                        "bg-purple-400 text-foreground" :
+                                        "bg-muted-foreground text-foreground"
 
 
                 )}

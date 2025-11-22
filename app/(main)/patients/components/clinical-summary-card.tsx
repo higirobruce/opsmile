@@ -26,10 +26,10 @@ export default function ClinicalSummaryTab({ patientData }: { patientData: any }
         console.log(patientData)
     }, [])
     return (
-        <div className='bg-white rounded-xl p-4 border '>
+        <div className='bg-white rounded-xl p-6 border '>
             {
                 lastVitalsRecord && (<>
-                    <p className='font-semibold text-md mb-2'>Vitals</p>
+                    <p className="font-semibold mt-3 mb-1 text-xs uppercase tracking-wide text-slate-500">Vitals</p>
                     <VitalSignCard vitalSign={lastVitalsRecord} /></>)
             }
 
@@ -37,7 +37,7 @@ export default function ClinicalSummaryTab({ patientData }: { patientData: any }
                 lastMedAssessRecord &&
                 (
                     <>
-                        <p className='font-semibold text-md mb-2'>Medical Assessment</p>
+                        <p className="font-semibold mt-3 mb-1 text-xs uppercase tracking-wide text-slate-500">Medical Assessment</p>
                         <MedicalAssessmentCard record={lastMedAssessRecord} /></>
                 )
             }
@@ -45,24 +45,24 @@ export default function ClinicalSummaryTab({ patientData }: { patientData: any }
             {
                 lastPreOpNotes &&
                 <>
-                    <p className='font-semibold text-md mb-1 mt-4'>Pre-Operative Notes</p>
-                    <p className='text-xs'>{lastPreOpNotes}</p>
+                    <p className="font-semibold mt-3 mb-1 text-xs uppercase tracking-wide text-slate-500">Pre-Operative Notes</p>
+                    <p className='text-xs  text-slate-400 '>{lastPreOpNotes}</p>
                 </>
             }
 
             {
                 lastAnesthesiaNotes &&
                 <>
-                    <p className='font-semibold text-md mb-1 mt-4'>Anesthesia Notes</p>
-                    <p className='text-xs'>{lastAnesthesiaNotes}</p>
+                    <p className="font-semibold mt-3 mb-1 text-xs uppercase tracking-wide text-slate-500">Anesthesia Notes</p>
+                    <p className='text-xs  text-slate-400 '>{lastAnesthesiaNotes}</p>
                 </>
             }
 
             {
                 lastPACUNotes &&
                 <>
-                    <p className='font-semibold text-md mb-1 mt-4'>PACU Notes</p>
-                    <p className='text-xs'>{lastPACUNotes}</p>
+                    <p className="font-semibold mt-3 mb-1 text-xs uppercase tracking-wide text-slate-500">PACU Notes</p>
+                    <p className='text-xs  text-slate-400 '>{lastPACUNotes}</p>
                 </>
             }
 

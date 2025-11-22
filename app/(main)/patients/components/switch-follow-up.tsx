@@ -29,7 +29,7 @@ export default function SwitchFollowUp({
       <div className="grid grow gap-2">
         <Label className="text-sm font-semibold text-foreground" htmlFor={id}>
           {label}{" "}
-          <span className="text-xs leading-[inherit] font-normal text-muted-foreground/60">
+          <span className="text-xs leading-[inherit] font-normal text-muted-foreground">
             ({sublabel})
           </span>
         </Label>

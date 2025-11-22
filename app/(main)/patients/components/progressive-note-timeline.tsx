@@ -65,7 +65,7 @@ export default function ProgressiveNotesTimeline({ notes }: { notes: Note[] }) {
                         <TimelineTitle className="font-semibold">{item.title || ''}</TimelineTitle>
                         <TimelineIndicator />
                     </TimelineHeader>
-                    <TimelineContent className="text-xs text-foreground/60">{item.notes}</TimelineContent>
+                    <TimelineContent className="text-xs text-foreground">{item.notes}</TimelineContent>
                 </TimelineItem>
             ))}
         </Timeline>

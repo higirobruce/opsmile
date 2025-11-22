@@ -176,7 +176,7 @@ export default function MedicalTabContent({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* Left Column: Form for new Consultation record */}
           <div>
-            <h2 className="text-xl font-semibold mb-3">Add New Consultation record</h2>
+            <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Add New Consultation record</h2>
             <div className="grid grid-cols-2 gap-5 bg-white p-5 border rounded-xl space-y-3">
               <div>
                 {/* <Label>Medical History</Label> */}
@@ -332,7 +332,7 @@ export default function MedicalTabContent({
 
           {/* Right Column: History of Consultation records */}
           <div>
-            <h2 className="text-xl font-semibold mb-3">Consultation record History</h2>
+            <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Consultation record History</h2>
             {patientData?.medical_assessments?.length === 0 && <p>No Consultation records found for this patient.</p>}
             {patientData?.medical_assessments?.length > 0 && (
               <div className="h-[calc(100vh-200px)] overflow-scroll p-5 border rounded-xl bg-white">

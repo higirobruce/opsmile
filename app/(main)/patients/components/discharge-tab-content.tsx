@@ -159,7 +159,7 @@ export default function DischargeTabContent({
     <div className="flex flex-col space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <h2 className="text-xl font-semibold mb-3">Add New Discharge Record</h2>
+          <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Add New Discharge Record</h2>
           <div className="bg-white p-5 border rounded-xl space-y-3">
             <div className="grid grid-cols-2 gap-5 ">
               <div className="flex flex-col justify-items-start">
@@ -326,7 +326,7 @@ export default function DischargeTabContent({
           </div>
         </div>
         <div>
-          <h2 className="text-xl font-semibold mb-3">Discharge History</h2>
+          <h2 className="font-semibold mb-3 text-xs uppercase tracking-wide text-slate-500">Discharge History</h2>
           {fetching && (
             <div className="flex h-96">
               <div role="status" className="animate-pulse">

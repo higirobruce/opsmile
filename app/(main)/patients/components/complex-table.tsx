@@ -201,7 +201,7 @@ const columns: ColumnDef<Item>[] = [
       <Badge
         className={cn(
           row.getValue("status") === "Inactive" &&
-          "bg-muted-foreground/60 text-primary-foreground"
+          "bg-muted-foreground text-primary-foreground"
         )}
       >
         {row.getValue("status")}

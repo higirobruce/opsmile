@@ -144,7 +144,7 @@ export default function Patient() {
 
 
   return (
-    <div className="flex flex-col space-y-5">
+    <div className="flex flex-col space-y-5 text-foreground">
       {patient?._id && (
         <>
           <Toaster />

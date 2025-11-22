@@ -35,7 +35,7 @@ export function DateAndTimePicker({ date, setDate }: { date: Date | undefined, s
     };
 
     return (
-        <div className="flex gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="flex flex-col gap-3">
                 <Label htmlFor="date-picker" className="px-1">
                     Date
@@ -45,7 +45,7 @@ export function DateAndTimePicker({ date, setDate }: { date: Date | undefined, s
                         <Button
                             variant="outline"
                             id="date-picker"
-                            className="w-32 justify-between font-normal"
+                            className="justify-between font-normal"
                         >
                             {date ? date.toLocaleDateString() : "Select date"}
                             <ChevronDownIcon />

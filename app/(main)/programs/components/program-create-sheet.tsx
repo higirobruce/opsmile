@@ -214,7 +214,7 @@ export default function ProgramCreateSheet({ refreshPrograms }: ProgramCreateShe
         const data = await response.json()
         setVillages(
           data
-            .map((village: any) => ({ value: village._id, label: village.name })))
+            .map((village: any) => ({ value: village._id, label: village.name, key: village._id })))
       } catch (error) {
         console.error("Failed to fetch villages:", error)
         toast.error("Failed to load villages")

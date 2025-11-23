@@ -52,11 +52,11 @@ export default function NewPatient({
   const [sectors, setSectors] = useState<any[]>([])
   const [cells, setCells] = useState<any[]>([])
   const [villages, setVillages] = useState<any[]>([])
-  const [selectedVillage, setSelectedVillage] = useState('')
-  const [selectedCell, setSelectedCell] = useState('')
-  const [selectedSector, setSelectedSector] = useState('')
-  const [selectedProvince, setSelectedProvince] = useState('')
-  const [selectedDistrict, setSelectedDistrict] = useState('')
+  const [selectedVillage, setSelectedVillage] = useState()
+  const [selectedCell, setSelectedCell] = useState()
+  const [selectedSector, setSelectedSector] = useState()
+  const [selectedProvince, setSelectedProvince] = useState()
+  const [selectedDistrict, setSelectedDistrict] = useState()
 
 
   useEffect(() => {
@@ -113,10 +113,10 @@ export default function NewPatient({
   }, [])
 
   useEffect(() => {
-    setSelectedDistrict('')
-    setSelectedSector('')
-    setSelectedCell('')
-    setSelectedVillage('')
+    setSelectedDistrict(undefined)
+    setSelectedSector(undefined)
+    setSelectedCell(undefined)
+    setSelectedVillage(undefined)
     setDistricts([])
     setSectors([])
     setCells([])
@@ -288,11 +288,11 @@ export default function NewPatient({
       setPhoneNumber("");
       setNID("");
       setPatientProgram("");
-      setSelectedProvince("");
-      setSelectedDistrict("");
-      setSelectedSector("");
-      setSelectedCell("");
-      setSelectedVillage("");
+      setSelectedProvince(undefined);
+      setSelectedDistrict(undefined);
+      setSelectedSector(undefined);
+      setSelectedCell(undefined);
+      setSelectedVillage(undefined);
 
       // Optionally append new patient to list
       if (appendNewPatient) {
@@ -410,7 +410,7 @@ export default function NewPatient({
             <div>
               <SelectComponent
                 _setValue={setSelectedProvince}
-                value={selectedProvince}
+                value={selectedProvince || ''}
                 name="province"
                 label="Province"
                 options={provinces}
@@ -421,7 +421,7 @@ export default function NewPatient({
             <div>
               <SelectComponent
                 _setValue={setSelectedDistrict}
-                value={selectedDistrict}
+                value={selectedDistrict || ''}
                 name="district"
                 label="District"
                 options={districts}
@@ -432,7 +432,7 @@ export default function NewPatient({
             <div>
               <SelectComponent
                 _setValue={setSelectedSector}
-                value={selectedSector}
+                value={selectedSector || ''}
                 name="sector"
                 label="Sector"
                 options={sectors}
@@ -442,7 +442,7 @@ export default function NewPatient({
             <div>
               <SelectComponent
                 _setValue={setSelectedCell}
-                value={selectedCell}
+                value={selectedCell || ''}
                 name="cell"
                 label="Cell"
                 options={cells}
@@ -452,7 +452,7 @@ export default function NewPatient({
             <div>
               <SelectComponent
                 _setValue={setSelectedVillage}
-                value={selectedVillage}
+                value={selectedVillage || ''}
                 name="village"
                 label="Village"
                 options={villages}

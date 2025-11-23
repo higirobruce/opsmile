@@ -27,9 +27,11 @@ import {
 import { useAuth } from "@/app/context/AuthContext"
 import SignIn from "@/app/componets/sign-in"
 import { sign } from "crypto"
+import { useRouter } from "next/navigation"
 
 export default function UserMenu() {
   let { user, loading, signOut } = useAuth()
+  let router = useRouter()
   return (
     <>
       {user && <DropdownMenu>
@@ -47,14 +49,14 @@ export default function UserMenu() {
               {user?.email}
             </span>
           </DropdownMenuLabel>
-          
+
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push(`/profile/${user?.id}`)}>
               <User2 size={16} className="opacity-60" aria-hidden="true" />
               <span>Profile</span>
             </DropdownMenuItem>
-           
+
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={async () => signOut()}>

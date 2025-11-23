@@ -91,6 +91,7 @@ export default function UserEditSheet({ user, onUserUpdated, children }: UserEdi
     { label: 'Doctor', value: 'doctor' },
     { label: 'Anesthesiologist', value: 'anesthesiologist' },
     { label: 'Surgeon', value: 'surgeon' },
+    { label: 'Medical Record', value: 'medical_record' },
   ];
 
   return (

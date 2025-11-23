@@ -50,17 +50,19 @@ export default function Profile() {
             .then(response => response.json())
             .then(data => {
 
-                // if (!data.ok) {
-                //     toast.error('Failed to change password!')
-                //     setSubmitting(false)
-                //     console.log(data)
-                //     throw new Error(`HTTP error! status: ${data.status}`)
-                // }
+                
+                if (data.error) {
+                    toast.error(data.message)
+                    setSubmitting(false)
+                    console.log(data)
+                    throw new Error(`HTTP error! status: ${data.status}`)
+                }
 
                 setSubmitting(false)
                 toast.success('Password successfully changed!')
             }).catch(err => {
-                toast.error('Failed to change password!')
+
+                // toast.error('Failed to change password!')
             })
     }
 
@@ -106,7 +108,7 @@ export default function Profile() {
                         </div>
 
                         <div className='w-full'>
-                            {!submitting && <ConfirmPasswordUpdate confirm={confirm} />}
+                            {!submitting && <ConfirmPasswordUpdate disabled={newPassword !== confirmPassword || !currentPassword || !newPassword || !confirmPassword} confirm={confirm} />}
                             {submitting && <Loader2 className='animate-spin' />}
                         </div>
                     </div>

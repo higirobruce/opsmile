@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 
-export default function ConfirmPasswordUpdate({ confirm }: { confirm: () => void }) {
+export default function ConfirmPasswordUpdate({ confirm, disabled }: { confirm: () => void, disabled: boolean }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="default">Submit</Button>
+                <Button disabled={disabled} variant="default">Submit</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

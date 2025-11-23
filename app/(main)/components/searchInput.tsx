@@ -94,7 +94,7 @@ export default function SearchInput({
           {/* Giant input */}
           <Input
             type="text"
-            placeholder="Search using: Patient ID, Name, or Phone Number"
+            placeholder="Search using: Patient ID, Name, Phone Number or Code"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             autoFocus

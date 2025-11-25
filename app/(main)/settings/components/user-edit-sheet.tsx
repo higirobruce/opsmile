@@ -31,6 +31,22 @@ interface UserEditSheetProps {
   children: React.ReactNode;
 }
 
+ export const roles = [
+    { label: 'Admin', value: 'admin' },
+    { label: 'Coordinator', value: 'coordinator' },
+    { label: 'Patient', value: 'patient' },
+    { label: 'Nurse', value: 'nurse' },
+    { label: 'Doctor', value: 'doctor' },
+    { label: 'Anesthesiologist', value: 'anesthesiologist' },
+    { label: 'Surgeon', value: 'surgeon' },
+    { label: 'Medical Record', value: 'medical_record' },
+    {label: 'Resident', value:'resident'},
+    {label: 'Pre-Op Nurse', value:'pre_op_nurse'},
+    {label: 'Post-Op Nurse', value:'post_op_nurse'},
+    {label: 'PACU Nurse', value:'pacu_nurse'},
+    {label: 'Registration', value:'registration'}
+  ];
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export default function UserEditSheet({ user, onUserUpdated, children }: UserEditSheetProps) {
@@ -83,21 +99,7 @@ export default function UserEditSheet({ user, onUserUpdated, children }: UserEdi
     }
   };
 
-  const roles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Coordinator', value: 'coordinator' },
-    { label: 'Patient', value: 'patient' },
-    { label: 'Nurse', value: 'nurse' },
-    { label: 'Doctor', value: 'doctor' },
-    { label: 'Anesthesiologist', value: 'anesthesiologist' },
-    { label: 'Surgeon', value: 'surgeon' },
-    { label: 'Medical Record', value: 'medical_record' },
-    {label: 'Resident', value:'resident'},
-    {label: 'Pre-Op Nurse', value:'pre_op_nurse'},
-    {label: 'Post-Op Nurse', value:'post_op_nurse'},
-    {label: 'PACU Nurse', value:'pacu_nurse'},
-    {label: 'Registration', value:'registration'}
-  ];
+ 
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

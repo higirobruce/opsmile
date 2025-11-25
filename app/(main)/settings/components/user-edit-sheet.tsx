@@ -43,6 +43,7 @@ interface UserEditSheetProps {
     {label: 'Resident', value:'resident'},
     {label: 'Pre-Op Nurse', value:'pre_op_nurse'},
     {label: 'Post-Op Nurse', value:'post_op_nurse'},
+    {label: 'NPA', value:'npa'},
     {label: 'PACU Nurse', value:'pacu_nurse'},
     {label: 'Registration', value:'registration'}
   ];

@@ -68,9 +68,12 @@ export function PatientByAgePieChart() {
         }
 
         const ageCounts: { [key: string]: number } = {
-          "0-20 years": 0,
-          "21-40 years": 0,
-          "41+ years": 0,
+          "0-2 years": 0,
+          "3-5 years": 0,
+          "6-12 years": 0,
+          "13-18 years": 0,
+          "19-35 years": 0,
+          "36+ years": 0,
         };
 
         data.patients.forEach((patient) => {
@@ -82,12 +85,18 @@ export function PatientByAgePieChart() {
             age--;
           }
 
-          if (age >= 0 && age <= 20) {
-            ageCounts["0-20 years"]++;
-          } else if (age >= 21 && age <= 40) {
-            ageCounts["21-40 years"]++;
-          } else if (age >= 41) {
-            ageCounts["41+ years"]++;
+          if (age >= 0 && age <= 2) {
+            ageCounts["0-2 years"]++;
+          } else if (age >= 3 && age <= 5) {
+            ageCounts["3-5 years"]++;
+          } else if (age >= 6 && age <= 12) {
+            ageCounts["6-12 years"]++;
+          } else if (age >= 13 && age <= 18) {
+            ageCounts["13-18 years"]++;
+          } else if (age >= 19 && age <= 35) {
+            ageCounts["19-35 years"]++;
+          } else if (age >= 36) {
+            ageCounts["36+ years"]++;
           }
         });
 

@@ -1,12 +1,8 @@
 
 'use client'
-import ProgramStatistics from './components/program-statistics';
-import UserStatistics from './components/user-statistics';
-import PatientData from './components/patient-data';
-import ActivityLogs from './components/activity-logs';
-import { ChartBarDefault } from './components/bar-chart';
 import { ProgramStatusPieChart } from './components/program-status-pie';
 import { PatientByAgePieChart } from './components/patient-by-age-pie';
+import { PatientByGenderPieChart } from './components/patient-by-gender-pie';
 
 export default function DashboardPage() {
   return (
@@ -22,6 +18,10 @@ export default function DashboardPage() {
           </div>
           <div className='flex-1'>
             <PatientByAgePieChart />
+          </div>
+
+          <div className='flex-1'>
+            <PatientByGenderPieChart />
           </div>
         </div>
 

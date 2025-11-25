@@ -118,7 +118,7 @@ export default function PatientTabs({
               size={16}
               aria-hidden="true"
             />
-            Nursing
+            Vital signs
           </TabsTrigger>
 
           <TabsTrigger

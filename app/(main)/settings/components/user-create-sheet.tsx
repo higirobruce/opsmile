@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/app/context/AuthContext';
 import { Toaster } from '@/components/ui/sonner';
 import SelectComponent from '@/app/(main)/components/select-component';
+import { roles } from './user-edit-sheet';
 
 interface UserCreateSheetProps {
   onUserCreated: () => void;
@@ -72,15 +73,6 @@ export default function UserCreateSheet({ onUserCreated, children }: UserCreateS
     }
   };
 
-const roles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Coordinator', value: 'coordinator' },
-    { label: 'Patient', value: 'patient' },
-    { label: 'Nurse', value: 'nurse' },
-    { label: 'Doctor', value: 'doctor' },
-    { label: 'Anesthesiologist', value: 'anesthesiologist' },
-    { label: 'Surgeon', value: 'surgeon' },
-  ];
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
